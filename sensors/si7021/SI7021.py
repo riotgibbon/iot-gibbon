@@ -26,6 +26,6 @@ data1 = bus.read_byte(0x40)
 celsTemp = ((data0 * 256 + data1) * 175.72 / 65536.0) - 46.85
 fahrTemp = celsTemp * 1.8 + 32
  
-print "Relative Humidity is : %.2f %%" %humidity
-print "Temperature in Celsius is : %.2f C" %celsTemp
-print "Temperature in Fahrenheit is : %.2f F" %fahrTemp
+print ("Relative Humidity is : %.2f %%" %humidity)
+print ("Temperature in Celsius is : %.2f C" %celsTemp)
+print ("Temperature in Fahrenheit is : %.2f F" %fahrTemp)

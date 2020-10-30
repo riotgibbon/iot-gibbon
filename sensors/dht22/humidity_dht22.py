@@ -5,7 +5,7 @@ import requests
 import logging
 import os
 from datetime import datetime
-import bme680
+
 
 
 # Initial the dht device, with data pin connected to:

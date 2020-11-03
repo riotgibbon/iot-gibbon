@@ -170,14 +170,14 @@ sensor.select_gas_heater_profile(0)
 device = get_device()
 
 
-dhtPin =board.D5
-logger.info(f"Connecting to DHT22 pin {dhtPin}") 
-dhtDevice = adafruit_dht.DHT22(dhtPin, use_pulseio=False)
-logger.info(f"Connected") 
+# dhtPin =board.D5
+# logger.info(f"Connecting to DHT22 pin {dhtPin}") 
+# dhtDevice = adafruit_dht.DHT22(dhtPin, use_pulseio=False)
+# logger.info(f"Connected") 
 
 
 bme680Read = False
-dht22Read = False
+dht22Read = True
 
 while True:
     try:
@@ -196,25 +196,25 @@ while True:
                     r = requests.post('https://maker.ifttt.com/trigger/bme680/with/key/d52lKnzf-xDid_NfD5tga-',data = {'value1':sensor.data.temperature, 'value2': sensor.data.humidity, 'value3': sensor.data.pressure})
                     logger.info(f"sent bme680 to IFTTT: {r}")
                     bme680Read = True
-        logger.info("starting dht22Read read")            
-        if dht22Read == False:
-            try:    
-                temp = dhtDevice.temperature
-                humidity = dhtDevice.humidity
-                logger.info(f"DHT22: temp{temp}, humidity: {humidity}") 
-                r = requests.post('https://maker.ifttt.com/trigger/DHT22/with/key/d52lKnzf-xDid_NfD5tga-',data = {'value1': temp, 'value2': humidity})
-                logger.info(f"sent DHT22 to IFTTT: {r}")  
-                dht22Read = True
-            except Exception as error:
-# Errors happen fairly often, DHT's are hard to read, just keep going
-                logger.error(error.args[0])
+        # logger.info("starting dht22Read read")            
+#         if dht22Read == False:
+#             try:    
+#                 temp = dhtDevice.temperature
+#                 humidity = dhtDevice.humidity
+#                 logger.info(f"DHT22: temp{temp}, humidity: {humidity}") 
+#                 r = requests.post('https://maker.ifttt.com/trigger/DHT22/with/key/d52lKnzf-xDid_NfD5tga-',data = {'value1': temp, 'value2': humidity})
+#                 logger.info(f"sent DHT22 to IFTTT: {r}")  
+#                 dht22Read = True
+#             except Exception as error:
+# # Errors happen fairly often, DHT's are hard to read, just keep going
+#                 logger.error(error.args[0])
     except Exception as error:
     # Errors happen fairly often, DHT's are hard to read, just keep going
         logger.error(error.args[0])   
         
     if dht22Read and bme680Read:
         bme680Read = False
-        dht22Read = False
+        # dht22Read = False
         time.sleep(sleepSeconds)
     else:
         time.sleep(1)

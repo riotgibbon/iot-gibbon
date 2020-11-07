@@ -1,0 +1,9 @@
+[Unit]
+Description=Write to IFTTT
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/github/iot-gibbon/python/microservices/livingRoomToIFTTT.py
+
+[Install]
+WantedBy=multi-user.target

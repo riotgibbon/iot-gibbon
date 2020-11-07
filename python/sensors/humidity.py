@@ -2,7 +2,6 @@
 
 import time
 import board
-import adafruit_dht
 import requests
 import logging
 import os
@@ -169,11 +168,6 @@ sensor.select_gas_heater_profile(0)
 
 device = get_device()
 
-
-# dhtPin =board.D5
-# logger.info(f"Connecting to DHT22 pin {dhtPin}") 
-# dhtDevice = adafruit_dht.DHT22(dhtPin, use_pulseio=False)
-# logger.info(f"Connected") 
 
 
 bme680Read = False

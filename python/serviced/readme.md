@@ -7,3 +7,4 @@ https://learn.sparkfun.com/tutorials/how-to-run-a-raspberry-pi-program-on-startu
 sudo systemctl daemon-reload
 
 sudo systemctl enable ifttt.service
+sudo systemctl enable pi_home.service

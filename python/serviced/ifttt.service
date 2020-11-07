@@ -1,6 +1,7 @@
 [Unit]
 Description=Write to IFTTT
-After=multi-user.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/microservices/livingRoomToIFTTT.py > /home/pi/livingRoomToIFTTT.log 2>&1'

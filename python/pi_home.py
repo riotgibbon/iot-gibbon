@@ -36,10 +36,7 @@ def display_settings(device, args):
         lib_name = lib_version = 'unknown'
 
     #--width 128 --height 128 --display sh1106 -r 2
-    # args.width=128
-    # args.height=128
-    args.display='sh1106'
-    # args.r=2
+
     import luma.core
     version = 'luma.{} {} (luma.core {})'.format(
         lib_name, lib_version, luma.core.__version__)
@@ -103,6 +100,11 @@ def get_device(actual_args=None):
     args
     # create device
     try:
+        args.width=128
+        args.height=128
+        args.display='sh1106'
+        args.r=2
+        
         device = cmdline.create_device(args)
         print(display_settings(device, args))
         return device

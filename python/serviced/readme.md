@@ -4,6 +4,10 @@ https://learn.sparkfun.com/tutorials/how-to-run-a-raspberry-pi-program-on-startu
 
  sudo cp *.service /lib/systemd/system/
 
+
+sudo systemctl disable ifttt.service
+sudo systemctl disable  pi_home.service
+
 sudo systemctl daemon-reload
 
 sudo systemctl enable ifttt.service

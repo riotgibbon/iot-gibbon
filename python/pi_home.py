@@ -39,7 +39,7 @@ def display_settings(device, args):
     args.width=128
     args.height=128
     args.display='sh1106'
-    args.resolution=2
+    args.r=2
     import luma.core
     version = 'luma.{} {} (luma.core {})'.format(
         lib_name, lib_version, luma.core.__version__)
@@ -119,8 +119,8 @@ sleepSeconds = sleepMinutes * 60
 
 logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)
-logger = logging.getLogger('DHT22')
-logname = datetime.now().strftime("DHT22_%Y-%m-%d.log")
+logger = logging.getLogger('pi_home')
+logname = datetime.now().strftime("pi_home_%Y-%m-%d.log")
 logpath = os.path.join(logroot,logname)
 hdlr = logging.FileHandler(logpath)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')

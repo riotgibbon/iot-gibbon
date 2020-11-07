@@ -32,7 +32,7 @@ def startMQTT(q):
     client.on_connect = on_connect
     client.on_message = on_message
 
-    while (True)
+    while (True):
         try:
             client.connect("192.168.0.63", 1883, 60)
             break
@@ -40,7 +40,7 @@ def startMQTT(q):
             print ("error connecting, pausing")
             traceback.print_exc()
             time.sleep(5)
-            
+
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
 # Other loop*() functions are available that give a threaded interface and a

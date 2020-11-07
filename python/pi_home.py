@@ -38,7 +38,7 @@ def display_settings(device, args):
     #--width 128 --height 128 --display sh1106 -r 2
     # args.width=128
     # args.height=128
-    # args.display='sh1106'
+    args.display='sh1106'
     # args.r=2
     import luma.core
     version = 'luma.{} {} (luma.core {})'.format(

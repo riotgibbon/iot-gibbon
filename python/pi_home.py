@@ -103,8 +103,8 @@ def get_device(actual_args=None):
         args.width=128
         args.height=128
         args.display='sh1106'
-        args.r=2
-        
+        # args.r=2
+
         device = cmdline.create_device(args)
         print(display_settings(device, args))
         return device

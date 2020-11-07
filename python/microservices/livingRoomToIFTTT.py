@@ -87,7 +87,7 @@ def readDictionary(q):
                 print ("error reading data")
                 traceback.print_exc()
             finally:
-                readTime = getReadTime(180)
+                readTime = getReadTime(600)
                 print (f"next read at {readTime}")
 
 

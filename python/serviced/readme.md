@@ -2,6 +2,8 @@
 
 https://learn.sparkfun.com/tutorials/how-to-run-a-raspberry-pi-program-on-startup/all#method-3-systemd
 
+systemctl enable systemd-networkd.service systemd-networkd-wait-online.service
+
  sudo cp *.service /lib/systemd/system/
 
 

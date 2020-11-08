@@ -85,8 +85,7 @@ bme680Read = False
 def getReadTime(seconds):
     return datetime.now() + timedelta(0,seconds)
 
-mqttWriteTime = getReadTime(10)
-print (f"next read at {readTime}")
+
 ifftWriteTime = getReadTime(10)
 
 def publish(client, metric, value):

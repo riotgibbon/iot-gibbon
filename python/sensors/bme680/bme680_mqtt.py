@@ -106,7 +106,7 @@ while True:
             # 
             publish(mqttClient,"temperature",temperature)   
             publish(mqttClient,"humidity",humidity)  
-            publish(mqttClient,"humidity",pressure)       
+            publish(mqttClient,"pressure",pressure)       
 
             if datetime.now() > ifftWriteTime:
                 try:

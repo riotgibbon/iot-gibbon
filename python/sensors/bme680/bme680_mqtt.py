@@ -73,11 +73,13 @@ sensor.set_gas_heater_temperature(320)
 sensor.set_gas_heater_duration(150)
 sensor.select_gas_heater_profile(0)
 
-broker="192.168.1.184"
+
+broker="192.168.0.63"
 port=1883
+logger.info(f"Connecting to mqtt broker {broker}:{port}")
 mqttClient = paho.Client("bme680")  
 mqttClient.connect(broker,port)  
-
+logger.info(f"Connected")
 bme680Read = False
 
 def getReadTime(seconds):

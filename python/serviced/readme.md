@@ -9,8 +9,11 @@ systemctl enable systemd-networkd.service systemd-networkd-wait-online.service
 
 sudo systemctl disable ifttt.service
 sudo systemctl disable  pi_home.service
+sudo systemctl disable  bme680_mqtt.service
+
 
 sudo systemctl daemon-reload
 
 sudo systemctl enable ifttt.service
 sudo systemctl enable pi_home.service
+sudo systemctl enable  bme680_mqtt.service

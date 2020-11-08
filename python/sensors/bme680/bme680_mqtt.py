@@ -99,14 +99,14 @@ while True:
 
             temperature=sensor.data.temperature
             pressure=sensor.data.pressure
-            humidity=sensor.data.humidity
+            humidity=sensor.data.humidity   
 
 
             logger.info(bme680)
             # 
-            publish("temperature",temperature)   
-            publish("humidity",humidity)  
-            publish("humidity",pressure)       
+            publish(mqttClient,"temperature",temperature)   
+            publish(mqttClient,"humidity",humidity)  
+            publish(mqttClient,"humidity",pressure)       
 
             if datetime.now() > ifftWriteTime:
                 try:

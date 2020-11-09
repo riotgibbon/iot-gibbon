@@ -65,6 +65,102 @@ external dir:
 
 sudo chown -R influxdb:influxdb /media/pi/201804/pi/influxd
 
+not workingls 
+
+switched back to original and run
+
+try stopping, copying the existing files to the HDD , and swapping the dirs - see what happens
+
+new hard drive
+`/dev/sda3       338G  2.5M  338G   1% /media/pi/PIBACK`
+
+```
+mkdir /media/pi/PIBACK/influxdb/
+sudo cp -r /var/lib/influxdb/* /media/pi/PIBACK/influxdb/
+```
+
+stop, update config and restart ...
+
+stop
+`sudo systemctl stop influxdb`
+
+config
+
+sudo nano /etc/influxdb/influxdb.conf
+
+[meta]
+  # Where the metadata/raft database is stored
+  # dir = "/media/pi/PIBACK//meta"
+  dir = "/media/pi/PIBACK/influxdb/meta"
+
+[data]
+  # The directory where the TSM storage engine stores TSM files.
+  #  dir = "/var/lib/influxdb/data"
+  dir = "/media/pi/PIBACK/influxdb/data"
+
+
+  # The directory where the TSM storage engine stores WAL files.
+  # wal-dir = "/var/lib/influxdb/wal"
+  wal-dir = "/media/pi/PIBACK/influxdb/wal"
+
+
+
+try switching ownership of location
+
+sudo chown -R influxdb:influxdb /media/pi/PIBACK/influxdb/
+
+not having it
+
+
+try reformatting
+
+/dev/sda3 
+
+https://raspberrytips.com/format-mount-usb-drive/#Format_or_reformat_the_entire_disk
+
+sudo fdisk /dev/sda3 
+
+sudo mkfs.ext4 /dev/sda2
+
+new folder
+/media/pi/67fea718-da7c-4d04-bf6e-0a67249ab3e1
+
+`sudo mkdir /media/pi/67fea718-da7c-4d04-bf6e-0a67249ab3e1/influxdb`
+
+change ownership
+
+sudo chown -R influxdb:influxdb /media/pi/67fea718-da7c-4d04-bf6e-0a67249ab3e1/influxdb
+
+sudo cp -r /var/lib/influxdb/* /media/pi/67fea718-da7c-4d04-bf6e-0a67249ab3e1/influxdb/
+
+update config
+
+sudo nano /etc/influxdb/influxdb.conf
+
+
+[meta]
+  # Where the metadata/raft database is stored
+  # dir = "/media/pi/PIBACK//meta"
+  dir = "/media/pi/67fea718-da7c-4d04-bf6e-0a67249ab3e1/influxdb/meta"
+
+[data]
+  # The directory where the TSM storage engine stores TSM files.
+  #  dir = "/var/lib/influxdb/data"
+  dir = "/media/pi/67fea718-da7c-4d04-bf6e-0a67249ab3e1/influxdb/data"
+
+
+  # The directory where the TSM storage engine stores WAL files.
+  # wal-dir = "/var/lib/influxdb/wal"
+  wal-dir = "/media/pi/67fea718-da7c-4d04-bf6e-0a67249ab3e1/influxdb/wal"
+
+
+restart
+
+sudo systemctl start influxdb
+systemctl status influxdb
+
+journalctl -u influxdb
+
 
 ## Starting
 

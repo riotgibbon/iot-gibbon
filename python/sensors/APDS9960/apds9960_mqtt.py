@@ -6,6 +6,7 @@ from adafruit_apds9960 import colorutility
 import time
 import paho.mqtt.client as paho
 import os
+import logging
 
 sleepSeconds =5
 sensor ='apds9960'

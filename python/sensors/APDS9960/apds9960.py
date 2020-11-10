@@ -19,10 +19,10 @@ while True:
 
         gesture = apds.gesture()
         if gesture == 1:
-        print("up")
+            print("up")
         if gesture == 2:
-        print("down")
+            print("down")
         if gesture == 3:
-        print("left")
+            print("left")
         if gesture == 4:
-        print("right")
+            print("right")

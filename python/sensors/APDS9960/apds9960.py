@@ -11,11 +11,17 @@ apds.enable_proximity = True
 apds.proximity_interrupt_threshold = (0, 175)
 apds.enable_proximity_interrupt = True
 
+apds.enable_color = True
+
+while not apds.color_data_ready:
+    time.sleep(0.005)
+
 while True:
         # print(apds.proximity)
         apds.clear_interrupt()
 
-
+        r, g, b, c = apds.color_data
+        print("r: {}, g: {}, b: {}, c: {}".format(r, g, b, c))
 
         gesture = apds.gesture()
         if gesture == 1:

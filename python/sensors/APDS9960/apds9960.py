@@ -12,7 +12,7 @@ apds.proximity_interrupt_threshold = (0, 175)
 apds.enable_proximity_interrupt = True
 
 while True:
-        print(apds.proximity)
+        # print(apds.proximity)
         apds.clear_interrupt()
 
 

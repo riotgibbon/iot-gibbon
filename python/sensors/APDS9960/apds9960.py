@@ -14,4 +14,15 @@ apds.enable_proximity_interrupt = True
 while True:
         print(apds.proximity)
         apds.clear_interrupt()
-        
+
+
+
+        gesture = apds.gesture()
+        if gesture == 1:
+        print("up")
+        if gesture == 2:
+        print("down")
+        if gesture == 3:
+        print("left")
+        if gesture == 4:
+        print("right")

@@ -2,6 +2,7 @@ import board
 import busio
 import digitalio
 from adafruit_apds9960.apds9960 import APDS9960
+import time
 
 i2c = busio.I2C(board.SCL, board.SDA)
 int_pin = digitalio.DigitalInOut(board.D5)

@@ -2,6 +2,7 @@ import board
 import busio
 import digitalio
 from adafruit_apds9960.apds9960 import APDS9960
+from adafruit_apds9960 import colorutility
 import time
 
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -22,6 +23,9 @@ while True:
         apds.clear_interrupt()
 
         r, g, b, c = apds.color_data
-        print("r: {}, g: {}, b: {}, c: {}".format(r, g, b, c))
+        print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
+
+        print("color temp {}".format(colorutility.calculate_color_temperature(r, g, b)))
+        print("light lux {}".format(colorutility.calculate_lux(r, g, b)))
 
        

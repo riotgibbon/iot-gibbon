@@ -17,11 +17,11 @@ import paho.mqtt.client as paho
 # sleepSeconds = sleepMinutes * 60
 
 sleepSeconds =5
-
+sensor ='bme680'
 logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)
-logger = logging.getLogger('bme680')
-logname = datetime.now().strftime("bme680_%Y-%m-%d.log")
+logger = logging.getLogger(sensor)
+logname = datetime.now().strftime(f"{sensor}_%Y-%m-%d.log")
 logpath = os.path.join(logroot,logname)
 hdlr = logging.FileHandler(logpath)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')

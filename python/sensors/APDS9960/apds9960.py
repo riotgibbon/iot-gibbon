@@ -4,6 +4,7 @@ import digitalio
 from adafruit_apds9960.apds9960 import APDS9960
 from adafruit_apds9960 import colorutility
 import time
+import paho.mqtt.client as paho
 
 i2c = busio.I2C(board.SCL, board.SDA)
 int_pin = digitalio.DigitalInOut(board.D5)
@@ -28,4 +29,4 @@ while True:
         print("color temp {}".format(colorutility.calculate_color_temperature(r, g, b)))
         print("light lux {}".format(colorutility.calculate_lux(r, g, b)))
 
-        time.sleep(1)
+        time.sleep(5)

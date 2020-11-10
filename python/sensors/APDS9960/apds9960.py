@@ -11,7 +11,7 @@ apds = APDS9960(i2c, interrupt_pin=int_pin)
 apds.enable_proximity = True
 apds.proximity_interrupt_threshold = (0, 175)
 apds.enable_proximity_interrupt = True
-apds.enable_gesture = True
+
 apds.enable_color = True
 
 while not apds.color_data_ready:
@@ -24,12 +24,4 @@ while True:
         r, g, b, c = apds.color_data
         print("r: {}, g: {}, b: {}, c: {}".format(r, g, b, c))
 
-        gesture = apds.gesture()
-        if gesture == 1:
-            print("up")
-        if gesture == 2:
-            print("down")
-        if gesture == 3:
-            print("left")
-        if gesture == 4:
-            print("right")
+       

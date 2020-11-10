@@ -5,6 +5,7 @@ from adafruit_apds9960.apds9960 import APDS9960
 from adafruit_apds9960 import colorutility
 import time
 import paho.mqtt.client as paho
+import os
 
 sleepSeconds =5
 sensor ='apds9960'
@@ -66,4 +67,4 @@ while True:
         print("color temp {}".format(colorTemp))
         print("light lux {}".format(lightLux))
 
-        time.sleep(sleepSeconds)
+        time.sleep(sleepSecond)

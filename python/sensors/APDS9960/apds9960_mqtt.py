@@ -43,13 +43,15 @@ apds.enable_proximity_interrupt = True
 apds.enable_color = True
 
 def publish(client, metric, value):
-    client.publish(f"home/tele/{metric}/livingroom/desk", value)
+    topic =f"home/tele/{metric}/livingroom/desk"
+    print (f"publishing: {topic}:{value}")
+    client.publish(topic, value)
 
 while not apds.color_data_ready:
     time.sleep(0.005)
 
 while True:
-        print(f"proximity: {apds.proximity}")
+        # print(f"proximity: {apds.proximity}")
         publish(mqttClient,"proximity",apds.proximity)   
         apds.clear_interrupt()
 
@@ -66,7 +68,7 @@ while True:
         publish(mqttClient,"colourTemp",colourTemp)   
         publish(mqttClient,"lightLux",lightLux)   
 
-        print("color temp {}".format(colorTemp))
-        print("light lux {}".format(lightLux))
+        # print("color temp {}".format(colourTemp))
+        # print("light lux {}".format(lightLux))
 
         time.sleep(sleepSecond)

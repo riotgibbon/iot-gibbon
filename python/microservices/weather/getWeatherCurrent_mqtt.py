@@ -6,7 +6,7 @@ import os
 import logging
 import time
 
-url = "https://rapidapi.p.rapidapi.com/weather"
+# url = "https://rapidapi.p.rapidapi.com/weather"
 location = "Slough"
 country= "uk"
 
@@ -18,6 +18,10 @@ headers = {
     }
 
 source = "openweather"
+
+key='b5807e59dfa1bcb69304c35d5ef03dc4'
+url=f'http://api.openweathermap.org/data/2.5/weather'#?q={location}&appid={key}'
+querystring = {"q":f"{location}","appid":key,"units":"metric"}
 
 logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)

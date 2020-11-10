@@ -1,9 +1,9 @@
 [Unit]
-Description=Write to IFTTT
+Description=Central PI display
 After=multi-user.target
 
 [Service]
-ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/pi_home.py > /home/pi/pi_home.log 2>&1'
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/pi_home.py > /home/pi/logs/pi_home.log 2>&1'
 Restart=always
 RestartSec=10s
 KillMode=process

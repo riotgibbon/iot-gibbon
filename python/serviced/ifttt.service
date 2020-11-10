@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/microservices/livingRoomToIFTTT.py > /home/pi/livingRoomToIFTTT.log 2>&1'
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/microservices/livingRoomToIFTTT.py > /home/pi/logs/livingRoomToIFTTT.log 2>&1'
 Restart=always
 RestartSec=10s
 KillMode=process

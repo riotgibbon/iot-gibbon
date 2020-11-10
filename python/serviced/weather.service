@@ -1,9 +1,9 @@
 [Unit]
-Description=Write to IFTTT
+Description=OpenWeather mqtt client
 After=multi-user.target
 
 [Service]
-ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/microservices/weather/getWeatherCurrent_mqtt.py > /home/pi/getWeatherCurrent_mqtt.log 2>&1'
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/microservices/weather/getWeatherCurrent_mqtt.py > /home/pi/logs/getWeatherCurrent_mqtt.log 2>&1'
 Restart=always
 RestartSec=10s
 KillMode=process

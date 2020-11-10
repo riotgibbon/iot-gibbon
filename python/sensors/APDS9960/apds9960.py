@@ -18,7 +18,7 @@ while not apds.color_data_ready:
     time.sleep(0.005)
 
 while True:
-        # print(apds.proximity)
+        print(f"proximity: {apds.proximity}")
         apds.clear_interrupt()
 
         r, g, b, c = apds.color_data

@@ -9,7 +9,7 @@ import os
 import logging
 from datetime import datetime,timedelta
 
-sleepSeconds =5
+sleepSeconds =2
 sensor ='apds9960'
 logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)

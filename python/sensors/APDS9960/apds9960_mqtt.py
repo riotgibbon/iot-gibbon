@@ -71,4 +71,4 @@ while True:
         # print("color temp {}".format(colourTemp))
         # print("light lux {}".format(lightLux))
 
-        time.sleep(sleepSecond)
+        time.sleep(sleepSeconds)

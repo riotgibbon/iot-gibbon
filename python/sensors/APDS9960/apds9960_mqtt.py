@@ -51,24 +51,26 @@ while not apds.color_data_ready:
     time.sleep(0.005)
 
 while True:
-        # print(f"proximity: {apds.proximity}")
-        publish(mqttClient,"proximity",apds.proximity)   
-        apds.clear_interrupt()
+        try:
+            # print(f"proximity: {apds.proximity}")
+            publish(mqttClient,"proximity",apds.proximity)   
+            apds.clear_interrupt()
 
-        r, g, b, c = apds.color_data
-        print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
+            r, g, b, c = apds.color_data
+            print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
 
-        publish(mqttClient,"red",r)   
-        publish(mqttClient,"green",g)   
-        publish(mqttClient,"blue",b)   
-        publish(mqttClient,"clear",c)   
+            publish(mqttClient,"red",r)   
+            publish(mqttClient,"green",g)   
+            publish(mqttClient,"blue",b)   
+            publish(mqttClient,"clear",c)   
 
-        colourTemp=colorutility.calculate_color_temperature(r, g, b)
-        lightLux=colorutility.calculate_lux(r, g, b)
-        publish(mqttClient,"colourTemp",colourTemp)   
-        publish(mqttClient,"lightLux",lightLux)   
+            colourTemp=colorutility.calculate_color_temperature(r, g, b)
+            lightLux=colorutility.calculate_lux(r, g, b)
+            publish(mqttClient,"colourTemp",colourTemp)   
+            publish(mqttClient,"lightLux",lightLux)   
+            
+        except Exception as error:
+            logger.error(error.args[0])   
 
-        # print("color temp {}".format(colourTemp))
-        # print("light lux {}".format(lightLux))
 
         time.sleep(sleepSeconds)

@@ -20,3 +20,4 @@ sudo systemctl enable pi_home.service
 sudo systemctl enable bme680_mqtt.service
 sudo systemctl enable weather.service
 sudo systemctl enable apds9960_mqtt.service
+

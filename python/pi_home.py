@@ -148,7 +148,7 @@ client = getInfluxClient()
 query = "select last(value),* from mqtt_consumer group by *;"
 
 def getTopicValue(result, topic):
-    return result.get_points(measurement='mqtt_consumer', tags={'topic': topic})[0]['value']
+    return list(result.get_points(measurement='mqtt_consumer', tags={'topic': topic}))[0]['value']
 
 
 today_last_time = "Unknown"

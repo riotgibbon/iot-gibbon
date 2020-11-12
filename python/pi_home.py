@@ -165,6 +165,7 @@ while True:
 
         if present :
             if not was_present:
+                logging.info("Switching light on")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_On/with/key/d52lKnzf-xDid_NfD5tga-')
                 was_present =True
             
@@ -204,6 +205,7 @@ while True:
         else:
             device.clear()
             if was_present:
+                logging.info("Switching light off")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_Off/with/key/d52lKnzf-xDid_NfD5tga-')
                 was_present =False
     time.sleep(0.1)

@@ -150,7 +150,7 @@ query = "select last(value),* from mqtt_consumer group by *;"
 def getTopicValue(result, topic):
     return list(result.get_points(measurement='mqtt_consumer', tags={'topic': topic}))[0]['value']
 
-
+was_present = False
 today_last_time = "Unknown"
 while True:
     
@@ -163,7 +163,11 @@ while True:
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
         present =getTopicValue(result,'home/tele/proximity/livingroom/desk')>5
 
-        if present:
+        if present :
+            if not was_present
+                r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_On/with/key/d52lKnzf-xDid_NfD5tga-')
+                was_present =True
+            
             today_last_time = today_time
 
 
@@ -199,6 +203,9 @@ while True:
                 draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
         else:
             device.clear()
+             if was_present
+                r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_Off/with/key/d52lKnzf-xDid_NfD5tga-')
+                was_present =False
     time.sleep(0.1)
 
 

@@ -13,6 +13,15 @@ from luma.core import cmdline, error
 from luma.core.legacy.font import proportional, SINCLAIR_FONT
 from luma.core.render import canvas
 import math
+from influxdb import InfluxDBClient
+
+def getInfluxClient(host='localhost', port=8086):
+    user=''
+    password=''
+    dbname = 'home'
+    client = InfluxDBClient(host, port, user, password, dbname)
+    return client
+
 
 def posn(angle, arm_length):
     dx = int(math.cos(math.radians(angle)) * arm_length)
@@ -133,61 +142,26 @@ logger.setLevel(logging.INFO)
 
 
 
-
-# logger.info("Connecting to bme680")
-
-# try:
-#     sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
-# except IOError:
-#     sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
-
-# logger.info("Connected")
-
-
-# logger.info('Calibration data:')
-# for name in dir(sensor.calibration_data):
-
-#     if not name.startswith('_'):
-#         value = getattr(sensor.calibration_data, name)
-
-#         if isinstance(value, int):
-#             logger.info('{}: {}'.format(name, value))
-
-# # These oversampling settings can be tweaked to
-# # change the balance between accuracy and noise in
-# # the data.
-
-# sensor.set_humidity_oversample(bme680.OS_2X)
-# sensor.set_pressure_oversample(bme680.OS_4X)
-# sensor.set_temperature_oversample(bme680.OS_8X)
-# sensor.set_filter(bme680.FILTER_SIZE_3)
-# sensor.set_gas_status(bme680.ENABLE_GAS_MEAS)
-
-# logger.info('\n\nInitial reading:')
-# for name in dir(sensor.data):
-#     value = getattr(sensor.data, name)
-
-#     if not name.startswith('_'):
-#         logger.info('{}: {}'.format(name, value))
-
-# sensor.set_gas_heater_temperature(320)
-# sensor.set_gas_heater_duration(150)
-# sensor.select_gas_heater_profile(0)
-
 device = get_device()
 
+client = getInfluxClient()
+query = "select last(value),* from mqtt_consumer group by *;"
 
-
-# bme680Read = False
-# dht22Read = True
+def getTopicValue(result, topic):
+    return result.get_points(measurement='mqtt_consumer', tags={'topic': topic})[0]['value']
 
 
 today_last_time = "Unknown"
 while True:
+    
     now = datetime.now()
     today_date = now.strftime("%d %b %y")
     today_time = now.strftime("%H:%M:%S")
     if today_time != today_last_time:
+        result = client.query(query)
+        temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
+        humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
+
         today_last_time = today_time
         with canvas(device) as draw:
             now = datetime.now()
@@ -217,7 +191,8 @@ while True:
             draw.ellipse((cx - 2, cy - 2, cx + 2, cy + 2), fill="white", outline="white")
             draw.text((2 * (cx + margin), cy - 8), today_date, fill="yellow")
             draw.text((2 * (cx + margin), cy), today_time, fill="yellow")
-
+            draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
+            draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
     time.sleep(0.1)
 
 

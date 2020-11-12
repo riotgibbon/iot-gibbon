@@ -203,7 +203,7 @@ while True:
                 draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
         else:
             device.clear()
-             if was_present:
+            if was_present:
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_Off/with/key/d52lKnzf-xDid_NfD5tga-')
                 was_present =False
     time.sleep(0.1)

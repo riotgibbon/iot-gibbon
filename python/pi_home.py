@@ -184,13 +184,13 @@ device = get_device()
 
 today_last_time = "Unknown"
 while True:
-    now = datetime.datetime.now()
+    now = datetime.now()
     today_date = now.strftime("%d %b %y")
     today_time = now.strftime("%H:%M:%S")
     if today_time != today_last_time:
         today_last_time = today_time
         with canvas(device) as draw:
-            now = datetime.datetime.now()
+            now = datetime.now()
             today_date = now.strftime("%d %b %y")
 
             margin = 4

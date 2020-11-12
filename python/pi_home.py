@@ -44,7 +44,7 @@ def display_settings(device, args):
     return 'Version: {}\nDisplay: {}\n{}Dimensions: {} x {}\n{}'.format(
         version, args.display, iface, device.width, device.height, '-' * 60)
 
-def clockReadings(temp, humidity, pressure):
+def clockReadings(temperature, humidity, pressure):
     today_last_time = "Unknown"
 
     now = datetime.now()
@@ -80,8 +80,8 @@ def clockReadings(temp, humidity, pressure):
             draw.ellipse((cx - 2, cy - 2, cx + 2, cy + 2), fill="white", outline="white")
             draw.text((2 * (cx + margin), cy - 8), today_date, fill="yellow")
             draw.text((2 * (cx + margin), cy), today_time, fill="yellow")
-            draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
-            draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
+            # draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
+            # draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
 
 def get_device(actual_args=None):
     """
@@ -134,70 +134,76 @@ logger.setLevel(logging.INFO)
 
 
 
-logger.info("Connecting to bme680")
+# logger.info("Connecting to bme680")
 
-try:
-    sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
-except IOError:
-    sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
+# try:
+#     sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
+# except IOError:
+#     sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
 
-logger.info("Connected")
-
-
-logger.info('Calibration data:')
-for name in dir(sensor.calibration_data):
-
-    if not name.startswith('_'):
-        value = getattr(sensor.calibration_data, name)
-
-        if isinstance(value, int):
-            logger.info('{}: {}'.format(name, value))
-
-# These oversampling settings can be tweaked to
-# change the balance between accuracy and noise in
-# the data.
-
-sensor.set_humidity_oversample(bme680.OS_2X)
-sensor.set_pressure_oversample(bme680.OS_4X)
-sensor.set_temperature_oversample(bme680.OS_8X)
-sensor.set_filter(bme680.FILTER_SIZE_3)
-sensor.set_gas_status(bme680.ENABLE_GAS_MEAS)
-
-logger.info('\n\nInitial reading:')
-for name in dir(sensor.data):
-    value = getattr(sensor.data, name)
-
-    if not name.startswith('_'):
-        logger.info('{}: {}'.format(name, value))
-
-sensor.set_gas_heater_temperature(320)
-sensor.set_gas_heater_duration(150)
-sensor.select_gas_heater_profile(0)
-
-device = get_device()
+# logger.info("Connected")
 
 
+# logger.info('Calibration data:')
+# for name in dir(sensor.calibration_data):
 
-bme680Read = False
-dht22Read = True
+#     if not name.startswith('_'):
+#         value = getattr(sensor.calibration_data, name)
+
+#         if isinstance(value, int):
+#             logger.info('{}: {}'.format(name, value))
+
+# # These oversampling settings can be tweaked to
+# # change the balance between accuracy and noise in
+# # the data.
+
+# sensor.set_humidity_oversample(bme680.OS_2X)
+# sensor.set_pressure_oversample(bme680.OS_4X)
+# sensor.set_temperature_oversample(bme680.OS_8X)
+# sensor.set_filter(bme680.FILTER_SIZE_3)
+# sensor.set_gas_status(bme680.ENABLE_GAS_MEAS)
+
+# logger.info('\n\nInitial reading:')
+# for name in dir(sensor.data):
+#     value = getattr(sensor.data, name)
+
+#     if not name.startswith('_'):
+#         logger.info('{}: {}'.format(name, value))
+
+# sensor.set_gas_heater_temperature(320)
+# sensor.set_gas_heater_duration(150)
+# sensor.select_gas_heater_profile(0)
+
+# device = get_device()
+
+
+
+# bme680Read = False
+# dht22Read = True
 
 while True:
-    try:
-        logger.info("starting bme680 read")
-        if bme680Read == False and sensor.get_sensor_data() :
-                    bme680 = 'bme680: {0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
+    temperature=""
+    pressure=""
+    humidity=""
+    clockReadings(temperature, humidity, pressure)
+    time.sleep(1)
 
-                    temperature=sensor.data.temperature
-                    pressure=sensor.data.pressure
-                    humidity=sensor.data.humidity
+    # try:
+    #     logger.info("starting bme680 read")
+    #     if bme680Read == False and sensor.get_sensor_data() :
+    #                 bme680 = 'bme680: {0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
+
+    #                 temperature=sensor.data.temperature
+    #                 pressure=sensor.data.pressure
+    #                 humidity=sensor.data.humidity
                     
-                    logger.info(bme680)
-                    # show_message(device, output, fill="white", font=proportional(SINCLAIR_FONT))
-                    # show_message(device, bme680, fill="white", font=SINCLAIR_FONT)
-                    clockReadings(temperature, humidity, pressure)
-                    r = requests.post('https://maker.ifttt.com/trigger/bme680/with/key/d52lKnzf-xDid_NfD5tga-',data = {'value1':sensor.data.temperature, 'value2': sensor.data.humidity, 'value3': sensor.data.pressure})
-                    logger.info(f"sent bme680 to IFTTT: {r}")
-                    bme680Read = True
+    #                 logger.info(bme680)
+    #                 # show_message(device, output, fill="white", font=proportional(SINCLAIR_FONT))
+    #                 # show_message(device, bme680, fill="white", font=SINCLAIR_FONT)
+    #                 clockReadings(temperature, humidity, pressure)
+    #                 r = requests.post('https://maker.ifttt.com/trigger/bme680/with/key/d52lKnzf-xDid_NfD5tga-',data = {'value1':sensor.data.temperature, 'value2': sensor.data.humidity, 'value3': sensor.data.pressure})
+    #                 logger.info(f"sent bme680 to IFTTT: {r}")
+    #                 bme680Read = True
         # logger.info("starting dht22Read read")            
 #         if dht22Read == False:
 #             try:    
@@ -209,15 +215,15 @@ while True:
 #                 dht22Read = True
 #             except Exception as error:
 # # Errors happen fairly often, DHT's are hard to read, just keep going
-#                 logger.error(error.args[0])
-    except Exception as error:
-    # Errors happen fairly often, DHT's are hard to read, just keep going
-        logger.error(error.args[0])   
+# #                 logger.error(error.args[0])
+#     except Exception as error:
+#     # Errors happen fairly often, DHT's are hard to read, just keep going
+#         logger.error(error.args[0])   
         
-    if dht22Read and bme680Read:
-        bme680Read = False
-        # dht22Read = False
-        time.sleep(sleepSeconds)
-    else:
-        time.sleep(1)
+#     if dht22Read and bme680Read:
+#         bme680Read = False
+#         # dht22Read = False
+#         time.sleep(sleepSeconds)
+#     else:
+#         time.sleep(1)
 

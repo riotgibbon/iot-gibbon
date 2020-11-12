@@ -161,38 +161,44 @@ while True:
         result = client.query(query)
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
+        present =getTopicValue(result,'home/tele/proximity/livingroom/desk')>5
 
-        today_last_time = today_time
-        with canvas(device) as draw:
-            now = datetime.now()
-            today_date = now.strftime("%d %b %y")
+            if present:
+            today_last_time = today_time
 
-            margin = 4
 
-            cx = 30
-            cy = min(device.height, 64) / 2
+            with canvas(device) as draw:
+                now = datetime.now()
+                today_date = now.strftime("%d %b %y")
 
-            left = cx - cy
-            right = cx + cy
+                margin = 4
 
-            hrs_angle = 270 + (30 * (now.hour + (now.minute / 60.0)))
-            hrs = posn(hrs_angle, cy - margin - 7)
+                cx = 30
+                cy = min(device.height, 64) / 2
 
-            min_angle = 270 + (6 * now.minute)
-            mins = posn(min_angle, cy - margin - 2)
+                left = cx - cy
+                right = cx + cy
 
-            sec_angle = 270 + (6 * now.second)
-            secs = posn(sec_angle, cy - margin - 2)
+                hrs_angle = 270 + (30 * (now.hour + (now.minute / 60.0)))
+                hrs = posn(hrs_angle, cy - margin - 7)
 
-            draw.ellipse((left + margin, margin, right - margin, min(device.height, 64) - margin), outline="white")
-            draw.line((cx, cy, cx + hrs[0], cy + hrs[1]), fill="white")
-            draw.line((cx, cy, cx + mins[0], cy + mins[1]), fill="white")
-            draw.line((cx, cy, cx + secs[0], cy + secs[1]), fill="red")
-            draw.ellipse((cx - 2, cy - 2, cx + 2, cy + 2), fill="white", outline="white")
-            draw.text((2 * (cx + margin), cy - 8), today_date, fill="yellow")
-            draw.text((2 * (cx + margin), cy), today_time, fill="yellow")
-            draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
-            draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
+                min_angle = 270 + (6 * now.minute)
+                mins = posn(min_angle, cy - margin - 2)
+
+                sec_angle = 270 + (6 * now.second)
+                secs = posn(sec_angle, cy - margin - 2)
+
+                draw.ellipse((left + margin, margin, right - margin, min(device.height, 64) - margin), outline="white")
+                draw.line((cx, cy, cx + hrs[0], cy + hrs[1]), fill="white")
+                draw.line((cx, cy, cx + mins[0], cy + mins[1]), fill="white")
+                draw.line((cx, cy, cx + secs[0], cy + secs[1]), fill="red")
+                draw.ellipse((cx - 2, cy - 2, cx + 2, cy + 2), fill="white", outline="white")
+                draw.text((2 * (cx + margin), cy - 8), today_date, fill="yellow")
+                draw.text((2 * (cx + margin), cy), today_time, fill="yellow")
+                draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
+                draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
+            else:
+                device.clear()
     time.sleep(0.1)
 
 

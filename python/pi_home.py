@@ -174,7 +174,7 @@ logger.setLevel(logging.INFO)
 # sensor.set_gas_heater_duration(150)
 # sensor.select_gas_heater_profile(0)
 
-# device = get_device()
+device = get_device()
 
 
 

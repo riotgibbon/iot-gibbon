@@ -163,7 +163,7 @@ while True:
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
         present =getTopicValue(result,'home/tele/proximity/livingroom/desk')>5
 
-            if present:
+        if present:
             today_last_time = today_time
 
 
@@ -197,8 +197,8 @@ while True:
                 draw.text((2 * (cx + margin), cy), today_time, fill="yellow")
                 draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
                 draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
-            else:
-                device.clear()
+        else:
+            device.clear()
     time.sleep(0.1)
 
 

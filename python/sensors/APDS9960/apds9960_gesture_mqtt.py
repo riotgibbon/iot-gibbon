@@ -59,19 +59,19 @@ while True:
             if gesture == 0x01:
                 print("up")
                 publish(mqttClient,"gesture","up")   
-                postToIFTT('desk_up'):  
+                postToIFTT('desk_up')
             elif gesture == 0x02:
                 print("down")
                 publish(mqttClient,"gesture","down")  
-                postToIFTT('desk_down'):  
+                postToIFTT('desk_down')
             elif gesture == 0x03:
                 print("left")
                 publish(mqttClient,"gesture","left")  
-                postToIFTT('desk_left'):  
+                postToIFTT('desk_left')
             elif gesture == 0x04:
                 print("right")
                 publish(mqttClient,"gesture","right")  
-                postToIFTT('desk_right'):  
+                postToIFTT('desk_right')
 
 
         except Exception as error:

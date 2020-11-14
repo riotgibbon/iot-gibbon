@@ -2,6 +2,8 @@
 import time
 import ioexpander as io
 import paho.mqtt.client as paho
+import os
+import logging
 
 ioe = io.IOE(i2c_addr=0x18)
 

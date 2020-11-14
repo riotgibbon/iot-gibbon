@@ -12,12 +12,12 @@ Press Ctrl+C to exit.
 ioe = io.IOE(i2c_addr=0x18)
 
 ioe.set_adc_vref(3.3)  # Input voltage of IO Expander, this is 3.3 on Breakout Garden
-ioe.set_mode(12, io.ADC)
+ioe.set_mode(14, io.ADC)
 
 last_adc = 0.00
 
 while True:
-    adc = ioe.input(7)
+    adc = ioe.input(14)
     adc = round(adc, 2)
 
     if adc != last_adc:

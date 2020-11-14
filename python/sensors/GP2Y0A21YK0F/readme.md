@@ -11,6 +11,8 @@ https://www.pololu.com/product/136
 https://shop.pimoroni.com/products/io-expander
 https://github.com/pimoroni/ioe-python
 
+sudo pip3 install pimoroni-ioexpander
+
 on port 14
 
 

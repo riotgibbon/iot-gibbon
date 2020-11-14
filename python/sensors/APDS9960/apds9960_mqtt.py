@@ -36,11 +36,12 @@ i2c = busio.I2C(board.SCL, board.SDA)
 int_pin = digitalio.DigitalInOut(board.D5)
 apds = APDS9960(i2c, interrupt_pin=int_pin)
 
-apds.enable_proximity = True
-apds.proximity_interrupt_threshold = (0, 175)
-apds.enable_proximity_interrupt = True
+# apds.enable_proximity = True
+# apds.proximity_interrupt_threshold = (0, 175)
+# apds.enable_proximity_interrupt = True
 
 apds.enable_color = True
+apds.enable_gesture = True
 
 def publish(client, metric, value):
     topic =f"home/tele/{metric}/livingroom/desk"
@@ -53,8 +54,8 @@ while not apds.color_data_ready:
 while True:
         try:
             # print(f"proximity: {apds.proximity}")
-            publish(mqttClient,"proximity",apds.proximity)   
-            apds.clear_interrupt()
+            # publish(mqttClient,"proximity",apds.proximity)   
+            # apds.clear_interrupt()
 
             r, g, b, c = apds.color_data
             print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
@@ -69,6 +70,23 @@ while True:
             publish(mqttClient,"colourTemp",colourTemp)   
             publish(mqttClient,"lightLux",lightLux)   
             
+
+            gesture = apds.gesture()
+
+            if gesture == 0x01:
+                print("up")
+                publish(mqttClient,"gesture","up")   
+            elif gesture == 0x02:
+                print("down")
+                publish(mqttClient,"gesture","down")  
+            elif gesture == 0x03:
+                print("left")
+                publish(mqttClient,"gesture","left")  
+            elif gesture == 0x04:
+                print("right")
+                publish(mqttClient,"gesture","right")  
+
+
         except Exception as error:
             logger.error(error.args[0])   
 

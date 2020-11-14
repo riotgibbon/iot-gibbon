@@ -149,7 +149,7 @@ logger.setLevel(logging.INFO)
 device = get_device()
 
 client = getInfluxClient()
-query = "SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 20s group by * ;"
+query = "SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 10s group by * ;"
 
 def getTopicValue(result, topic):
     try:
@@ -160,6 +160,16 @@ def getTopicValue(result, topic):
 was_present = False
 today_last_time = "Unknown"
 presentFrom = datetime.now()
+
+
+margin = 4
+
+cx = 30
+cy = min(device.height, 64) / 2
+
+left = cx - cy
+right = cx + cy
+
 while True:
     
     now = datetime.now()
@@ -169,8 +179,9 @@ while True:
         result = client.query(query)
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
-        present =getTopicValue(result,'home/tele/present/livingroom/desk')>0
-
+        is_present =getTopicValue(result,'home/tele/present/livingroom/desk')>0
+        present =getTopicValue(result,'home/tele/present/livingroom/desk')
+        proximityVoltage =getTopicValue(result,'home/tele/proximityVoltage/livingroom/desk')
         if present :
             if not was_present:
                 logging.info("Switching light on")
@@ -186,13 +197,7 @@ while True:
                 now = datetime.now()
                 today_date = now.strftime("%d %b %y")
 
-                margin = 4
 
-                cx = 30
-                cy = min(device.height, 64) / 2
-
-                left = cx - cy
-                right = cx + cy
 
                 hrs_angle = 270 + (30 * (now.hour + (now.minute / 60.0)))
                 hrs = posn(hrs_angle, cy - margin - 7)
@@ -213,13 +218,15 @@ while True:
                 draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
                 draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
                 draw.text((2 * (cx + margin), cy+24), f"{str(presentForHMS)} ", fill="yellow")
+                draw.text((2 * (cx + margin), cy+24), f"{str(proximityVoltage)} ", fill="yellow")
         else:
             device.clear()
+
             if was_present:
                 logging.info("Switching light off")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_Off/with/key/d52lKnzf-xDid_NfD5tga-')
                 was_present =False
-    time.sleep(0.1)
+    time.sleep(0.5)
 
 
 

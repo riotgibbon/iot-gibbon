@@ -17,7 +17,7 @@ ioe.set_mode(12, io.ADC)
 last_adc = 0.00
 
 while True:
-    adc = ioe.input(12)
+    adc = ioe.input(7)
     adc = round(adc, 2)
 
     if adc != last_adc:

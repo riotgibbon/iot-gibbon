@@ -18,10 +18,10 @@ last_adc = 0.00
 
 while True:
     adc = ioe.input(14)
-    adc = round(adc, 2)
+    adc = round(adc, 4)
 
     if adc != last_adc:
-        print("{:.2f}v".format(adc))
+        print("{:.4f}v".format(adc))
         last_adc = adc
 
-    time.sleep(1.0 / 30)
+    time.sleep(.5)

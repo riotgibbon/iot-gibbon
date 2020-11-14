@@ -39,7 +39,7 @@ apds = APDS9960(i2c, interrupt_pin=int_pin)
 # apds.enable_proximity = True
 # apds.proximity_interrupt_threshold = (0, 175)
 # apds.enable_proximity_interrupt = True
-
+apds.enable_proximity = True
 apds.enable_color = True
 apds.enable_gesture = True
 

@@ -15,3 +15,7 @@ on port 14
 
 
 gp2y0a21yk0f
+
+generates voltage depending on proximity
+
+0.5 to 0.8 seems the `present` reading

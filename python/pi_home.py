@@ -180,9 +180,9 @@ while True:
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
         is_present =getTopicValue(result,'home/tele/present/livingroom/desk')>0
-        present =getTopicValue(result,'home/tele/present/livingroom/desk')
+
         proximityVoltage =getTopicValue(result,'home/tele/proximityVoltage/livingroom/desk')
-        if present :
+        if is_present :
             if not was_present:
                 logging.info("Switching light on")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_On/with/key/d52lKnzf-xDid_NfD5tga-')
@@ -218,7 +218,7 @@ while True:
                 draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
                 draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
                 draw.text((2 * (cx + margin), cy+24), f"{str(presentForHMS)} ", fill="yellow")
-                draw.text((2 * (cx + margin), cy+24), f"{str(proximityVoltage)} ", fill="yellow")
+                draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
         else:
             device.clear()
 

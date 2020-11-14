@@ -5,7 +5,7 @@ import board
 import requests
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import bme680
 from luma.core.legacy import show_message
 import sys
@@ -122,7 +122,11 @@ def get_device(actual_args=None):
         parser.error(e)
         return None
 
-# Initial the dht device, with data pin connected to:
+def strfdelta(tdelta, fmt):
+    d = {"days": tdelta.days}
+    d["hours"], rem = divmod(tdelta.seconds, 3600)
+    d["minutes"], d["seconds"] = divmod(rem, 60)
+    return fmt.format(**d)
 
 sleepMinutes =10
 sleepSeconds = sleepMinutes * 60
@@ -145,13 +149,14 @@ logger.setLevel(logging.INFO)
 device = get_device()
 
 client = getInfluxClient()
-query = "select last(value),* from mqtt_consumer group by *;"
+query = "SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 10s group by * ;"
 
 def getTopicValue(result, topic):
-    return list(result.get_points(measurement='mqtt_consumer', tags={'topic': topic}))[0]['value']
+    return list(result.get_points(measurement='mqtt_consumer', tags={'topic': topic}))[0]['mean']
 
 was_present = False
 today_last_time = "Unknown"
+presentFrom = datetime.now()
 while True:
     
     now = datetime.now()
@@ -161,16 +166,18 @@ while True:
         result = client.query(query)
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
-        present =getTopicValue(result,'home/tele/proximity/livingroom/desk')>5
+        present =getTopicValue(result,'home/tele/proximity/livingroom/desk')>0
 
         if present :
             if not was_present:
                 logging.info("Switching light on")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_On/with/key/d52lKnzf-xDid_NfD5tga-')
                 was_present =True
-            
-            today_last_time = today_time
+                presentFrom = datetime.now()
 
+            today_last_time = today_time
+            presentFor = presentFrom - datetime.now()
+            presentForHMS = strfdelta(presentFor, "{hours}:{minutes}:{seconds}")
 
             with canvas(device) as draw:
                 now = datetime.now()
@@ -202,6 +209,7 @@ while True:
                 draw.text((2 * (cx + margin), cy), today_time, fill="yellow")
                 draw.text((2 * (cx + margin), cy+8), f"{str(temperature)} C", fill="yellow")
                 draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
+                draw.text((2 * (cx + margin), cy+24), f"{str(presentForHMS)} ", fill="yellow")
         else:
             device.clear()
             if was_present:

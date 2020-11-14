@@ -1,0 +1,13 @@
+[Unit]
+Description=gp2y0a21yk0f mqtt client
+After=multi-user.target
+
+[Service]
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/sensors/GP2Y0A21YK0F/gp2y0a21yk0f.py > /home/pi/logs/gp2y0a21yk0f_mqtt.log 2>&1'
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+
+[Install]
+WantedBy=multi-user.target

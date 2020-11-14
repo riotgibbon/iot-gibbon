@@ -1,0 +1,13 @@
+[Unit]
+Description=apds9960_gesture mqtt client
+After=multi-user.target
+
+[Service]
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/sensors/APDS9960/apds9960_gesture_mqtt.py > /home/pi/logs/apds9960_gesture_mqtt.log 2>&1'
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+
+[Install]
+WantedBy=multi-user.target

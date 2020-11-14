@@ -152,7 +152,10 @@ client = getInfluxClient()
 query = "SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 10s group by * ;"
 
 def getTopicValue(result, topic):
-    return list(result.get_points(measurement='mqtt_consumer', tags={'topic': topic}))[0]['mean']
+    try:
+        return list(result.get_points(measurement='mqtt_consumer', tags={'topic': topic}))[0]['mean']
+    except Exception as error:
+        return 0
 
 was_present = False
 today_last_time = "Unknown"
@@ -166,7 +169,7 @@ while True:
         result = client.query(query)
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
-        present =getTopicValue(result,'home/tele/proximity/livingroom/desk')>0
+        present =getTopicValue(result,'home/tele/present/livingroom/desk')>0
 
         if present :
             if not was_present:

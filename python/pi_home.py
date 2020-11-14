@@ -149,7 +149,7 @@ logger.setLevel(logging.INFO)
 device = get_device()
 
 client = getInfluxClient()
-query = "SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 10s group by * ;"
+query = "SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 20s group by * ;"
 
 def getTopicValue(result, topic):
     try:
@@ -179,7 +179,7 @@ while True:
                 presentFrom = datetime.now()
 
             today_last_time = today_time
-            presentFor = presentFrom - datetime.now()
+            presentFor =datetime.now() - presentFrom 
             presentForHMS = strfdelta(presentFor, "{hours}:{minutes}:{seconds}")
 
             with canvas(device) as draw:

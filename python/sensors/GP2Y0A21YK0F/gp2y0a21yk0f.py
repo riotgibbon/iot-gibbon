@@ -44,7 +44,7 @@ while True:
     adc = round(adc, 4)
     present=0
     if adc != last_adc:
-        if adc>0.5 and adc<0.9:
+        if adc>0.2 and adc<1:
             present=1
         publish(mqttClient,"present",present)  
         publish(mqttClient,"proximityVoltage",adc)     

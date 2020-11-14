@@ -39,9 +39,11 @@ apds = APDS9960(i2c, interrupt_pin=int_pin)
 # apds.enable_proximity = True
 # apds.proximity_interrupt_threshold = (0, 175)
 # apds.enable_proximity_interrupt = True
-apds.enable_proximity = True
+# apds.enable_proximity = True
+# apds.enable_gesture = True
+
 apds.enable_color = True
-apds.enable_gesture = True
+
 
 def publish(client, metric, value):
     topic =f"home/tele/{metric}/livingroom/desk"
@@ -56,7 +58,7 @@ while True:
             # print(f"proximity: {apds.proximity}")
             # publish(mqttClient,"proximity",apds.proximity)   
             # apds.clear_interrupt()
-
+            gesture = apds.gesture()
             r, g, b, c = apds.color_data
             print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
 
@@ -71,7 +73,7 @@ while True:
             publish(mqttClient,"lightLux",lightLux)   
             
 
-            gesture = apds.gesture()
+            
 
             if gesture == 0x01:
                 print("up")

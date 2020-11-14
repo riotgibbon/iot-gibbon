@@ -179,7 +179,8 @@ while True:
         result = client.query(query)
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
-        is_present =getTopicValue(result,'home/tele/present/livingroom/desk')>0
+        presentMean=getTopicValue(result,'home/tele/present/livingroom/desk')
+        is_present =presentMean>0
 
         proximityVoltage =getTopicValue(result,'home/tele/proximityVoltage/livingroom/desk')
         if is_present :
@@ -219,9 +220,13 @@ while True:
                 draw.text((2 * (cx + margin), cy+16), f"{str(humidity)} %", fill="yellow")
                 draw.text((2 * (cx + margin), cy+24), f"{str(presentForHMS)} ", fill="yellow")
                 draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
+                draw.text((2 * (cx + margin), cy+40), f"{str(presentMean)} ", fill="yellow")
         else:
-            device.clear()
-
+            with canvas(device) as draw:
+                device.clear()
+                draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
+                draw.text((2 * (cx + margin), cy+40), f"{str(presentMean)} ", fill="yellow")
+                
             if was_present:
                 logging.info("Switching light off")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_Off/with/key/d52lKnzf-xDid_NfD5tga-')

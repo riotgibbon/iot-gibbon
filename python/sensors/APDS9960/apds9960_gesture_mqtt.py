@@ -48,9 +48,6 @@ def publish(client, metric, value):
     print (f"publishing: {topic}:{value}")
     client.publish(topic, value)
 
-while not apds.color_data_ready:
-    time.sleep(0.005)
-
 while True:
         try:
 

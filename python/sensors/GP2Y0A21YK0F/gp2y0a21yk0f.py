@@ -43,12 +43,12 @@ while True:
     adc = ioe.input(14)
     adc = round(adc, 4)
     present=0
-    if adc != last_adc:
-        if adc>0.2 and adc<1:
-            present=1
-        publish(mqttClient,"present",present)  
-        publish(mqttClient,"proximityVoltage",adc)     
-        print(f"present: {present}, {adc:.4f}v")
-        last_adc = adc
+
+
+    if adc>0.2 and adc<1:
+        present=1
+    publish(mqttClient,"present",present)  
+    publish(mqttClient,"proximityVoltage",adc)     
+
 
     time.sleep(1)

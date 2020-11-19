@@ -8,6 +8,7 @@ import paho.mqtt.client as paho
 import os
 import logging
 from datetime import datetime,timedelta
+import requests
 
 sleepSeconds =5
 sensor ='apds9960'
@@ -64,19 +65,19 @@ readTime = getReadTime(0)
 
 while True:
         try:
-            # print(f"proximity: {apds.proximity}")
-            # publish(mqttClient,"proximity",apds.proximity)   
-            # apds.clear_interrupt()
+
             gesture = apds.gesture()
 
             if gesture == 0x01:
                 print("up")
                 publish(mqttClient,"gesture","up") 
-                postToIFTT('desk_up')  
+                postToIFTT('desk_up') 
+
             elif gesture == 0x02:
                 print("down")
                 publish(mqttClient,"gesture","down")  
                 postToIFTT('desk_down')
+
             elif gesture == 0x03:
                 print("left")
                 publish(mqttClient,"gesture","left")  
@@ -87,7 +88,7 @@ while True:
                 publish(mqttClient,"gesture","right")  
                 postToIFTT('desk_right')
 
-                
+
             if datetime.now() > readTime:
                 r, g, b, c = apds.color_data
                 print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")

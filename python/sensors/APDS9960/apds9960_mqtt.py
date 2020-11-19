@@ -65,6 +65,8 @@ readTime = getReadTime(0)
 
 while True:
         try:
+            gesture = apds.gesture()
+            
             if datetime.now() > readTime:
                 while not apds.color_data_ready:
                     time.sleep(0.005)
@@ -83,7 +85,7 @@ while True:
                 
                 readTime = getReadTime(sleepSeconds)
 
-            gesture = apds.gesture()
+            
 
             if gesture == 0x01:
                 print("up")
@@ -104,12 +106,6 @@ while True:
                 print("right")
                 publish(mqttClient,"gesture","right")  
                 postToIFTT('desk_right')
-
-
-
-            
-
-
 
         except Exception as error:
             logger.error(error.args[0])   

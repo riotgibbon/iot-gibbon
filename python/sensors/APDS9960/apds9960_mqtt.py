@@ -40,7 +40,7 @@ apds = APDS9960(i2c, interrupt_pin=int_pin)
 # apds.enable_proximity = True
 # apds.proximity_interrupt_threshold = (0, 175)
 # apds.enable_proximity_interrupt = True
-apds.enable_proximity = True
+# apds.enable_proximity = True
 
 apds.enable_gesture = True
 apds.enable_color = True
@@ -65,6 +65,23 @@ readTime = getReadTime(0)
 
 while True:
         try:
+            if datetime.now() > readTime:
+                while not apds.color_data_ready:
+                    time.sleep(0.005)
+                r, g, b, c = apds.color_data
+                print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
+
+                publish(mqttClient,"red",r)   
+                publish(mqttClient,"green",g)   
+                publish(mqttClient,"blue",b)   
+                publish(mqttClient,"clear",c)   
+
+                colourTemp=colorutility.calculate_color_temperature(r, g, b)
+                lightLux=colorutility.calculate_lux(r, g, b)
+                publish(mqttClient,"colourTemp",colourTemp)   
+                publish(mqttClient,"lightLux",lightLux)   
+                
+                readTime = getReadTime(sleepSeconds)
 
             gesture = apds.gesture()
 
@@ -89,21 +106,7 @@ while True:
                 postToIFTT('desk_right')
 
 
-            if datetime.now() > readTime:
-                r, g, b, c = apds.color_data
-                print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
 
-                publish(mqttClient,"red",r)   
-                publish(mqttClient,"green",g)   
-                publish(mqttClient,"blue",b)   
-                publish(mqttClient,"clear",c)   
-
-                colourTemp=colorutility.calculate_color_temperature(r, g, b)
-                lightLux=colorutility.calculate_lux(r, g, b)
-                publish(mqttClient,"colourTemp",colourTemp)   
-                publish(mqttClient,"lightLux",lightLux)   
-                
-                readTime = getReadTime(sleepSeconds)
             
 
 

@@ -66,7 +66,7 @@ readTime = getReadTime(0)
 while True:
         try:
             gesture = apds.gesture()
-            
+
             if datetime.now() > readTime:
                 while not apds.color_data_ready:
                     time.sleep(0.005)
@@ -108,7 +108,8 @@ while True:
                 postToIFTT('desk_right')
 
         except Exception as error:
-            logger.error(error.args[0])   
+            logger.error(error.args[0])  
+            print("error: "+ error) 
 
 
         

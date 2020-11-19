@@ -53,6 +53,10 @@ def publish(client, metric, value):
 def getReadTime(seconds):
     return datetime.now() + timedelta(0,seconds)
 
+def postToIFTT(event):    
+    r = requests.get(f'https://maker.ifttt.com/trigger/{event}/with/key/d52lKnzf-xDid_NfD5tga-')
+
+
 while not apds.color_data_ready:
     time.sleep(0.005)
 
@@ -67,17 +71,23 @@ while True:
 
             if gesture == 0x01:
                 print("up")
-                publish(mqttClient,"gesture","up")   
+                publish(mqttClient,"gesture","up") 
+                postToIFTT('desk_up')  
             elif gesture == 0x02:
                 print("down")
                 publish(mqttClient,"gesture","down")  
+                postToIFTT('desk_down')
             elif gesture == 0x03:
                 print("left")
                 publish(mqttClient,"gesture","left")  
+                postToIFTT('desk_left')
+
             elif gesture == 0x04:
                 print("right")
                 publish(mqttClient,"gesture","right")  
+                postToIFTT('desk_right')
 
+                
             if datetime.now() > readTime:
                 r, g, b, c = apds.color_data
                 print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")

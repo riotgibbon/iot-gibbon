@@ -9,7 +9,7 @@ import os
 import logging
 from datetime import datetime,timedelta
 
-sleepSeconds =2
+sleepSeconds =5
 sensor ='apds9960'
 logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)
@@ -39,7 +39,7 @@ apds = APDS9960(i2c, interrupt_pin=int_pin)
 # apds.enable_proximity = True
 # apds.proximity_interrupt_threshold = (0, 175)
 # apds.enable_proximity_interrupt = True
-apds.enable_proximity = True
+# apds.enable_proximity = True
 apds.enable_gesture = True
 
 apds.enable_color = True
@@ -50,8 +50,13 @@ def publish(client, metric, value):
     print (f"publishing: {topic}:{value}")
     client.publish(topic, value)
 
+def getReadTime(seconds):
+    return datetime.now() + timedelta(0,seconds)
+
 while not apds.color_data_ready:
     time.sleep(0.005)
+
+readTime = getReadTime(0)
 
 while True:
         try:
@@ -59,21 +64,6 @@ while True:
             # publish(mqttClient,"proximity",apds.proximity)   
             # apds.clear_interrupt()
             gesture = apds.gesture()
-            r, g, b, c = apds.color_data
-            print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
-
-            publish(mqttClient,"red",r)   
-            publish(mqttClient,"green",g)   
-            publish(mqttClient,"blue",b)   
-            publish(mqttClient,"clear",c)   
-
-            colourTemp=colorutility.calculate_color_temperature(r, g, b)
-            lightLux=colorutility.calculate_lux(r, g, b)
-            publish(mqttClient,"colourTemp",colourTemp)   
-            publish(mqttClient,"lightLux",lightLux)   
-            
-
-            
 
             if gesture == 0x01:
                 print("up")
@@ -88,9 +78,27 @@ while True:
                 print("right")
                 publish(mqttClient,"gesture","right")  
 
+            if datetime.now() > readTime:
+                r, g, b, c = apds.color_data
+                print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
+
+                publish(mqttClient,"red",r)   
+                publish(mqttClient,"green",g)   
+                publish(mqttClient,"blue",b)   
+                publish(mqttClient,"clear",c)   
+
+                colourTemp=colorutility.calculate_color_temperature(r, g, b)
+                lightLux=colorutility.calculate_lux(r, g, b)
+                publish(mqttClient,"colourTemp",colourTemp)   
+                publish(mqttClient,"lightLux",lightLux)   
+                
+                readTime = getReadTime(sleepSeconds)
+            
+
+
 
         except Exception as error:
             logger.error(error.args[0])   
 
 
-        time.sleep(sleepSeconds)
+        

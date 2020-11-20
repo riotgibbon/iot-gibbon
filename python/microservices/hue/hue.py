@@ -16,6 +16,22 @@ def getMqttClient():
             time.sleep(5)
     return client
 
+def getHue(reading):
+    # make range between 810 and 850
+    min = 810
+    max = 850
+
+    readingPc = (reading-min)/(max-min)
+
+    hueDry = 65535
+    hueWet = 45000
+
+    hueRange = hueDry-hueWet
+
+    hueReading = ((1-readingPc)* hueRange) + hueWet
+
+    return hueReading
+
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
@@ -28,7 +44,9 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # print(f"new message")
     print(f"new message {msg.topic}: {str(msg.payload)}")
-    # livingRoom[msg.topic]=str(msg.payload.decode("utf-8"))
+    reading =int(msg.payload.decode("utf-8"))
+    hueReading = hueReading(reading)
+    print (f"reading : {reading} = {hueReading}")
 
 client = getMqttClient()
 client.on_connect = on_connect

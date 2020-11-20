@@ -45,7 +45,7 @@ void connect() {
    delay(1000);
  }
  Serial.println("\nconnected!");
-// client.subscribe("/hello"); //SUBSCRIBE TO TOPIC /hello
+
 }
 
 
@@ -59,11 +59,7 @@ int soilPower = 7;//Variable for Soil moisture Power
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(9600);
-  //
-//  while (!Serial) {
-//    delay(1000);
-//  }
-  //
+
   WiFi.begin(ssid, pass);
   delay(10000);
 

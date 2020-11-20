@@ -222,8 +222,8 @@ while True:
                 draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
                 draw.text((2 * (cx + margin), cy+40), f"{str(presentMean)} ", fill="yellow")
         else:
-            # with canvas(device) as draw:
-            #     device.clear()
+            with canvas(device) as draw:
+                device.clear()
             #     draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
             #     draw.text((2 * (cx + margin), cy+40), f"{str(presentMean)} ", fill="yellow")
                 

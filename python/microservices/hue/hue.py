@@ -34,6 +34,15 @@ def getHue(reading):
 
     return hueReading
 
+def postToLights(hueReading):
+    host = '192.168.0.14'
+    key='Zk16ZQhoxu1MHAJskpApN8i-y8xg0EfGULyBMHS7'
+    lightId = 2
+    
+    uri =f"https://{host}/api/{key}/lights/{lightId}/state"
+
+    r = requests.put('uri', data = {"sat":200, "bri":100,"hue":hueReading})
+
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
@@ -49,6 +58,7 @@ def on_message(client, userdata, msg):
     reading =int(msg.payload.decode("utf-8"))
     hueReading = getHue(reading)
     print (f"reading : {reading} = {hueReading}")
+    postToLights(hueReading)
 
 client = getMqttClient()
 client.on_connect = on_connect

@@ -45,7 +45,7 @@ def on_message(client, userdata, msg):
     # print(f"new message")
     print(f"new message {msg.topic}: {str(msg.payload)}")
     reading =int(msg.payload.decode("utf-8"))
-    hueReading = hueReading(reading)
+    hueReading = getHue(reading)
     print (f"reading : {reading} = {hueReading}")
 
 client = getMqttClient()

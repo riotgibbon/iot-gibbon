@@ -7,7 +7,8 @@ from phue import Bridge  # https://github.com/studioimaginaire/phue
 
 hueDry = 65535
 hueWet = 45000
-
+min = 750
+max = 850
 
 host = '192.168.0.14'
 
@@ -33,8 +34,7 @@ def getMqttClient():
 
 def getHue(reading):
     # make range between 810 and 850
-    min = 750
-    max = 850
+
 
     readingPc = (reading-min)/(max-min)
     print (f"readingPC: {readingPc}%")
@@ -79,11 +79,12 @@ def on_message(client, userdata, msg):
     # print(f"new message")
     print(f"new message {msg.topic}: {str(msg.payload)}")
     reading =int(msg.payload.decode("utf-8"))
-    hueReading = getHue(reading)
-    client.publish('home/cmd/hue/tv/', hueReading)
-    print (f"reading : {reading} = {hueReading}")
-    postToLights(hueReading)
-    
+    if reading>min and reading<max:
+        hueReading = getHue(reading)
+        client.publish('home/cmd/hue/tv/', hueReading)
+        print (f"reading : {reading} = {hueReading}")
+        postToLights(hueReading)
+        
 
 
 client = getMqttClient()

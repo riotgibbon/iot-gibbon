@@ -6,7 +6,7 @@ import requests
 from phue import Bridge  # https://github.com/studioimaginaire/phue
 
 hueDry = 65535
-hueWet = 45000
+hueWet = 0
 min = 750
 max = 850
 

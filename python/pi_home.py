@@ -222,10 +222,10 @@ while True:
                 draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
                 draw.text((2 * (cx + margin), cy+40), f"{str(presentMean)} ", fill="yellow")
         else:
-            with canvas(device) as draw:
-                device.clear()
-                draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
-                draw.text((2 * (cx + margin), cy+40), f"{str(presentMean)} ", fill="yellow")
+            # with canvas(device) as draw:
+            #     device.clear()
+            #     draw.text((2 * (cx + margin), cy+32), f"{str(proximityVoltage)} ", fill="yellow")
+            #     draw.text((2 * (cx + margin), cy+40), f"{str(presentMean)} ", fill="yellow")
                 
             if was_present:
                 logging.info("Switching light off")
@@ -233,50 +233,4 @@ while True:
                 was_present =False
     time.sleep(0.5)
 
-
-
-    # temperature=""
-    # pressure=""
-    # humidity=""
-    # clockReadings(temperature, humidity, pressure)
-    # time.sleep(0.1)
-
-    # try:
-    #     logger.info("starting bme680 read")
-    #     if bme680Read == False and sensor.get_sensor_data() :
-    #                 bme680 = 'bme680: {0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
-
-    #                 temperature=sensor.data.temperature
-    #                 pressure=sensor.data.pressure
-    #                 humidity=sensor.data.humidity
-                    
-    #                 logger.info(bme680)
-    #                 # show_message(device, output, fill="white", font=proportional(SINCLAIR_FONT))
-    #                 # show_message(device, bme680, fill="white", font=SINCLAIR_FONT)
-    #                 clockReadings(temperature, humidity, pressure)
-    #                 r = requests.post('https://maker.ifttt.com/trigger/bme680/with/key/d52lKnzf-xDid_NfD5tga-',data = {'value1':sensor.data.temperature, 'value2': sensor.data.humidity, 'value3': sensor.data.pressure})
-    #                 logger.info(f"sent bme680 to IFTTT: {r}")
-    #                 bme680Read = True
-        # logger.info("starting dht22Read read")            
-#         if dht22Read == False:
-#             try:    
-#                 temp = dhtDevice.temperature
-#                 humidity = dhtDevice.humidity
-#                 logger.info(f"DHT22: temp{temp}, humidity: {humidity}") 
-#                 r = requests.post('https://maker.ifttt.com/trigger/DHT22/with/key/d52lKnzf-xDid_NfD5tga-',data = {'value1': temp, 'value2': humidity})
-#                 logger.info(f"sent DHT22 to IFTTT: {r}")  
-#                 dht22Read = True
-#             except Exception as error:
-# # Errors happen fairly often, DHT's are hard to read, just keep going
-# #                 logger.error(error.args[0])
-#     except Exception as error:
-#     # Errors happen fairly often, DHT's are hard to read, just keep going
-#         logger.error(error.args[0])   
-        
-#     if dht22Read and bme680Read:
-#         bme680Read = False
-#         # dht22Read = False
-#         time.sleep(sleepSeconds)
-#     else:
-#         time.sleep(1)
 

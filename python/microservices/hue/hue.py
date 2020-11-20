@@ -27,9 +27,10 @@ def getHue(reading):
     hueWet = 45000
 
     hueRange = hueDry-hueWet
-    print (f"hueRange: {hueRange}%")
-
-    hueReading = int(((1-readingPc)* hueRange) + hueWet)
+    print (f"hueRange: {hueRange}")
+    hueShare =(1-readingPc)* hueRange
+    print (f"hueShare: {hueShare}")
+    hueReading = int(hueShare + hueWet)
 
     return hueReading
 

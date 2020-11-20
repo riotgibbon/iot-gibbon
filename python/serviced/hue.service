@@ -1,5 +1,5 @@
 [Unit]
-Description=bme680 mqtt client
+Description=hue client
 After=multi-user.target
 
 [Service]

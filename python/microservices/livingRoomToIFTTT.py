@@ -9,6 +9,18 @@ import requests
 
 livingRoom={}
 
+def getMqttClient():
+    client = mqtt.Client()
+    while (True):
+        try:
+            client.connect("192.168.0.63", 1883, 60)
+            break
+        except Exception:
+            print ("error connecting, pausing")
+            traceback.print_exc()
+            time.sleep(5)
+    return client
+
 # The callback for when the client receives a CONNACK response from the server.
 
 def startMQTT(q):
@@ -28,18 +40,18 @@ def startMQTT(q):
         q.put(livingRoom)
 
 
-    client = mqtt.Client()
+    client = getMqttClient()
     client.on_connect = on_connect
     client.on_message = on_message
 
-    while (True):
-        try:
-            client.connect("192.168.0.63", 1883, 60)
-            break
-        except Exception:
-            print ("error connecting, pausing")
-            traceback.print_exc()
-            time.sleep(5)
+    # while (True):
+    #     try:
+    #         client.connect("192.168.0.63", 1883, 60)
+    #         break
+    #     except Exception:
+    #         print ("error connecting, pausing")
+    #         traceback.print_exc()
+    #         time.sleep(5)
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
@@ -54,7 +66,11 @@ def getMoisture(thisDict,plant):
     moisture = int(thisDict['home/tele/soilmoisture/livingroom/' + plant])
     return moisture
 
+
+
 def readDictionary(q):
+
+    client = getMqttClient()
 
     readTime = getReadTime(10)
     broadcastTime = getReadTime(10)

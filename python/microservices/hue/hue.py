@@ -5,6 +5,9 @@ import traceback
 import requests
 from phue import Bridge  # https://github.com/studioimaginaire/phue
 
+hueDry = 65535
+hueWet = 45000
+
 
 host = '192.168.0.14'
 
@@ -35,8 +38,6 @@ def getHue(reading):
 
     readingPc = (reading-min)/(max-min)
     print (f"readingPC: {readingPc}%")
-    hueDry = 65535
-    hueWet = 45000
 
     hueRange = hueDry-hueWet
     print (f"hueRange: {hueRange}")
@@ -56,10 +57,10 @@ def postToLights(hueReading):
 
     # r = requests.put(uri, data = {"sat":str(200), "   ":str(254),"hue":str(hueReading)}, verify=False)
     # print(r)
-
-    b.set_light(lightId, 'hue', hueReading)
-    b.set_light(lightId, 'sat', 254)
-    b.set_light(lightId, 'bri', 254)
+    if hueReading > hueWet and  hueReading < hueDry:
+        b.set_light(lightId, 'hue', hueReading)
+        b.set_light(lightId, 'sat', 254)
+        b.set_light(lightId, 'bri', 254)
     
 
 

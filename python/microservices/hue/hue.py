@@ -42,7 +42,7 @@ def postToLights(hueReading):
     uri =f"https://{host}/api/{key}/lights/{lightId}/state"
     print(uri)
 
-    r = requests.put(uri, data = {"sat":200, "bri":254,"hue":hueReading}, verify=False)
+    r = requests.put(uri, data = {"sat":str(200), "bri":str(254),"hue":str(hueReading)}, verify=False)
     print(r)
 
 

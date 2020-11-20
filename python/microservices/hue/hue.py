@@ -49,7 +49,7 @@ def getHue(reading):
 def postToLights(hueReading):
     
     key='Zk16ZQhoxu1MHAJskpApN8i-y8xg0EfGULyBMHS7'
-    lightId = 2
+    lightId = 7
     
     uri =f"https://{host}/api/{key}/lights/{lightId}/state"
     print(uri)

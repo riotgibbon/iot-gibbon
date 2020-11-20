@@ -18,15 +18,16 @@ def getMqttClient():
 
 def getHue(reading):
     # make range between 810 and 850
-    min = 800
+    min = 750
     max = 850
 
     readingPc = (reading-min)/(max-min)
-
+    print (f"readingPC: {readingPc}%")
     hueDry = 65535
     hueWet = 45000
 
     hueRange = hueDry-hueWet
+    print (f"hueRange: {hueRange}%")
 
     hueReading = int(((1-readingPc)* hueRange) + hueWet)
 

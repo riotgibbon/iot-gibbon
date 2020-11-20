@@ -3,6 +3,17 @@ import time
 from datetime import datetime,timedelta
 import traceback
 import requests
+from phue import Bridge
+
+host = '192.168.0.14'
+
+b = Bridge(host)
+
+# If the app is not registered and the button is not pressed, press the button and call connect() (this only needs to be run a single time)
+b.connect()
+
+# Get the bridge state (This returns the full dictionary that you can explore)
+b.get_api()
 
 def getMqttClient():
     client = mqtt.Client()
@@ -35,15 +46,18 @@ def getHue(reading):
     return hueReading
 
 def postToLights(hueReading):
-    host = '192.168.0.14'
+    
     key='Zk16ZQhoxu1MHAJskpApN8i-y8xg0EfGULyBMHS7'
     lightId = 2
     
     uri =f"https://{host}/api/{key}/lights/{lightId}/state"
     print(uri)
 
-    r = requests.put(uri, data = {"sat":str(200), "bri":str(254),"hue":str(hueReading)}, verify=False)
-    print(r)
+    # r = requests.put(uri, data = {"sat":str(200), "bri":str(254),"hue":str(hueReading)}, verify=False)
+    # print(r)
+
+    b.set_light(lightId, 'hue', hueReading)
+    
 
 
 def on_connect(client, userdata, flags, rc):

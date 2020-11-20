@@ -7,8 +7,8 @@ from phue import Bridge  # https://github.com/studioimaginaire/phue
 
 hueDry = 65535
 hueWet = 0
-min = 750
-max = 850
+min = 800
+max = 840
 
 host = '192.168.0.14'
 
@@ -58,10 +58,10 @@ def postToLights(hueReading):
     # r = requests.put(uri, data = {"sat":str(200), "   ":str(254),"hue":str(hueReading)}, verify=False)
     # print(r)
     try:
-        if hueReading > hueWet and  hueReading < hueDry:
-            b.set_light(lightId, 'hue', hueReading)
-            b.set_light(lightId, 'sat', 254)
-            b.set_light(lightId, 'bri', 254)
+        # if hueReading > hueWet and  hueReading < hueDry:
+        b.set_light(lightId, 'hue', hueReading)
+        b.set_light(lightId, 'sat', 254)
+        b.set_light(lightId, 'bri', 254)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

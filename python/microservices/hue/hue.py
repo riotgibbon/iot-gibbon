@@ -77,9 +77,10 @@ def on_message(client, userdata, msg):
     print(f"new message {msg.topic}: {str(msg.payload)}")
     reading =int(msg.payload.decode("utf-8"))
     hueReading = getHue(reading)
+    client.publish('home/cmd/hue/tv/', hueReading)
     print (f"reading : {reading} = {hueReading}")
     postToLights(hueReading)
-    client.publish('home/cmd/hue/tv/', hueReading)
+    
 
 
 client = getMqttClient()

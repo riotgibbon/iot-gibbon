@@ -3,7 +3,8 @@ import time
 from datetime import datetime,timedelta
 import traceback
 import requests
-from phue import Bridge
+from phue import Bridge  # https://github.com/studioimaginaire/phue
+
 
 host = '192.168.0.14'
 

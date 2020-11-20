@@ -1,0 +1,13 @@
+[Unit]
+Description=bme680 mqtt client
+After=multi-user.target
+
+[Service]
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/python/microservices/hue/hue.py > /home/pi/logs/hue.log 2>&1'
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+
+[Install]
+WantedBy=multi-user.target

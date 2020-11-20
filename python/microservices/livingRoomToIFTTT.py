@@ -49,16 +49,32 @@ def startMQTT(q):
 
 def getReadTime(seconds):
     return datetime.now() + timedelta(0,seconds)
-    
+
+def getMoisture(thisDict,plant):
+    moisture = int(thisDict['home/tele/soilmoisture/livingroom/' + plant])
+    return moisture
+
 def readDictionary(q):
 
     readTime = getReadTime(10)
+    broadcastTime = getReadTime(10)
     print (f"next read at {readTime}")
     # print (f"start loop")
     while(True):
         
         # print (f"reading queue")
         thisDict= q.get()      
+
+        if datetime.now() > broadcastTime:
+            aralia = getMoisture(thisDict,'aralia')
+            bonsai = getMoisture(thisDict,'bonsai')
+            amaryllis = getMoisture(thisDict,'amaryllis')
+            yucca = getMoisture(thisDict,'yucca')
+
+            average=(aralia+bonsai+amaryllis+yucca)/4
+            client.publish('home/tele/soilmoisture/livingroom/average', average)
+
+            broadcastTime= getReadTime(10)
         
         if datetime.now() > readTime:
             try:

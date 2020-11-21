@@ -100,13 +100,13 @@ def postToLights(plantName, reading):
 
         bri =mappedHumidity/254
 
-        r,g,b = converter.xy_to_rgb(x,y,bri)
+        # red,,b = converter.xy_to_rgb(x,y,bri)
 
         
 
         hex = f"#{converter.xy_to_hex(x,y,bri)}"
 
-        hue= {'xy': xy, 'hex': hex, 'rgb':(r,g,b), 'bri': bri }
+        hue= {'xy': xy, 'hex': hex, 'rgb':converter.xy_to_rgb(x,y,bri), 'bri': bri }
         # print(hue)
         body={}
         body['hue']=hue #json.dumps(lightInfo)

@@ -12,7 +12,7 @@ hueWet = 0
 min = 800
 max = 840
 
-transitionTime = 50
+transitionTime = 20
 
 def getInfluxClient(host='localhost', port=8086):
     user=''

@@ -90,7 +90,7 @@ def on_message(client, userdata, msg):
     if reading>min and reading<max:
 
 
-        hueReading = getHue(reading)
+        # hueReading = getHue(reading)
         mapped = mapRange(reading,min,max,hueWet,hueDry)
         client.publish('home/cmd/hue/tv/', mapped)
         print (f"reading : {reading} =  {mapped} ")

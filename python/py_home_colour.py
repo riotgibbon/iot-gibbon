@@ -1,8 +1,5 @@
 import paho.mqtt.client as mqtt
 import json
-from rgbxy import Converter
-
-converter = Converter()
 
 
 def getMqttClient():
@@ -35,15 +32,15 @@ def on_message(client, userdata, msg):
     print (f"hue: {hue}")
 
     xy = hue['xy']
-    bri =  hue['bri']
-    print(f"plant: {plant}, xy:{xy}, bri:{bri}")
-
     x= xy[0]
     y=xy[1]
-    print(f"x: {x}, y: {y}")
+    bri =  hue['bri']
 
-    briScaled= bri/254
-    r,g,b =converter.xy_to_rgb(x,y,briScaled)
+    print(f"plant: {plant}, xy:{xy}, bri:{bri}")
+
+
+
+    r,g,b = hue['rgb']
 
     print(f"r,g,b : {r},{g},{b}")
 

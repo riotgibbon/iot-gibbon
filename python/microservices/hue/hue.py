@@ -81,7 +81,7 @@ def postToLights(reading):
         light= b.get_light(lightId)
         print(light)
         lightInfo ={"reading":reading, "hue":mapped, "xy": light['state']['xy']}
-        client.publish('home/cmd/hue/tv/', mapped)
+        client.publish('home/cmd/hue/tv/', lightInfo)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

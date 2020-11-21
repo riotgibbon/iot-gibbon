@@ -26,11 +26,11 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # print(f"new message {msg.topic}: {str(msg.payload)}")
     body = json.loads(msg.payload)
-    print(body)
+    print(f"body: {body}")
     plant = body['plant']['name']
     print(f"plant: {plant}")
     hue =  (body['hue'])
-    print (hue)
+    print (f"hue: {hue}")
     state =hue['state']
     print(f"state: {state}")
     xy = state['xy']

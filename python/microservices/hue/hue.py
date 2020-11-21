@@ -98,8 +98,8 @@ def postToLights(plantName, reading):
         nextPlantTime=(plantChangeTime - datetime.now()).seconds
         plantInfo ={'name':plantName, 'reading': reading, 'nextPlantAt': nextPlantTime}
         body['plant']=plantInfo
-        json = json.dumps(body)
-        client.publish('home/cmd/hue/tv', json)
+        jsonMsg = json.dumps(body)
+        client.publish('home/cmd/hue/tv', jsonMsg)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

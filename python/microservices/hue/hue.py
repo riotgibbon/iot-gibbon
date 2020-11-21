@@ -24,7 +24,7 @@ currentPlantCount=0
 def getPlantChangeTime(minutes):
     return datetime.now() + timedelta(0,1)
 
-global plantChangeTime 
+
 plantChangeTime= getPlantChangeTime(plantMinutes)
 print(f"plantChangeTime: {plantChangeTime}")
 
@@ -112,7 +112,7 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     # print(f"new message")
-    global plantChangeTime
+    global plantChangeTime 
     print(f"new message {msg.topic}: {str(msg.payload)}")
     plantCount=len(plants)
 

@@ -71,7 +71,7 @@ def mapRange( x,  in_min,  in_max,  out_min,  out_max):
 
 
 
-def postToLights(reading):
+def postToLights(plantName, reading):
     
     key='Zk16ZQhoxu1MHAJskpApN8i-y8xg0EfGULyBMHS7'
     lightId = 7
@@ -95,8 +95,11 @@ def postToLights(reading):
         b.set_light(lightId,command)
         b.set_light(2,command)
         lightInfo= str(b.get_light(lightId))
-
-        client.publish('home/cmd/hue/tv/', lightInfo)
+        body={}
+        body['hue']=lightInfo
+        plantInfo ={'name':plantName, 'reading': reading}
+        body['plant']=plantInfo
+        client.publish('home/cmd/hue/tv/', body)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()
@@ -114,7 +117,7 @@ def on_message(client, userdata, msg):
     # print(f"new message")
     global plantChangeTime 
     global currentPlantCount 
-    print(f"new message {msg.topic}: {str(msg.payload)}")
+    # print(f"new message {msg.topic}: {str(msg.payload)}")
     plantCount=len(plants)
 
     if datetime.now() > plantChangeTime:
@@ -132,7 +135,7 @@ def on_message(client, userdata, msg):
         if reading>min and reading<max:
             nextPlantTime=plantChangeTime - datetime.now()
             print(f"processing {currentPlantName}: {reading}, next plant in {nextPlantTime}")
-            postToLights(reading)
+            postToLights( currentPlantName, reading)
         
 
 

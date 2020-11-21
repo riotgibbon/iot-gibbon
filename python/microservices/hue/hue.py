@@ -78,6 +78,8 @@ def postToLights(hueReading):
         
         command =  {'transitiontime' : transitionTime,  'hue':  hueReading, 'sat':mappedTemperature, 'bri': mappedHumidity}
         b.set_light(lightId,command)
+        light= b.get_light(lightId)
+        print(light)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

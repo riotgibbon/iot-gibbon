@@ -1,6 +1,8 @@
 import paho.mqtt.client as mqtt
 import json
+from rgb_xy import Converter
 
+converter = Converter()
 
 
 def getMqttClient():
@@ -35,6 +37,7 @@ def on_message(client, userdata, msg):
     xy = hue['xy']
     bri =  hue['bri']
     print(f"plant: {plant}, xy:{xy}, bri:{bri}")
+    print(f"x: {xy[0]}, y: {xy[1]}")
 
         
 

@@ -6,7 +6,7 @@ import requests
 from phue import Bridge  # https://github.com/studioimaginaire/phue
 from influxdb import InfluxDBClient
 import json
-
+from rgbxy import Converter
 
 hueDry = 65535
 hueWet = 0
@@ -93,7 +93,20 @@ def postToLights(plantName, reading):
         # b.set_light(2,command)
 
         lightInfo= b.get_light(lightId)
-        hue= {'xy': lightInfo['state']['xy'],'bri': lightInfo['state']['bri'] }
+
+        xy = lightInfo['state']['xy']
+        x= xy[0]
+        y=xy[1]
+
+        bri =mappedHumidity/254
+
+        r,g,b = converter.xy_to_rgb(x,y,bri)
+
+        
+
+        hex = f"#{converter.xy_to_hex(x,y,bri)}"
+
+        hue= {'xy': xy, 'hex': hex, 'rgb':(r,g,b), 'bri': bri }
         # print(hue)
         body={}
         body['hue']=hue #json.dumps(lightInfo)

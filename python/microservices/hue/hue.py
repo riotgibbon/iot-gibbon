@@ -113,6 +113,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # print(f"new message")
     global plantChangeTime 
+    global currentPlantCount 
     print(f"new message {msg.topic}: {str(msg.payload)}")
     plantCount=len(plants)
 

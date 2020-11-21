@@ -19,7 +19,7 @@ transitionTime = 20
 
 plantMinutes=1
 currentPlantCount=0
-plantChangeTime = getPlantChangeTime(plantMinutes)
+
 
 def getPlantChangeTime(minutes):
     return datetime.now() + timedelta(0,1)
@@ -48,6 +48,7 @@ b.connect()
 b.get_api()
 
 influxClient = getInfluxClient()
+plantChangeTime = getPlantChangeTime(plantMinutes)
 
 def getMqttClient():
     client = mqtt.Client()
@@ -112,7 +113,7 @@ def on_message(client, userdata, msg):
     if datetime.now() > plantChangeTime:
         currentPlantCount+=1
         plantChangeTime = getPlantChangeTime(plantMinutes)
-        
+
     currentPlantIndex = currentPlantCount % plantCount
     currentPlantName = plants[currentPlantIndex]
     currentPlantTopic = f"{plantTopics}{currentPlantName}"

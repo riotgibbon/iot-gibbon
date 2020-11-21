@@ -33,7 +33,7 @@ def getMqttClient():
     return client
 
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+  return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 
 def getHue(reading):
@@ -87,7 +87,7 @@ def on_message(client, userdata, msg):
         hueReading = getHue(reading)
         mapped = mapRange(reading,min,max,hueWet,hueDry)
         client.publish('home/cmd/hue/tv/', mapped)
-        print (f"reading : {reading} =  {hueReading} / {mapped}")
+        print (f"reading : {reading} =  {hueReading} / {mapped} ({hueWet}-{mapped})")
         postToLights(mapped)
         
 

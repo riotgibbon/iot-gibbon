@@ -87,7 +87,7 @@ def on_message(client, userdata, msg):
         hueReading = getHue(reading)
         mapped = mapRange(reading,min,max,hueWet,hueDry)
         client.publish('home/cmd/hue/tv/', mapped)
-        print (f"reading : {reading} =  {hueReading} / {mapped} ({hueWet - mapped})")
+        print (f"reading : {reading} =  {hueReading} / {mapped} ({hueDry - mapped})")
         postToLights(mapped)
         
 

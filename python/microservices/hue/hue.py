@@ -24,7 +24,8 @@ currentPlantCount=0
 def getPlantChangeTime(minutes):
     return datetime.now() + timedelta(0,1)
 
-global plantChangeTime = getPlantChangeTime(plantMinutes)
+global plantChangeTime 
+plantChangeTime= getPlantChangeTime(plantMinutes)
 print(f"plantChangeTime: {plantChangeTime}")
 
 def getInfluxClient(host='localhost', port=8086):

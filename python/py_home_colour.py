@@ -14,6 +14,7 @@ disp = ST7789.ST7789(
     backlight=19,               # 18 for back BG slot, 19 for front BG slot.
     rotation=90,
     spi_speed_hz=80 * 1000 * 1000
+)
 
 # Initialize display.
 disp.begin()

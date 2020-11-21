@@ -97,7 +97,7 @@ def postToLights(plantName, reading):
         lightInfo= str(b.get_light(lightId))
         body={}
         body['hue']=lightInfo
-        plantInfo ={'name':plantName, 'reading': reading}
+        plantInfo ={'name':plantName, 'reading': reading, 'nextPlantAt': plantChangeTime}
         body['plant']=plantInfo
         client.publish('home/cmd/hue/tv/', str(body))
     except Exception:

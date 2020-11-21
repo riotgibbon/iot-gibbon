@@ -92,10 +92,11 @@ def postToLights(plantName, reading):
         b.set_light(lightId,command)
         # b.set_light(2,command)
 
-        lightInfo= str(b.get_light(lightId))
-        print(lightInfo)
+        lightInfo= b.get_light(lightId)
+        hue= {'xy': lightInfo['state']['xy'],'bri': lightInfo['state']['bri'] }
+        print(hue)
         body={}
-        body['hue']=json.loads(b.get_light(lightId))
+        body['hue']=hue
         nextPlantTime=(plantChangeTime - datetime.now()).seconds
         plantInfo ={'name':plantName, 'reading': reading, 'nextPlantAt': nextPlantTime}
         body['plant']=plantInfo

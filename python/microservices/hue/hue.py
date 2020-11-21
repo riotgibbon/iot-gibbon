@@ -62,13 +62,10 @@ def postToLights(reading):
     lightId = 7
 
     mapped = mapRange(reading,min,max,hueWet,hueDry)
-    
-    # uri =f"https://{host}/api/{key}/lights/{lightId}/state"
-    # print(uri)
 
     try:
-        # if hueReading > hueWet and  hueReading < hueDry:
-        # b.set_light(lightId, 'hue', hueReading)
+
+
         temperature = getValue(influxClient, 'temperature')
         mappedTemperature= mapRange(temperature,15,35,230,254)
         print(f"temp: {temperature}C, mapped: {mappedTemperature}")
@@ -78,7 +75,8 @@ def postToLights(reading):
         print(f"humidity: {humidity}C, mapped: {mappedHumidity}")
         # b.set_light(lightId, 'bri', mappedHumidity) 
         
-        command =  {'transitiontime' : transitionTime,  'hue':  hueReading, 'sat':mappedTemperature, 'bri': mappedHumidity}
+        command =  {'transitiontime' : transitionTime,  'hue':  mapped, 'sat':mappedTemperature, 'bri': mappedHumidity}
+        print(command)
         b.set_light(lightId,command)
         light= b.get_light(lightId)
         print(light)

@@ -93,7 +93,7 @@ def postToLights(plantName, reading):
         command =  {'transitiontime' : transitionTime,  'hue':  mapped, 'sat':mappedTemperature, 'bri': mappedHumidity}
         print(command)
         b.set_light(lightId,command)
-        b.set_light(2,command)
+        # b.set_light(2,command)
         lightInfo= str(b.get_light(lightId))
         body={}
         body['hue']=lightInfo

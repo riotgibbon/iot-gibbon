@@ -61,8 +61,8 @@ def postToLights(hueReading):
     key='Zk16ZQhoxu1MHAJskpApN8i-y8xg0EfGULyBMHS7'
     lightId = 7
     
-    uri =f"https://{host}/api/{key}/lights/{lightId}/state"
-    print(uri)
+    # uri =f"https://{host}/api/{key}/lights/{lightId}/state"
+    # print(uri)
 
     try:
         # if hueReading > hueWet and  hueReading < hueDry:

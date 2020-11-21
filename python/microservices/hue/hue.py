@@ -17,7 +17,7 @@ plantTopics ="home/tele/soilmoisture/livingroom/"
 
 transitionTime = 20
 
-plantSeconds=60
+plantSeconds=10
 currentPlantCount=0
 
 
@@ -124,6 +124,7 @@ def on_message(client, userdata, msg):
 
     currentPlantIndex = currentPlantCount % plantCount
     currentPlantName = plants[currentPlantIndex]
+    print (f"currentPlantCount: {currentPlantCount}, currentPlantIndex: {currentPlantIndex}, currentPlantName: {currentPlantName} ")
     currentPlantTopic = f"{plantTopics}{currentPlantName}"
     if currentPlantTopic == str(msg.topic):
         reading =int(msg.payload.decode("utf-8"))

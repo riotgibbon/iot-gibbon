@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 import json
-from rgb_xy import Converter
+from rgbxy import Converter
 
 converter = Converter()
 

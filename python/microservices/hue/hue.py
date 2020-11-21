@@ -68,8 +68,10 @@ def postToLights(hueReading):
         temperature = getValue(influxClient, 'temperature')
         mappedTemperature= mapRange(temperature,15,35,200,254)
         print(f"temp: {temperature}C, mapped: {mappedTemperature}")
-        b.set_light(lightId, 'sat', 254)
-        b.set_light(lightId, 'bri', 254)
+        b.set_light(lightId, 'sat', mappedTemperature)
+        humidity = getValue(influxClient, 'humidity')
+        mappedHumidity = mapRange(humidity,60,100,200,254)
+        b.set_light(lightId, 'bri', mappedHumidity)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

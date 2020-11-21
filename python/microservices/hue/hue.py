@@ -5,7 +5,7 @@ import traceback
 import requests
 from phue import Bridge  # https://github.com/studioimaginaire/phue
 from influxdb import InfluxDBClient
-import json
+
 
 hueDry = 65535
 hueWet = 0
@@ -97,8 +97,8 @@ def postToLights(plantName, reading):
         nextPlantTime=(plantChangeTime - datetime.now()).seconds
         plantInfo ={'name':plantName, 'reading': reading, 'nextPlantAt': nextPlantTime}
         body['plant']=plantInfo
-        data_out=json.dumps(body) 
-        client.publish('home/cmd/hue/tv', data_out)
+        
+        client.publish('home/cmd/hue/tv', str(body))
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

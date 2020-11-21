@@ -12,7 +12,7 @@ hueWet = 0
 min = 800
 max = 840
 
-plants = ['yucca', 'amarylis', 'bonsai', 'aralia']
+plants = ['yucca', 'amaryllis', 'bonsai', 'aralia']
 plantTopics ="home/tele/soilmoisture/livingroom/"
 
 transitionTime = 20

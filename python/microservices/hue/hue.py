@@ -12,7 +12,16 @@ hueWet = 0
 min = 800
 max = 840
 
+plants = ['yucca', 'amarylis', 'bonsai', 'aralia']
+plantTopics ="home/tele/soilmoisture/livingroom/"
+
 transitionTime = 20
+
+plantMinutes=1
+currentPlantCount=0
+
+def getPlantChangeTime(minutes):
+    return datetime.now() + timedelta(0,1)
 
 def getInfluxClient(host='localhost', port=8086):
     user=''
@@ -97,15 +106,18 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # print(f"new message")
     print(f"new message {msg.topic}: {str(msg.payload)}")
-    reading =int(msg.payload.decode("utf-8"))
-    if reading>min and reading<max:
+    plantCount=len(plants)
+    currentPlantIndex = currentPlantCount % plantCount
+    currentPlantName = plants[currentPlantIndex]
+    print(f"currentPlantName: {currentPlantName}")
+    currentPlantTopic = f"{plantTopics}{currentPlantName}"
+    if currentPlantTopic == str(msg.topic):
+        reading =int(msg.payload.decode("utf-8"))
+        if reading>min and reading<max:
 
 
-        # hueReading = getHue(reading)
-        
-        
-        # print (f"reading : {reading} =  {mapped} ")
-        postToLights(reading)
+
+            postToLights(reading)
         
 
 

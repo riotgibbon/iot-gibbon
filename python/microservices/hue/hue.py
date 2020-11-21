@@ -24,7 +24,7 @@ def getInfluxClient(host='localhost', port=8086):
 def getValue(client, reading):
     query =  f"SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 30s  and topic = 'home/tele/{reading}/livingroom/window'"
     result = client.query(query)
-    value = list(result.get_points(measurement='mqtt_consumer'))[0]['mean']
+    value = int(list(result.get_points(measurement='mqtt_consumer'))[0]['mean'])
     return value
 
 host = '192.168.0.14'
@@ -72,7 +72,7 @@ def postToLights(reading):
         # b.set_light(lightId, 'sat', mappedTemperature)
         humidity = getValue(influxClient, 'humidity')
         mappedHumidity = mapRange(humidity,60,100,200,254)
-        print(f"humidity: {humidity}C, mapped: {mappedHumidity}")
+        print(f"humidity: {humidity}%, mapped: {mappedHumidity}")
         # b.set_light(lightId, 'bri', mappedHumidity) 
         
         command =  {'transitiontime' : transitionTime,  'hue':  mapped, 'sat':mappedTemperature, 'bri': mappedHumidity}

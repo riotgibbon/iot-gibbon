@@ -8,6 +8,8 @@ from influxdb import InfluxDBClient
 import json
 from rgbxy import Converter
 
+converter = Converter()
+
 hueDry = 65535
 hueWet = 0
 min = 800

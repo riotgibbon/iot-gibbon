@@ -12,6 +12,8 @@ hueWet = 0
 min = 800
 max = 840
 
+transitionTime = 300
+
 def getInfluxClient(host='localhost', port=8086):
     user=''
     password=''
@@ -64,15 +66,18 @@ def postToLights(hueReading):
 
     try:
         # if hueReading > hueWet and  hueReading < hueDry:
-        b.set_light(lightId, 'hue', hueReading)
+        # b.set_light(lightId, 'hue', hueReading)
         temperature = getValue(influxClient, 'temperature')
         mappedTemperature= mapRange(temperature,15,35,230,254)
         print(f"temp: {temperature}C, mapped: {mappedTemperature}")
-        b.set_light(lightId, 'sat', mappedTemperature)
+        # b.set_light(lightId, 'sat', mappedTemperature)
         humidity = getValue(influxClient, 'humidity')
         mappedHumidity = mapRange(humidity,60,100,200,254)
         print(f"humidity: {humidity}C, mapped: {mappedHumidity}")
-        b.set_light(lightId, 'bri', mappedHumidity)
+        # b.set_light(lightId, 'bri', mappedHumidity) 
+        
+        command =  {'transitiontime' : transitionTime,  'hue':  hueReading, 'sat':mappedTemperature, 'bri': mappedHumidity}
+        b.set_light(lightId,command)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

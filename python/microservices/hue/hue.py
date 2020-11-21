@@ -128,7 +128,7 @@ def on_message(client, userdata, msg):
     if currentPlantTopic == str(msg.topic):
         reading =int(msg.payload.decode("utf-8"))
         if reading>min and reading<max:
-            nextPlantTime=datetime.now() > plantChangeTime
+            nextPlantTime=datetime.now() - plantChangeTime
             print(f"processing {currentPlantName}: {reading}, next plant in {nextPlantTime}")
             postToLights(reading)
         

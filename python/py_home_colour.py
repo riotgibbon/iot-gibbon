@@ -30,7 +30,7 @@ def on_message(client, userdata, msg):
     plant = body['plant']['name']
     hue =  body['hue']
     print (hue)
-    state =hue['state']
+    state =hue['xy']
     print(state)
     xy = state['xy']
     bri =  body['hue']['state']['bri']

@@ -70,7 +70,7 @@ def on_message(client, userdata, msg):
     draw = ImageDraw.Draw(img)
     draw.rectangle((10, 10, WIDTH - 10, HEIGHT - 10), outline=(r,g,b), fill=(255, 0, 255))
 
-
+    disp.display(img)
         
 
 

@@ -17,12 +17,12 @@ plantTopics ="home/tele/soilmoisture/livingroom/"
 
 transitionTime = 20
 
-plantMinutes=1
+plantSeconds=60
 currentPlantCount=0
 
 
-def getPlantChangeTime(minutes):
-    return datetime.now() + timedelta(0,1)
+def getPlantChangeTime():
+    return datetime.now() + timedelta(0,plantSeconds)
 
 
 plantChangeTime= getPlantChangeTime(plantMinutes)
@@ -118,7 +118,7 @@ def on_message(client, userdata, msg):
     plantCount=len(plants)
 
     if datetime.now() > plantChangeTime:
-        plantChangeTime = getPlantChangeTime(plantMinutes)
+        plantChangeTime = getPlantChangeTime()
         currentPlantCount+=1
         
 

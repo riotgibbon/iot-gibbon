@@ -37,7 +37,16 @@ def on_message(client, userdata, msg):
     xy = hue['xy']
     bri =  hue['bri']
     print(f"plant: {plant}, xy:{xy}, bri:{bri}")
-    print(f"x: {xy[0]}, y: {xy[1]}")
+
+    x= xy[0]
+    y=xy[1]
+    print(f"x: {x}, y: {y}")
+
+    bri= 1
+    r,g,b =converter.xy_to_rgb(x,y,bri)
+
+    print(f"r,g,b : {r},{g},{b}")
+
 
         
 

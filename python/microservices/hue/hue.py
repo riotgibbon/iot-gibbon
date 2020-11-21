@@ -66,7 +66,7 @@ def postToLights(hueReading):
         # if hueReading > hueWet and  hueReading < hueDry:
         b.set_light(lightId, 'hue', hueReading)
         temperature = getValue(influxClient, 'temperature')
-        mappedTemperature= mapRange(temperature,15,35,200,254)
+        mappedTemperature= mapRange(temperature,15,35,230,254)
         print(f"temp: {temperature}C, mapped: {mappedTemperature}")
         b.set_light(lightId, 'sat', mappedTemperature)
         humidity = getValue(influxClient, 'humidity')

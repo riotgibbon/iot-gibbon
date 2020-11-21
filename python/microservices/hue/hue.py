@@ -99,7 +99,7 @@ def postToLights(plantName, reading):
         body['hue']=lightInfo
         plantInfo ={'name':plantName, 'reading': reading}
         body['plant']=plantInfo
-        client.publish('home/cmd/hue/tv/', body)
+        client.publish('home/cmd/hue/tv/', str(body))
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()

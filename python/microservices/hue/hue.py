@@ -17,7 +17,7 @@ plantTopics ="home/tele/soilmoisture/livingroom/"
 
 transitionTime = 20
 
-plantSeconds=60
+plantSeconds=180
 currentPlantCount=0
 
 

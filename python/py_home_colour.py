@@ -2,6 +2,11 @@ import paho.mqtt.client as mqtt
 import json
 import ST7789
 
+
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+
 disp = ST7789.ST7789(
     port=0,
     cs=ST7789.BG_SPI_CS_FRONT,  # BG_SPI_CS_BACK or BG_SPI_CS_FRONT

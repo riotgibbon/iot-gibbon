@@ -101,7 +101,7 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("home/tele/soilmoisture/livingroom/yucca")
+    client.subscribe(f"{plantTopics}#")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -110,14 +110,11 @@ def on_message(client, userdata, msg):
     plantCount=len(plants)
     currentPlantIndex = currentPlantCount % plantCount
     currentPlantName = plants[currentPlantIndex]
-    print(f"currentPlantName: {currentPlantName}")
     currentPlantTopic = f"{plantTopics}{currentPlantName}"
     if currentPlantTopic == str(msg.topic):
         reading =int(msg.payload.decode("utf-8"))
         if reading>min and reading<max:
-
-
-
+            print(f"processing {currentPlantName}: {reading}")
             postToLights(reading)
         
 

@@ -56,10 +56,12 @@ def mapRange( x,  in_min,  in_max,  out_min,  out_max):
 
 
 
-def postToLights(hueReading):
+def postToLights(reading):
     
     key='Zk16ZQhoxu1MHAJskpApN8i-y8xg0EfGULyBMHS7'
     lightId = 7
+
+    mapped = mapRange(reading,min,max,hueWet,hueDry)
     
     # uri =f"https://{host}/api/{key}/lights/{lightId}/state"
     # print(uri)
@@ -80,6 +82,8 @@ def postToLights(hueReading):
         b.set_light(lightId,command)
         light= b.get_light(lightId)
         print(light)
+        lightInfo ={"reading":reading, "hue":mapped, "xy": light['state']['xy']}
+        client.publish('home/cmd/hue/tv/', mapped)
     except Exception:
         print ("error posting hue data")
         traceback.print_exc()
@@ -101,10 +105,10 @@ def on_message(client, userdata, msg):
 
 
         # hueReading = getHue(reading)
-        mapped = mapRange(reading,min,max,hueWet,hueDry)
-        client.publish('home/cmd/hue/tv/', mapped)
-        print (f"reading : {reading} =  {mapped} ")
-        postToLights(mapped)
+        
+        
+        # print (f"reading : {reading} =  {mapped} ")
+        postToLights(reading)
         
 
 

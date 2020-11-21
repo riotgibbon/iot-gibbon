@@ -1,5 +1,20 @@
 import paho.mqtt.client as mqtt
 import json
+import ST7789
+
+disp = ST7789.ST7789(
+    port=0,
+    cs=ST7789.BG_SPI_CS_FRONT,  # BG_SPI_CS_BACK or BG_SPI_CS_FRONT
+    dc=9,
+    backlight=19,               # 18 for back BG slot, 19 for front BG slot.
+    rotation=90,
+    spi_speed_hz=80 * 1000 * 1000
+
+# Initialize display.
+disp.begin()
+
+WIDTH = disp.width
+HEIGHT = disp.height
 
 
 def getMqttClient():
@@ -43,6 +58,10 @@ def on_message(client, userdata, msg):
     r,g,b = rgb[0], rgb[1], rgb[2]
 
     print(f"r,g,b : {r},{g},{b}")
+
+    img = Image.new('RGB', (WIDTH, HEIGHT), color=(r,g,b))
+
+    draw = ImageDraw.Draw(img)
 
 
         

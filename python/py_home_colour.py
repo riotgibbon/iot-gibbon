@@ -28,9 +28,10 @@ def on_message(client, userdata, msg):
     body = json.loads(msg.payload)
     print(body)
     plant = body['plant']['name']
+    print(f"plant: {plant}")
     hue =  body['hue']
     print (hue)
-    state =hue['xy']
+    state =hue['state']
     print(state)
     xy = state['xy']
     bri =  body['hue']['state']['bri']

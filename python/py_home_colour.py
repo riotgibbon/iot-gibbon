@@ -42,8 +42,8 @@ def on_message(client, userdata, msg):
     y=xy[1]
     print(f"x: {x}, y: {y}")
 
-    bri= 1
-    r,g,b =converter.xy_to_rgb(x,y,bri)
+    briScaled= bri/254
+    r,g,b =converter.xy_to_rgb(x,y,briScaled)
 
     print(f"r,g,b : {r},{g},{b}")
 

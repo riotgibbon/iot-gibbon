@@ -23,6 +23,8 @@ currentPlantCount=0
 
 def getPlantChangeTime(minutes):
     return datetime.now() + timedelta(0,1)
+    
+plantChangeTime = getPlantChangeTime(plantMinutes)
 
 def getInfluxClient(host='localhost', port=8086):
     user=''
@@ -48,7 +50,7 @@ b.connect()
 b.get_api()
 
 influxClient = getInfluxClient()
-plantChangeTime = getPlantChangeTime(plantMinutes)
+
 
 def getMqttClient():
     client = mqtt.Client()

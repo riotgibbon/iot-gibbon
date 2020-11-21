@@ -4,11 +4,26 @@ from datetime import datetime,timedelta
 import traceback
 import requests
 from phue import Bridge  # https://github.com/studioimaginaire/phue
+from influxdb import InfluxDBClient
+
 
 hueDry = 65535
 hueWet = 0
 min = 800
 max = 840
+
+def getInfluxClient(host='localhost', port=8086):
+    user=''
+    password=''
+    dbname = 'home'
+    client = InfluxDBClient(host, port, user, password, dbname)
+    return client
+
+def getValue(client, reading):
+    query =  f"SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 30s  and topic = 'home/tele/{reading}/livingroom/window'"
+    result = client.query(query)
+    value = list(result.get_points(measurement='mqtt_consumer'))[0]['mean']
+    return value
 
 host = '192.168.0.14'
 
@@ -19,6 +34,8 @@ b.connect()
 
 # Get the bridge state (This returns the full dictionary that you can explore)
 b.get_api()
+
+influxClient = getInfluxClient()
 
 def getMqttClient():
     client = mqtt.Client()
@@ -36,20 +53,6 @@ def mapRange( x,  in_min,  in_max,  out_min,  out_max):
   return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 
-def getHue(reading):
-    # make range between 810 and 850
-
-
-    readingPc = (reading-min)/(max-min)
-    print (f"readingPC: {readingPc}%")
-
-    hueRange = hueDry-hueWet
-    print (f"hueRange: {hueRange}")
-    hueShare =(1-readingPc)* hueRange
-    print (f"hueShare: {hueShare}")
-    hueReading = int(hueShare + hueWet)
-
-    return hueReading
 
 def postToLights(hueReading):
     
@@ -59,11 +62,12 @@ def postToLights(hueReading):
     uri =f"https://{host}/api/{key}/lights/{lightId}/state"
     print(uri)
 
-    # r = requests.put(uri, data = {"sat":str(200), "   ":str(254),"hue":str(hueReading)}, verify=False)
-    # print(r)
     try:
         # if hueReading > hueWet and  hueReading < hueDry:
         b.set_light(lightId, 'hue', hueReading)
+        temperature = getValue(influxClient, 'temperature')
+        mappedTemperature= mapRange(temperature,15,35,200,254)
+        print(f"temp: {temperature}C, mapped: {mappedTemperature}")
         b.set_light(lightId, 'sat', 254)
         b.set_light(lightId, 'bri', 254)
     except Exception:
@@ -84,10 +88,12 @@ def on_message(client, userdata, msg):
     print(f"new message {msg.topic}: {str(msg.payload)}")
     reading =int(msg.payload.decode("utf-8"))
     if reading>min and reading<max:
+
+
         hueReading = getHue(reading)
         mapped = mapRange(reading,min,max,hueWet,hueDry)
         client.publish('home/cmd/hue/tv/', mapped)
-        print (f"reading : {reading} =  {hueReading} / {mapped} ({hueDry - mapped})")
+        print (f"reading : {reading} =  {mapped} ")
         postToLights(mapped)
         
 

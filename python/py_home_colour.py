@@ -39,8 +39,8 @@ def on_message(client, userdata, msg):
     print(f"plant: {plant}, xy:{xy}, bri:{bri}")
 
 
-
-    r,g,b = hue['rgb']
+    rgb=hue['rgb']
+    r,g,b = rgb[0], rgb[1], rgb[2]
 
     print(f"r,g,b : {r},{g},{b}")
 

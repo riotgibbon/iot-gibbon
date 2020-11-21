@@ -32,6 +32,10 @@ def getMqttClient():
             time.sleep(5)
     return client
 
+def mapRange( x,  in_min,  in_max,  out_min,  out_max):
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
 def getHue(reading):
     # make range between 810 and 850
 
@@ -81,9 +85,10 @@ def on_message(client, userdata, msg):
     reading =int(msg.payload.decode("utf-8"))
     if reading>min and reading<max:
         hueReading = getHue(reading)
-        client.publish('home/cmd/hue/tv/', hueReading)
-        print (f"reading : {reading} = {hueReading}")
-        postToLights(hueReading)
+        mapped = mapRange(reading,min,max,hueWet,hueDry)
+        client.publish('home/cmd/hue/tv/', mapped)
+        print (f"reading : {reading} =  {hueReading} / {mapped}")
+        postToLights(mapped)
         
 
 

@@ -68,6 +68,7 @@ def on_message(client, userdata, msg):
     img = Image.new('RGB', (WIDTH, HEIGHT), color=(r,g,b))
 
     draw = ImageDraw.Draw(img)
+    draw.rectangle((10, 10, WIDTH - 10, HEIGHT - 10), outline=(r,g,b), fill=(255, 0, 255))
 
 
         

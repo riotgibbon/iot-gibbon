@@ -124,10 +124,11 @@ def on_message(client, userdata, msg):
 
     currentPlantIndex = currentPlantCount % plantCount
     currentPlantName = plants[currentPlantIndex]
-    print (f"currentPlantCount: {currentPlantCount}, currentPlantIndex: {currentPlantIndex}, currentPlantName: {currentPlantName} ")
-    currentPlantTopic = f"{plantTopics}{currentPlantName}"
+
     if currentPlantTopic == str(msg.topic):
         reading =int(msg.payload.decode("utf-8"))
+        print (f"currentPlantCount: {currentPlantCount}, currentPlantIndex: {currentPlantIndex}, currentPlantName: {currentPlantName} ")
+        currentPlantTopic = f"{plantTopics}{currentPlantName}"
         if reading>min and reading<max:
             nextPlantTime=plantChangeTime - datetime.now()
             print(f"processing {currentPlantName}: {reading}, next plant in {nextPlantTime}")

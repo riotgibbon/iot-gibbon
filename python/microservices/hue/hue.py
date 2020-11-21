@@ -40,7 +40,7 @@ def getValue(client, reading, default):
     try:
         query =  f"SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 30s  and topic = 'home/tele/{reading}/livingroom/window'"
         result = client.query(query)
-        value = int(list(result.get_points(measurement='mqtt_consumer'))[0]['mean'])
+        value = (list(result.get_points(measurement='mqtt_consumer'))[0]['mean'])
         return value
     except:
         return default
@@ -80,11 +80,11 @@ def postToLights(plantName, reading):
     mapped = mapRange(reading,min,max,hueWet,hueDry)
     try:
         temperature = getValue(influxClient, 'temperature', 22)
-        mappedTemperature= mapRange(temperature,15,35,230,254)
-        print(f"temp: {temperature}C, mapped: {mappedTemperature}")
+        mappedTemperature= mapRange(temperature,15,30,230,254)
+        print(f"temp: {temperature:.2f}C, mapped: {mappedTemperature}")
         humidity = getValue(influxClient, 'humidity',60)
         mappedHumidity = mapRange(humidity,60,100,200,254)
-        print(f"humidity: {humidity}%, mapped: {mappedHumidity}")
+        print(f"humidity: {humidity:.2f}%, mapped: {mappedHumidity}")
         
         command =  {'transitiontime' : transitionTime,  'hue':  mapped, 'sat':mappedTemperature, 'bri': mappedHumidity}
         print(command)

@@ -112,11 +112,14 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     # print(f"new message")
+    global plantChangeTime
     print(f"new message {msg.topic}: {str(msg.payload)}")
     plantCount=len(plants)
+
     if datetime.now() > plantChangeTime:
-        currentPlantCount+=1
         plantChangeTime = getPlantChangeTime(plantMinutes)
+        currentPlantCount+=1
+        
 
     currentPlantIndex = currentPlantCount % plantCount
     currentPlantName = plants[currentPlantIndex]

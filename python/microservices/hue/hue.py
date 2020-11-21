@@ -25,7 +25,7 @@ def getPlantChangeTime():
     return datetime.now() + timedelta(0,plantSeconds)
 
 
-plantChangeTime= getPlantChangeTime(plantMinutes)
+plantChangeTime= getPlantChangeTime()
 print(f"plantChangeTime: {plantChangeTime}")
 
 def getInfluxClient(host='localhost', port=8086):
@@ -128,7 +128,8 @@ def on_message(client, userdata, msg):
     if currentPlantTopic == str(msg.topic):
         reading =int(msg.payload.decode("utf-8"))
         if reading>min and reading<max:
-            print(f"processing {currentPlantName}: {reading}")
+            nextPlantTime=datetime.now() > plantChangeTime
+            print(f"processing {currentPlantName}: {reading}, next plant in {nextPlantTime}")
             postToLights(reading)
         
 

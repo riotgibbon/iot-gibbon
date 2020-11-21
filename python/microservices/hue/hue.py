@@ -9,7 +9,7 @@ from influxdb import InfluxDBClient
 
 hueDry = 65535
 hueWet = 0
-min = 800
+min = 780
 max = 840
 
 plants = ['yucca', 'amaryllis', 'bonsai', 'aralia']

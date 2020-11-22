@@ -90,6 +90,7 @@ def getPressureIndex(client):
     print (f"pressure: last: {last}, min: {min}, max {max}, index: {index}")
     return index
 
+
 def postToLights(plantName, reading):
     lightId = 7
     # light mapping:
@@ -101,7 +102,7 @@ def postToLights(plantName, reading):
     # multiple pressure and moisture indexes to
     hueIndex = pressureIndex * moistureIndex
 
-    hueMappedValue = (hueIndex, 1, 10000, hueLow, hueHigh)
+    hueMappedValue =mapRange (hueIndex, 1, 10000, hueLow, hueHigh)
     print(f"moisture: {reading}, pressureIndex: {pressureIndex}, moistureIndex: {moistureIndex}, hueIndex: {hueIndex}, hueMappedValue: {hueMappedValue}")
 
     try:

@@ -107,7 +107,7 @@ def postToLights(plantName, reading):
 
     try:
         temperature = getWindowAverageValue(influxClient, 'temperature', 22)
-        mappedTemperature= mapRange(temperature,15,30,230,254)
+        mappedTemperature= mapRange(temperature,15,30,100,254)
         print(f"temp: {temperature:.2f}C, mapped: {mappedTemperature}")
         humidity = getWindowAverageValue(influxClient, 'humidity',60)
         mappedHumidity = mapRange(humidity,60,100,200,254)

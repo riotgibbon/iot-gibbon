@@ -84,8 +84,8 @@ def getPressureIndex(client):
     result = client.query(query)
     values = (list(result.get_points(measurement='mqtt_consumer'))[0])
     min= values['min']
-    max=value['max']
-    last=value['last']
+    max=values['max']
+    last=values['last']
     index = indexValue(last,min,max)
     print (f"pressure: last: {last}, min: {min}, max {max}, index: {index}")
     return index

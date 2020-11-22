@@ -10,10 +10,10 @@ from rgbxy import Converter
 
 converter = Converter()
 
-hueDry = 65535
-hueWet = 0
-min = 800
-max = 840
+hueHigh = 65535
+hueLow = 0
+moistureMin = 800
+moistureMax = 840
 
 plants = ['yucca', 'amaryllis', 'bonsai', 'aralia']
 plantTopics ="home/tele/soilmoisture/livingroom/"
@@ -38,7 +38,7 @@ def getInfluxClient(host='localhost', port=8086):
     client = InfluxDBClient(host, port, user, password, dbname)
     return client
 
-def getValue(client, reading, default):
+def getWindowAverageValue(client, reading, default):
 
     try:
         query =  f"SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 30s  and topic = 'home/tele/{reading}/livingroom/window'"
@@ -76,20 +76,43 @@ def getMqttClient():
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
   return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
+def indexValue(value, low, high)
+    return mapRange(value, low,high,1,100)
 
+def getPressureIndex(client):
+    query =  f"SELECT last(value), min(value), max(value) FROM mqtt_consumer   WHERE  topic = 'home/tele/pressure/livingroom/desk' and value > 970"
+    result = client.query(query)
+    values = (list(result.get_points(measurement='mqtt_consumer'))[0])
+    min= values['min']
+    max=value['max']
+    last=value['last']
+    index = indexValue(last,min,max)
+    print (f"pressure: last: {last}, min: {min}, max {max}, index: {index}")
+    return index
 
 def postToLights(plantName, reading):
     lightId = 7
-    mapped = mapRange(reading,min,max,hueWet,hueDry)
+    # light mapping:
+    # get index of pressure
+    pressureIndex = getPressureIndex(influxClient)
+    # get index of moisture readings
+    #mapped = mapRange(reading,moistureMin,moistureMax,hueLow,hueHigh)
+    moistureIndex =  indexValue(reading,moistureMin,moistureMax) 
+    # multiple pressure and moisture indexes to
+    hueIndex = pressureIndex * moistureIndex
+
+    hueMappedValue = (hueIndex, 1, 10000, hueLow, hueHigh)
+    print(f"moisture: {reading}, pressureIndex: {pressureIndex}, moistureIndex: {moistureIndex}, hueIndex: {hueIndex}, hueMappedValue: {hueMappedValue}")
+
     try:
-        temperature = getValue(influxClient, 'temperature', 22)
+        temperature = getWindowAverageValue(influxClient, 'temperature', 22)
         mappedTemperature= mapRange(temperature,15,30,230,254)
         print(f"temp: {temperature:.2f}C, mapped: {mappedTemperature}")
-        humidity = getValue(influxClient, 'humidity',60)
+        humidity = getWindowAverageValue(influxClient, 'humidity',60)
         mappedHumidity = mapRange(humidity,60,100,200,254)
         print(f"humidity: {humidity:.2f}%, mapped: {mappedHumidity}")
         
-        command =  {'transitiontime' : transitionTime,  'hue':  mapped, 'sat':mappedTemperature, 'bri': mappedHumidity}
+        command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':mappedTemperature, 'bri': mappedHumidity}
         print(command)
         b.set_light(lightId,command)
         # b.set_light(2,command)
@@ -150,7 +173,7 @@ def on_message(client, userdata, msg):
         reading =int(msg.payload.decode("utf-8"))
         print (f"currentPlantCount: {currentPlantCount}, currentPlantIndex: {currentPlantIndex}, currentPlantName: {currentPlantName} ")
         
-        if reading>min and reading<max:
+        if reading>moistureMin and reading<moistureMax:
             nextPlantTime=plantChangeTime - datetime.now()
             print(f"processing {currentPlantName}: {reading}, next plant in {nextPlantTime}")
             postToLights( currentPlantName, reading)

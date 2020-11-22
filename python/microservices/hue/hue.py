@@ -132,7 +132,7 @@ def postToLights(plantName, reading):
 
         hex = f"#{converter.xy_to_hex(x,y,bri)}"
 
-        hue= {'xy': xy, 'hex': hex, 'rgb':converter.xy_to_rgb(x,y,bri), 'bri': bri }
+        hue= {'xy': xy, 'hex': hex, 'rgb':converter.xy_to_rgb(x,y,bri), 'bri': bri, 'hue': hueMappedValue }
         # print(hue)
         body={}
         body['hue']=hue #json.dumps(lightInfo)

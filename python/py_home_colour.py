@@ -65,7 +65,7 @@ def on_message(client, userdata, msg):
 
     print(f"r,g,b : {r},{g},{b}")
 
-    img = Image.new('RGB', (WIDTH, HEIGHT), color=(r,g,b))
+    img = Image.new('RGB', (WIDTH, HEIGHT), color=rgb)
 
     draw = ImageDraw.Draw(img)
     # draw.rectangle((10, 10, WIDTH - 10, HEIGHT - 10), outline=(r,g,b), fill=(r,g,b))

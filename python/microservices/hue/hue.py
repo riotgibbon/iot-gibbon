@@ -76,7 +76,7 @@ def getMqttClient():
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
   return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
-def indexValue(value, low, high)
+def indexValue(value, low, high):
     return mapRange(value, low,high,1,100)
 
 def getPressureIndex(client):

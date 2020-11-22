@@ -41,7 +41,7 @@ def getInfluxClient(host='localhost', port=8086):
 def getWindowAverageValue(client, reading, default):
 
     try:
-        query =  f"SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 30s  and topic = 'home/tele/{reading}/livingroom/window'"
+        query =  f"SELECT last(value) FROM mqtt_consumer   WHERE  topic = 'home/tele/{reading}/livingroom/window'"
         result = client.query(query)
         value = (list(result.get_points(measurement='mqtt_consumer'))[0]['mean'])
         return value

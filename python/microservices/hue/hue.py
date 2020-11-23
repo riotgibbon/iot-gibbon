@@ -74,7 +74,7 @@ def getMqttClient():
     return client
 
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
-  return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+  return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 def indexValue(value, low, high):
     return mapRange(value, low,high,1,100)
@@ -102,15 +102,15 @@ def postToLights(plantName, reading):
     # multiple pressure and moisture indexes to
     hueIndex = pressureIndex * moistureIndex
 
-    hueMappedValue =mapRange (hueIndex, 1, 1000, hueLow, hueHigh)
+    hueMappedValue =int(mapRange (hueIndex, 1, 1000, hueLow, hueHigh))
     print(f"moisture: {reading}, pressureIndex: {pressureIndex}, moistureIndex: {moistureIndex}, hueIndex: {hueIndex}, hueMappedValue: {hueMappedValue}")
 
     try:
         temperature = getWindowAverageValue(influxClient, 'temperature', 22)
-        mappedTemperature= mapRange(temperature,15,30,100,254)
+        mappedTemperature= int(mapRange(temperature,15,30,100,254))
         print(f"temp: {temperature:.2f}C, mapped: {mappedTemperature}")
         humidity = getWindowAverageValue(influxClient, 'humidity',60)
-        mappedHumidity = mapRange(humidity,60,100,200,254)
+        mappedHumidity = int(mapRange(humidity,60,100,200,254))
         print(f"humidity: {humidity:.2f}%, mapped: {mappedHumidity}")
         
         command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':mappedTemperature, 'bri': mappedHumidity}

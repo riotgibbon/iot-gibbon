@@ -95,14 +95,14 @@ def postToLights(plantName, reading):
     lightId = 7
     # light mapping:
     # get index of pressure
-    pressureIndex = getPressureIndex(influxClient)
+    pressureIndex = getPressureIndex(influxClient)/10
     # get index of moisture readings
     #mapped = mapRange(reading,moistureMin,moistureMax,hueLow,hueHigh)
     moistureIndex =  indexValue(reading,moistureMin,moistureMax) 
     # multiple pressure and moisture indexes to
     hueIndex = pressureIndex * moistureIndex
 
-    hueMappedValue =mapRange (hueIndex, 1, 10000, hueLow, hueHigh)
+    hueMappedValue =mapRange (hueIndex, 1, 1000, hueLow, hueHigh)
     print(f"moisture: {reading}, pressureIndex: {pressureIndex}, moistureIndex: {moistureIndex}, hueIndex: {hueIndex}, hueMappedValue: {hueMappedValue}")
 
     try:

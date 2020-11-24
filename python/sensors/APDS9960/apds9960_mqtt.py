@@ -87,9 +87,10 @@ while True:
                 print("right")
                 publish(mqttClient,"gesture","right")  
                 postToIFTT('desk_right')
+
             if datetime.now() > readTime:
-                while not apds.color_data_ready:
-                    time.sleep(0.005)
+                # while not apds.color_data_ready:
+                #     time.sleep(0.005)
                 r, g, b, c = apds.color_data
                 print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
 

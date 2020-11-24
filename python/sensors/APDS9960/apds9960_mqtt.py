@@ -40,7 +40,7 @@ apds = APDS9960(i2c, interrupt_pin=int_pin)
 # apds.enable_proximity = True
 # apds.proximity_interrupt_threshold = (0, 175)
 # apds.enable_proximity_interrupt = True
-apds.enable_proximity = True
+# apds.enable_proximity = True
 
 apds.enable_gesture = True
 apds.enable_color = True
@@ -86,26 +86,26 @@ while True:
                 readTime = getReadTime(sleepSeconds)
 
             
-            # gesture = apds.gesture()
-            # if gesture == 0x01:
-            #     print("up")
-            #     publish(mqttClient,"gesture","up") 
-            #     postToIFTT('desk_up') 
+            gesture = apds.gesture()
+            if gesture == 0x01:
+                print("up")
+                publish(mqttClient,"gesture","up") 
+                postToIFTT('desk_up') 
 
-            # elif gesture == 0x02:
-            #     print("down")
-            #     publish(mqttClient,"gesture","down")  
-            #     postToIFTT('desk_down')
+            elif gesture == 0x02:
+                print("down")
+                publish(mqttClient,"gesture","down")  
+                postToIFTT('desk_down')
 
-            # elif gesture == 0x03:
-            #     print("left")
-            #     publish(mqttClient,"gesture","left")  
-            #     postToIFTT('desk_left')
+            elif gesture == 0x03:
+                print("left")
+                publish(mqttClient,"gesture","left")  
+                postToIFTT('desk_left')
 
-            # elif gesture == 0x04:
-            #     print("right")
-            #     publish(mqttClient,"gesture","right")  
-            #     postToIFTT('desk_right')
+            elif gesture == 0x04:
+                print("right")
+                publish(mqttClient,"gesture","right")  
+                postToIFTT('desk_right')
 
         except Exception as error:
             logger.error(error.args[0])  

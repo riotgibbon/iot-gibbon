@@ -68,8 +68,9 @@ while True:
             
             
             if datetime.now() > readTime:
-                # while not apds.color_data_ready:
-                #     time.sleep(0.005)
+                apds.enable_color = True
+                while not apds.color_data_ready:
+                    time.sleep(0.005)
                 r, g, b, c = apds.color_data
                 print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
 

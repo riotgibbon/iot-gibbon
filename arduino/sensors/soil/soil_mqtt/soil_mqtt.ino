@@ -73,29 +73,31 @@ void setup() {
 void loop() {
   char cstr[16];
   int   soilValue = readSoil();
-   char* soil = itoa(soilValue, cstr, 10);
-  Serial.print("Soil Moisture: "); 
-  Serial.println(soil);
-
-  client.loop();
-  if (!client.connected()) {
-   connect();
-  }
-
-  digitalWrite(LED_BUILTIN, HIGH); 
+  if (soilValue > 100) {
+     char* soil = itoa(soilValue, cstr, 10);
+    Serial.print("Soil Moisture: "); 
+    Serial.println(soil);
   
- 
-  client.publish(topicname, soil);
-
-  digitalWrite(LED_BUILTIN, LOW);  
-  //
-  switch (WiFi.status()) {
-    case WL_CONNECT_FAILED:
-    case WL_CONNECTION_LOST:
-    case WL_DISCONNECTED: WiFi.begin(ssid, pass);
+    client.loop();
+    if (!client.connected()) {
+     connect();
+    }
+  
+    digitalWrite(LED_BUILTIN, HIGH); 
+    
+    
+    client.publish(topicname, soil);
+  
+    digitalWrite(LED_BUILTIN, LOW);  
+    //
+    switch (WiFi.status()) {
+      case WL_CONNECT_FAILED:
+      case WL_CONNECTION_LOST:
+      case WL_DISCONNECTED: WiFi.begin(ssid, pass);
+    }
+    //
+    delay(5000);
   }
-  //
-  delay(5000);
 }
 
 

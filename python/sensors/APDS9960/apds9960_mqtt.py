@@ -67,46 +67,46 @@ while True:
         try:
             
             
-            if datetime.now() > readTime:
-                # apds.enable_color = True
-                # while not apds.color_data_ready:
-                #     time.sleep(0.005)
-                r, g, b, c = apds.color_data
-                print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
+            # if datetime.now() > readTime:
+            #     # apds.enable_color = True
+            #     # while not apds.color_data_ready:
+            #     #     time.sleep(0.005)
+            #     r, g, b, c = apds.color_data
+            #     print(f"red: {r}, green: {g}, blue: {b}, clear: {c}")
 
-                publish(mqttClient,"red",r)   
-                publish(mqttClient,"green",g)   
-                publish(mqttClient,"blue",b)   
-                publish(mqttClient,"clear",c)   
+            #     publish(mqttClient,"red",r)   
+            #     publish(mqttClient,"green",g)   
+            #     publish(mqttClient,"blue",b)   
+            #     publish(mqttClient,"clear",c)   
 
-                colourTemp=colorutility.calculate_color_temperature(r, g, b)
-                lightLux=colorutility.calculate_lux(r, g, b)
-                publish(mqttClient,"colourTemp",colourTemp)   
-                publish(mqttClient,"lightLux",lightLux)   
+            #     colourTemp=colorutility.calculate_color_temperature(r, g, b)
+            #     lightLux=colorutility.calculate_lux(r, g, b)
+            #     publish(mqttClient,"colourTemp",colourTemp)   
+            #     publish(mqttClient,"lightLux",lightLux)   
                 
-                readTime = getReadTime(sleepSeconds)
+            #     readTime = getReadTime(sleepSeconds)
 
 
-            # gesture = apds.gesture()
-            # if gesture == 0x01:
-            #     print("up")
-            #     publish(mqttClient,"gesture","up") 
-            #     postToIFTT('desk_up') 
+            gesture = apds.gesture()
+            if gesture == 0x01:
+                print("up")
+                publish(mqttClient,"gesture","up") 
+                postToIFTT('desk_up') 
 
-            # elif gesture == 0x02:
-            #     print("down")
-            #     publish(mqttClient,"gesture","down")  
-            #     postToIFTT('desk_down')
+            elif gesture == 0x02:
+                print("down")
+                publish(mqttClient,"gesture","down")  
+                postToIFTT('desk_down')
 
-            # elif gesture == 0x03:
-            #     print("left")
-            #     publish(mqttClient,"gesture","left")  
-            #     postToIFTT('desk_left')
+            elif gesture == 0x03:
+                print("left")
+                publish(mqttClient,"gesture","left")  
+                postToIFTT('desk_left')
 
-            # elif gesture == 0x04:
-            #     print("right")
-            #     publish(mqttClient,"gesture","right")  
-            #     postToIFTT('desk_right')
+            elif gesture == 0x04:
+                print("right")
+                publish(mqttClient,"gesture","right")  
+                postToIFTT('desk_right')
 
 
         except Exception as error:

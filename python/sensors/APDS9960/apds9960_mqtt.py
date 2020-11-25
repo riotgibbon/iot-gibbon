@@ -43,7 +43,7 @@ apds = APDS9960(i2c, interrupt_pin=int_pin)
 apds.enable_proximity = True
 
 apds.enable_gesture = True
-apds.enable_color = True
+# apds.enable_color = True
 
 
 def publish(client, metric, value):
@@ -58,8 +58,8 @@ def postToIFTT(event):
     r = requests.get(f'https://maker.ifttt.com/trigger/{event}/with/key/d52lKnzf-xDid_NfD5tga-')
 
 
-while not apds.color_data_ready:
-    time.sleep(0.005)
+# while not apds.color_data_ready:
+#     time.sleep(0.005)
 
 readTime = getReadTime(0)
 

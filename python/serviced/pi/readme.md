@@ -4,7 +4,7 @@ https://learn.sparkfun.com/tutorials/how-to-run-a-raspberry-pi-program-on-startu
 
 systemctl enable systemd-networkd.service systemd-networkd-wait-online.service
 
- sudo cp /home/pi/github/iot-gibbon/python/serviced/*.service /lib/systemd/system/
+ sudo cp /home/pi/github/iot-gibbon/python/serviced/pi/*.service /lib/systemd/system/
 
 
 sudo systemctl disable ifttt.service
@@ -25,3 +25,23 @@ sudo systemctl enable apds9960_mqtt.service
 sudo systemctl enable gp2y0a21yk0f_mqtt.service
 sudo systemctl enable hue.service
 
+
+restart
+
+sudo systemctl restart ifttt.service
+sudo systemctl restart pi_home.service
+sudo systemctl restart bme680_mqtt.service
+sudo systemctl restart weather.service
+sudo systemctl restart apds9960_mqtt.service
+sudo systemctl restart gp2y0a21yk0f_mqtt.service
+sudo systemctl restart hue.service
+
+
+status
+sudo systemctl status ifttt.service
+sudo systemctl status pi_home.service
+sudo systemctl status bme680_mqtt.service
+sudo systemctl status weather.service
+sudo systemctl status apds9960_mqtt.service
+sudo systemctl status gp2y0a21yk0f_mqtt.service
+sudo systemctl enstatusqable hue.service

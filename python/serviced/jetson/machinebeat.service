@@ -1,0 +1,14 @@
+[Unit]
+Description=machinebeat client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/bin/bash -c '/usr/local/services/machinebeat/machinebeat -e -c machinebeat.yml'
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+
+[Install]
+WantedBy=multi-user.target

@@ -4,7 +4,7 @@ https://learn.sparkfun.com/tutorials/how-to-run-a-raspberry-pi-program-on-startu
 
 systemctl enable systemd-networkd.service systemd-networkd-wait-online.service
 
- sudo cp /home/pi/github/iot-gibbon/python/serviced/jetson/*.service /lib/systemd/system/
+ sudo cp /home/toby/github/iot-gibbon/python/serviced/jetson/*.service /lib/systemd/system/
 
 
 sudo systemctl disable machinebeat.service

@@ -365,7 +365,45 @@ create sudo /usr/local/services
 /usr/local
 
  sudo cp -r  machinebeat /usr/local/services/
- 
+
 
 
 sudo /usr/local/services/machinebeat/machinebeat -e -c machinebeat.yml
+
+
+create as a service:
+
+/usr/local/services/machinebeat/machinebeat -e -c /usr/local/services/machinebeat/machinebeat.yml
+
+
+## ports for elastic
+
+see if port range is blocked
+
+
+sudo systemctl start elasticsearch.service
+sudo systemctl stop elasticsearch.service
+sudo systemctl restart elasticsearch.service
+
+sudo docker run -dit --name not-elastic -p 9200:80 -v /home/user/website/:/usr/local/apache2/htdocs/ httpd:2.4
+
+curl http://localhost:9200/docker.html
+
+```
+toby@jet-gibbon:~/machinebeat$ curl http://localhost:9200/docker.html
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Docker demo</title>
+ </head>
+ <body>
+<h1>Hello from Docker/</h1>
+<ul></ul>
+</body></html>
+```
+
+http://192.168.0.72:9200/docker.html
+
+
+works externally
+

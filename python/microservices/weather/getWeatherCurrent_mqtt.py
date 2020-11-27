@@ -5,6 +5,7 @@ from datetime import datetime,timedelta
 import os
 import logging
 import time
+import traceback
 
 # url = "https://rapidapi.p.rapidapi.com/weather"
 location = "Slough"
@@ -27,7 +28,7 @@ logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)
 logger = logging.getLogger(source)
 logname = datetime.now().strftime(f"{source}_%Y-%m-%d.log")
-logpath = os.path.join(logroot,logname)
+logpath = os.path.join(logroot,logname) 
 hdlr = logging.FileHandler(logpath)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
@@ -53,27 +54,19 @@ def publish(client, metric, value):
 
 while True:
     try:
-
         response = requests.request("GET", url, headers=headers, params=querystring)
-
-
         logger.info(response.text)
-
         weather = json.loads(response.text)
-
         readings = weather['main']
-
         temperature=readings['temp']
         pressure=readings['pressure']
         humidity=readings['humidity']   
 
-
         publish(mqttClient,"temperature",temperature)   
         publish(mqttClient,"humidity",humidity)  
         publish(mqttClient,"pressure",pressure)    
-
     
     except Exception as error:
-        logger.error(error.args[0])   
+        traceback.print_exc() 
 
     time.sleep(sleepSeconds)

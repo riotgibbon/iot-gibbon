@@ -76,6 +76,4 @@ while True:
     except Exception as error:
         logger.error(error.args[0])   
 
-         
-    else:
-        time.sleep(sleepSeconds)
+    time.sleep(sleepSeconds)

@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/bin/bash -c '/home/toby/machinebeat/machinebeat -e -c machinebeat.yml'
+ExecStart=/bin/bash -c '/usr/local/services/machinebeat/machinebeat -e -c /usr/local/services/machinebeat/machinebeat.yml'
 Restart=always
 RestartSec=10s
 KillMode=process

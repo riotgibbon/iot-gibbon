@@ -47,8 +47,8 @@ while True:
 
     if adc>0.2 and adc<1:
         present=1
-    publish(mqttClient,"present",present)  
-    publish(mqttClient,"proximityVoltage",adc)     
+        publish(mqttClient,"present",present)  
+        publish(mqttClient,"proximityVoltage",adc)     
 
 
     time.sleep(1)

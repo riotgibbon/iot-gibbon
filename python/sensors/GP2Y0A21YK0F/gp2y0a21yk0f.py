@@ -45,7 +45,7 @@ while True:
     present=0
 
 
-    if adc>0.2 and adc<1:
+    if adc>0.2 and adc<1.2:
         present=1
     publish(mqttClient,"present",present)  
     publish(mqttClient,"proximityVoltage",adc)     

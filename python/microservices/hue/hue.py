@@ -48,7 +48,7 @@ def getWindowAverageValue(client, reading, default):
     except:
         return default
 
-host = '192.168.0.14'
+host = '192.168.0.11'
 
 b = Bridge(host)
 

@@ -37,13 +37,16 @@ logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
 
+def getMqttClient():
+    broker="192.168.0.63"
+    port=1883
+    logger.info(f"Connecting to mqtt broker {broker}:{port}")
+    mqttClient = paho.Client(source)  
+    mqttClient.connect(broker,port)  
+    logger.info(f"Connected")
+    return mqttClient
 
-broker="192.168.0.63"
-port=1883
-logger.info(f"Connecting to mqtt broker {broker}:{port}")
-mqttClient = paho.Client(source)  
-mqttClient.connect(broker,port)  
-logger.info(f"Connected")
+
 
 sleepSeconds = 60
 
@@ -62,6 +65,8 @@ while True:
         pressure=readings['pressure']
         humidity=readings['humidity']   
 
+
+        mqttClient = getMqttClient()
         publish(mqttClient,"temperature",temperature)   
         publish(mqttClient,"humidity",humidity)  
         publish(mqttClient,"pressure",pressure)    

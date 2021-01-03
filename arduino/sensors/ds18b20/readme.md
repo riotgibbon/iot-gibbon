@@ -9,3 +9,11 @@ https://create.arduino.cc/projecthub/TheGadgetBoy/ds18b20-digital-temperature-se
 http://www.pjrc.com/teensy/arduino_libraries/OneWire.zip
 
 https://github.com/milesburton/Arduino-Temperature-Control-Library
+
+
+
+
+
+getting addresses
+https://lastminuteengineers.com/multiple-ds18b20-arduino-tutorial/
+

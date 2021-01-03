@@ -26,7 +26,7 @@ sudo systemctl enable gp2y0a21yk0f_mqtt.service
 sudo systemctl enable hue.service
 
 
-restart
+
 
 sudo systemctl restart ifttt.service
 sudo systemctl restart pi_home.service
@@ -37,11 +37,11 @@ sudo systemctl restart gp2y0a21yk0f_mqtt.service
 sudo systemctl restart hue.service
 
 
-status
+
 sudo systemctl status ifttt.service
 sudo systemctl status pi_home.service
 sudo systemctl status bme680_mqtt.service
 sudo systemctl status weather.service
 sudo systemctl status apds9960_mqtt.service
 sudo systemctl status gp2y0a21yk0f_mqtt.service
-sudo systemctl enstatusqable hue.service
+sudo systemctl status hue.service

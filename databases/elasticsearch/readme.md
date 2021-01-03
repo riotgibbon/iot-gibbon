@@ -23,6 +23,13 @@ sudo apt install elasticsearch
 
 use external disk for data
 
+ensure is not FAT32 formatted
+ check with `df -T`
+
+ permissions need to be open for read/write from disk root
+chown to `elasticsearch` user
+
+
 /media/9EEC04FDEC04D187
 
 
@@ -31,13 +38,44 @@ mkdir /media/9EEC04FDEC04D187/data/elasticsearch
 
 sudo nano /etc/elasticsearch/elasticsearch.yml
 
-
 #path.data: /var/lib/elasticsearch
 path.data: /media/9EEC04FDEC04D187/data/elasticsearch/data
 
 
 #path.logs: /var/log/elasticsearch
 path.logs: /media/9EEC04FDEC04D187/data/elasticsearch/log
+
+new disk
+
+/media/toby/toshiba
+
+mkdir /media/toby/toshiba/data/elasticsearch
+
+sudo nano /etc/elasticsearch/elasticsearch.yml
+
+#path.data: /var/lib/elasticsearch
+path.data: /media/toby/toshiba/data/elasticsearch/data
+
+#path.logs: /var/log/elasticsearch
+path.logs: /media/toby/toshiba/data/elasticsearch/log
+
+
+sudo chown -R elasticsearch:elasticsearch /media/toby/toshiba/data/elasticsearch/data
+
+
+/media/818ea40d-9b59-4cba-ab75-2b480d92a894
+
+sudo nano /etc/elasticsearch/elasticsearch.yml
+
+#path.data: /var/lib/elasticsearch
+path.data: /media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data
+
+#path.logs: /var/log/elasticsearch
+path.logs: /media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/log
+
+sudo chown -R elasticsearch:elasticsearch /media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/
+
+
 
 ## Start/stop
 
@@ -103,7 +141,12 @@ curl http://192.168.0.72:8080
 can view from outside, Elastic issue
 
 
-network.host: 127.0.0.1
+iscovery.type: single-node
+transport.tcp.port: 9300
+http.host: 0.0.0.0
+http.port: 9200
+transport.host: localhost
+network.host: 0.0.0.0
 
 ## Logstash
 
@@ -352,7 +395,7 @@ running nicely, make into a startup service
 
 toby@jet-gibbon:~$ curl -X GET 'http://localhost:9200/machinebeat-7.8.1-2020.11.27-000001/_count'{"count":9167,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0}}
 
-
+curl -X GET 'http://localhost:9200/machinebeat-7.8.18*/_count'
 
 target installation directory
 
@@ -384,6 +427,7 @@ see if port range is blocked
 sudo systemctl start elasticsearch.service
 sudo systemctl stop elasticsearch.service
 sudo systemctl restart elasticsearch.service
+sudo systemctl status elasticsearch.service
 
 sudo docker run -dit --name not-elastic -p 9200:80 -v /home/user/website/:/usr/local/apache2/htdocs/ httpd:2.4
 
@@ -406,4 +450,47 @@ http://192.168.0.72:9200/docker.html
 
 
 works externally
+
+http://192.168.0.72:9200/
+
+now works locally and from laptop
+
+
+## Kibana
+
+sudo apt install kibana
+
+
+Elastic:
+discovery.type: single-node
+transport.tcp.port: 9300
+http.host: 0.0.0.0
+http.port: 9200
+transport.host: localhost
+network.host: 0.0.0.0
+
+discovery.type: single-node
+http.host: 0.0.0.0
+transport.host: localhost
+network.host: 0.0.0.0
+
+
+
+
+
+
+
+cd kibana-7.10.0-linux-aarch64/
+bin/kibana
+
+kibana-7.10.0-linux-aarch64/bin/kibana
+
+shift and run as a service
+
+
+192.168.0.72
+
+## Index Pattern in Kibana
+MqttValue
+return Float.parseFloat(doc['mqtt.message.content.keyword'].value)
 

@@ -11,8 +11,9 @@ sudo systemctl disable machinebeat.service
 
 sudo systemctl daemon-reload
 
-sudo systemctl machinebeat ifttt.service
+sudo systemctl enable machinebeat.service
 
+sudo systemctl daemon-reload
 
 restart
 

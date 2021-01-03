@@ -12,6 +12,8 @@
 #include "deskmate/input/input.h"
 #include "deskmate/mqtt/mqtt.h"
 
+// #include "Adafruit_Si7021.h"
+
 namespace deskmate {
 namespace app {
 namespace {

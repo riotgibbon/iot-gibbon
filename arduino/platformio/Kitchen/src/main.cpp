@@ -15,6 +15,8 @@
 #include "deskmate/arduino/net/wifi.h"
 #include "deskmate/gfx/display.h"  // testing only
 
+#include "Adafruit_Si7021.h"
+
 using deskmate::app::App;
 using deskmate::arduino::gfx::SharpMemDisplay;
 using deskmate::arduino::input::SetupButtonsInterruptHandler;

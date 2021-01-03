@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "deskmate/app/config.h"
-#include "deskmate/gfx/display.h"
+// #include "deskmate/gfx/display.h"
 #include "deskmate/gfx/screens/window.h"
 #include "deskmate/input/input.h"
 #include "deskmate/mqtt/mqtt.h"
@@ -16,7 +16,7 @@ namespace app {
 namespace {
 
 using deskmate::app::MQTTConfig;
-using deskmate::gfx::Display;
+// using deskmate::gfx::Display;
 }  // namespace
 
 // TODO: make this more flexible. In an ideal world, it would receive a config
@@ -27,8 +27,8 @@ using deskmate::gfx::Display;
 // screen/items they want.
 class App {
  public:
-  App(Display *display, deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer)
-      : display_(display), mqtt_buffer_(mqtt_buffer) {}
+  App( deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer)
+      :  mqtt_buffer_(mqtt_buffer) {}
 
   bool Init(const std::vector<MQTTConfig> &mqtt_configs,
             const std::vector<MQTTFloatingPointSensorConfig> &sensor_configs,
@@ -41,7 +41,7 @@ class App {
   }
 
  private:
-  Display *display_;
+  // Display *display_;
   deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
   std::unique_ptr<deskmate::gfx::screens::Window> window_;
 };

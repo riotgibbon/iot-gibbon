@@ -81,7 +81,8 @@ void setup() {
   Serial.println("published");
 
 
-  App app(&display, &mqtt_manager);
+  // App app(&display, &mqtt_manager);
+  App app( &mqtt_manager);
   app.Init(kMQTTConfigs, kMQTTFloatingPointSensors, kMQTTWeatherConfigs);
 
   // SetupButtonsInterruptHandler(kCrankPushPin, kButtonAPin, kButtonBPin,

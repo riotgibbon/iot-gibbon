@@ -8,5 +8,9 @@
 			"path": "lib"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"random": "cpp"
+		}
+	}
 }

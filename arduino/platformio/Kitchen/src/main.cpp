@@ -46,13 +46,6 @@ using deskmate::credentials::kMQTTServer;
 using deskmate::credentials::kMQTTUser;
 using deskmate::credentials::kMQTTWeatherConfigs;
 
-// // Input pins.
-// using deskmate::credentials::kButtonAPin;
-// using deskmate::credentials::kButtonBPin;
-// using deskmate::credentials::kButtonCPin;
-// using deskmate::credentials::kCrankAPin;
-// using deskmate::credentials::kCrankBPin;
-// using deskmate::credentials::kCrankPushPin;
 
 void setup() {
   Serial.begin(9600);
@@ -80,17 +73,12 @@ void setup() {
   msg.topic="test";
   msg.payload="hello from ESP32";
   mqtt_manager.Publish(msg);
-  Serial.println("published");
+  Serial.println("queued");
 
 
-  // App app(&display, &mqtt_manager);
   App app( &mqtt_manager);
   app.Init(kMQTTConfigs, kMQTTFloatingPointSensors, kMQTTWeatherConfigs);
 
-  // SetupButtonsInterruptHandler(kCrankPushPin, kButtonAPin, kButtonBPin,
-  //                              kButtonCPin, app.GetInputEventHandler());
-  // SetupCrankInterruptHandler(kCrankAPin, kCrankBPin,
-  //                            app.GetInputEventHandler());
 
   while (true) {
     wifi_manager.MaybeReconnect();

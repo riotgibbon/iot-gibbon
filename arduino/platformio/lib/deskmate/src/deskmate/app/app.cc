@@ -19,88 +19,101 @@ namespace app {
 namespace {
 using deskmate::app::MQTTConfig;
 using deskmate::app::MQTTFloatingPointSensorConfig;
-using deskmate::gfx::Size;
-using deskmate::gfx::components::MQTTCircleHorizontalListItem;
-using deskmate::gfx::components::MQTTListItem;
-using deskmate::gfx::components::MQTTVerticalBarHorizontalListItem;
-using deskmate::gfx::screens::HorizontalList;
-using deskmate::gfx::screens::HorizontalListItem;
-using deskmate::gfx::screens::ListItem;
-using deskmate::gfx::screens::ListScreen;
-using deskmate::gfx::screens::Window;
-using deskmate::gfx::screens::WindowedScreen;
+using deskmate::mqtt::MQTTMessage;
 using deskmate::mqtt::MQTTMessageBuffer;
 
-constexpr int kVerticalBarContainerWidth = 32;
-constexpr int kCircleContainerWidth = 84;
 
-// std::unique_ptr<ListScreen> MakeSwitchesControls(
-//     const std::vector<MQTTConfig> &mqtt_configs,
-//     MQTTMessageBuffer *mqtt_buffer) {
-//   std::vector<std::unique_ptr<ListItem>> left_list_items;
-//   for (const auto &cfg : mqtt_configs) {
-//     std::unique_ptr<MQTTListItem> list_item = std::make_unique<MQTTListItem>(
-//         cfg.display_name, cfg.command_topic, cfg.state_topic, mqtt_buffer);
-//     mqtt_buffer->Subscribe(list_item.get());
-//     left_list_items.push_back(std::move(list_item));
-//   }
-//   return std::make_unique<ListScreen>(left_list_items);
-// }
 
-// std::unique_ptr<HorizontalList> MakePlantsDashboard(
-//     const std::vector<MQTTFloatingPointSensorConfig> &sensor_configs,
-//     MQTTMessageBuffer *mqtt_buffer) {
-//   std::vector<std::unique_ptr<HorizontalListItem>> items;
-//   for (const auto &config : sensor_configs) {
-//     auto item = std::make_unique<MQTTVerticalBarHorizontalListItem>(
-//         config.display_name, config.value_topic, config.availability_topic);
-//     mqtt_buffer->Subscribe(item.get());
-//     items.push_back(std::move(item));
-//   }
-//   return std::make_unique<HorizontalList>(items, kVerticalBarContainerWidth);
-// }
+Adafruit_Si7021 sensor = Adafruit_Si7021();
+float temperature = 0;
+float humidity = 0;
 
-// std::unique_ptr<HorizontalList> MakeWeatherDashboard(
-//     const std::vector<MQTTFloatingPointSensorConfig> &weather_configs,
-//     MQTTMessageBuffer *mqtt_buffer) {
-//   std::vector<std::unique_ptr<HorizontalListItem>> items;
-//   for (const auto &config : weather_configs) {
-//     auto item = std::make_unique<MQTTCircleHorizontalListItem>(
-//         config.display_name, config.unit, config.value_topic,
-//         config.availability_topic);
-//     mqtt_buffer->Subscribe(item.get());
-//     items.push_back(std::move(item));
-//   }
-//   return std::make_unique<HorizontalList>(items, kCircleContainerWidth);
-// }
+unsigned long startMillis;  //some global variables available anywhere in the program
+unsigned long currentMillis;
+const unsigned long period = 5000;  //the value is a number of milliseconds
+
 
 }  // namespace
+
+
+bool InitSensor(){
+  Serial.println("Si7021 test!");
+  
+  if (!sensor.begin()) {
+    Serial.println("Did not find Si7021 sensor!");
+    return false;
+  }
+
+  Serial.print("Found model ");
+  switch(sensor.getModel()) {
+    case SI_Engineering_Samples:
+      Serial.print("SI engineering samples"); break;
+    case SI_7013:
+      Serial.print("Si7013"); break;
+    case SI_7020:
+      Serial.print("Si7020"); break;
+    case SI_7021:
+      Serial.print("Si7021"); break;
+    case SI_UNKNOWN:
+    default:
+      Serial.print("Unknown");
+  }
+  Serial.print(" Rev(");
+  Serial.print(sensor.getRevision());
+  Serial.print(")");
+  Serial.print(" Serial #"); Serial.print(sensor.sernum_a, HEX); Serial.println(sensor.sernum_b, HEX);
+  return true;
+}
 
 bool App::Init(
     const std::vector<MQTTConfig> &mqtt_configs,
     const std::vector<MQTTFloatingPointSensorConfig> &sensor_configs,
     const std::vector<MQTTFloatingPointSensorConfig> &weather_configs) {
-  // const Size &size = display_->GetSize();
 
-  // std::vector<WindowedScreen> windowed_screens;
-  // windowed_screens.push_back({MakeSwitchesControls(mqtt_configs, mqtt_buffer_),
-  //                             {{0, 0}, {size.height, size.width / 2}},
-  //                             /*focusable=*/true});
-  // windowed_screens.push_back(
-  //     {MakePlantsDashboard(sensor_configs, mqtt_buffer_),
-  //      {{0, size.width / 2}, {size.height / 2, size.width / 2}},
-  //      /*focusable=*/true});
-  // windowed_screens.push_back(
-  //     {MakeWeatherDashboard(weather_configs, mqtt_buffer_),
-  //      {{size.height / 2, size.width / 2}, {size.height / 2, size.width / 2}},
-  //      /*focusable=*/true});
+    // InitSensor();
+    startMillis = millis();  //initial start time
 
-  // window_ = std::make_unique<Window>(windowed_screens);
   return true;
+}
+
+
+void GetReadings(){
+    temperature=sensor.readTemperature();
+  char tempString[8];
+  dtostrf(temperature, 1, 2, tempString);    
+  humidity=sensor.readHumidity();
+  char humString[8];
+  dtostrf(humidity, 1, 2, humString);
+  
+  Serial.print("Humidity:    ");
+  Serial.print(humString);
+  Serial.print("\tTemperature: ");
+  Serial.println(tempString);
+
+}
+
+void App::dummyReading(){
+  
+  
+  MQTTMessage msg;
+  msg.topic="test";
+  msg.payload="reading to go here";
+
+  // Serial.println(msg.payload);
+  mqtt_buffer_->Publish(msg);
 }
 
 bool App::Tick() {
   mqtt_buffer_->Tick();
+
+  currentMillis = millis();  //get the current "time" (actually the number of milliseconds since the program started)
+  if (currentMillis - startMillis >= period)  //test whether the period has elapsed
+  {
+    Serial.println("reading loop");
+    dummyReading();
+    startMillis = currentMillis; 
+  }
+  // GetReadings();
   // display_->Clear();
   // window_->Render(display_);
   // display_->Refresh();

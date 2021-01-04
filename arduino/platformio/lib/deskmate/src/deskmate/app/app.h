@@ -35,15 +35,14 @@ class App {
             const std::vector<MQTTFloatingPointSensorConfig> &weather_configs);
 
   bool Tick();
+  void dummyReading(); 
 
-  deskmate::input::InputEventHandler *GetInputEventHandler() {
-    return window_.get();
-  }
+
 
  private:
-  // Display *display_;
+
   deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
-  std::unique_ptr<deskmate::gfx::screens::Window> window_;
+
 };
 
 }  // namespace app

@@ -6,11 +6,21 @@
 		},
 		{
 			"path": "lib"
+		},
+		{
+			"path": "Bedroom"
 		}
 	],
 	"settings": {
 		"files.associations": {
-			"random": "cpp"
+			"random": "cpp",
+			"*.tcc": "c",
+			"fstream": "c",
+			"iosfwd": "c",
+			"istream": "c",
+			"limits": "c",
+			"sstream": "c",
+			"streambuf": "c"
 		}
 	}
 }

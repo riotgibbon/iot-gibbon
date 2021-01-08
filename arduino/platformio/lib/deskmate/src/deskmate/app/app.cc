@@ -1,5 +1,7 @@
 #include "deskmate/app/app.h"
 
+#include "deskmate/arduino/sensors/dummy.h"
+
 #include "deskmate/app/config.h"
 #include "deskmate/gfx/components/mqtt_circle_horizontal_list_item.h"
 #include "deskmate/gfx/components/mqtt_list_item.h"
@@ -22,6 +24,7 @@ using deskmate::app::MQTTFloatingPointSensorConfig;
 using deskmate::mqtt::MQTTMessage;
 using deskmate::mqtt::MQTTMessageBuffer;
 
+using deskmate::arduino::sensors::dummy;
 
 
 Adafruit_Si7021 sensor = Adafruit_Si7021();
@@ -31,6 +34,7 @@ float humidity = 0;
 unsigned long startMillis;  //some global variables available anywhere in the program
 unsigned long currentMillis;
 const unsigned long period = 5000;  //the value is a number of milliseconds
+
 
 
 }  // namespace
@@ -77,7 +81,7 @@ bool App::Init(
 }
 
 
-void GetReadings(){
+readings App::GetReadings(){
     temperature=sensor.readTemperature();
   char tempString[8];
   dtostrf(temperature, 1, 2, tempString);    
@@ -89,6 +93,26 @@ void GetReadings(){
   Serial.print(humString);
   Serial.print("\tTemperature: ");
   Serial.println(tempString);
+
+  readings thisReading;
+  thisReading.temperature=tempString;
+  thisReading.humidity=humString;
+
+
+
+    MQTTMessage temperatureMessage;
+    temperatureMessage.topic ="test/tele/temperature/kitchen";
+    temperatureMessage.payload=thisReading.temperature;
+
+    MQTTMessage humidityMessage;
+    humidityMessage.topic="test/tele/humidity/kitchen";
+    humidityMessage.payload =thisReading.humidity;  
+
+    mqtt_buffer_->Publish(temperatureMessage);
+    mqtt_buffer_->Publish(humidityMessage);
+    
+
+  return thisReading;
 
 }
 
@@ -110,7 +134,11 @@ bool App::Tick() {
   if (currentMillis - startMillis >= period)  //test whether the period has elapsed
   {
     Serial.println("reading loop");
-    dummyReading();
+    // readings thisReading = GetReadings();
+    dummy thisDummy = dummy();
+    thisDummy.read();
+    
+
     startMillis = currentMillis; 
   }
   // GetReadings();

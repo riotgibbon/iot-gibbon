@@ -38,7 +38,7 @@ MQTTManager::MQTTManager(const char* server, int port, const char* username,
 }
 
 bool MQTTManager::Connect() {
-  Serial.println("[mqtt] Will connect.");
+  // Serial.println("[mqtt] Will connect.");
   return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),
                                  password_.c_str());
 }
@@ -63,7 +63,7 @@ bool MQTTManager::Tick() {
   pubsub_client_->loop();
 
   if (!IsConnected()) {
-    Serial.println("[mqtt] Connection lost. Reconnecting.");
+    // Serial.println("[mqtt] Connection lost. Reconnecting.");
     if (!Connect()) {
       Serial.println("[mqtt] Unable to reconnect.");
       return false;

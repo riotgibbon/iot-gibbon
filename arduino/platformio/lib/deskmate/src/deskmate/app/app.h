@@ -19,6 +19,12 @@ using deskmate::app::MQTTConfig;
 // using deskmate::gfx::Display;
 }  // namespace
 
+  struct readings
+  {
+    std::string temperature;
+    std::string humidity;
+  };
+
 // TODO: make this more flexible. In an ideal world, it would receive a config
 // file and would instantiate an app to match it. Right now the definitions of
 // which screens, items are used are hardcoded, and the configs only control
@@ -35,12 +41,12 @@ class App {
             const std::vector<MQTTFloatingPointSensorConfig> &weather_configs);
 
   bool Tick();
-  void dummyReading(); 
-
+  
+  readings GetReadings();
 
 
  private:
-
+  void dummyReading(); 
   deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
 
 };

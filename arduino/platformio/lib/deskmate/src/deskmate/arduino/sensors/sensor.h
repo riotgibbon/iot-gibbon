@@ -1,12 +1,15 @@
-
-
 namespace deskmate {
     namespace arduino {
         namespace sensors {
 
-            class dummy{
+            class sensor{
                 public:
                 virtual void read();
+            };
+
+             class dummy: public sensor{
+                public:
+                void read() override;
             };
         }
     }

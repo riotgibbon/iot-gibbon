@@ -1,6 +1,7 @@
 #include "deskmate/app/app.h"
 
-#include "deskmate/arduino/sensors/dummy.h"
+#include "deskmate/arduino/sensors/sensor.h"
+
 
 #include "deskmate/app/config.h"
 #include "deskmate/gfx/components/mqtt_circle_horizontal_list_item.h"
@@ -25,6 +26,7 @@ using deskmate::mqtt::MQTTMessage;
 using deskmate::mqtt::MQTTMessageBuffer;
 
 using deskmate::arduino::sensors::dummy;
+using deskmate::arduino::sensors::sensor;
 
 
 Adafruit_Si7021 sensor = Adafruit_Si7021();

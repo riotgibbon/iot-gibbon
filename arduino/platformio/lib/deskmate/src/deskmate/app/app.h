@@ -10,7 +10,7 @@
 #include "deskmate/gfx/screens/window.h"
 #include "deskmate/input/input.h"
 #include "deskmate/mqtt/mqtt.h"
-
+// #include "deskmate/arduino/sensors/sensor.h"
 #include "deskmate/arduino/sensors/si7021.h"
 
 namespace deskmate {
@@ -18,6 +18,7 @@ namespace app {
 namespace {
 
 using deskmate::app::MQTTConfig;
+using deskmate::arduino::sensors::sensor;
 using deskmate::arduino::sensors::si7021;
 // using deskmate::gfx::Display;
 }  // namespace
@@ -42,8 +43,11 @@ class App {
   bool Init(const std::vector<MQTTConfig> &mqtt_configs,
             const std::vector<MQTTFloatingPointSensorConfig> &sensor_configs,
             const std::vector<MQTTFloatingPointSensorConfig> &weather_configs);
-
-  bool Tick();
+  void addSensor(si7021 newSensor) {
+    thisSensor=newSensor;
+  }
+   
+  bool Tick();  
   
   // readings GetReadings();
 
@@ -51,7 +55,7 @@ class App {
  private:
   // void dummyReading(); 
   deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
-  si7021 sensor_si7021;
+  si7021 thisSensor;
 
 };
 

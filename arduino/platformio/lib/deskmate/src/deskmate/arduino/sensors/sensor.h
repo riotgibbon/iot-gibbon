@@ -1,3 +1,6 @@
+#ifndef DESKMATE_ARDUINO_SENSORS_SENSOR_H
+#define DESKMATE_ARDUINO_SENSORS_SENSOR_H
+
 #include "deskmate/mqtt/mqtt.h"
 
 
@@ -7,17 +10,16 @@ namespace deskmate {
 
             class sensor{
                 public:
+                    sensor(){};
                     virtual void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer);
+                    
                 private:
                     // std::string location;
-                    deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
+                    // deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
             };
 
 
-            //  class dummy: public sensor{
-            //     public:
-            //     void read() override;
-            // };
         }
     }
 }
+#endif 

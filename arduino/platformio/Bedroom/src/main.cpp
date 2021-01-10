@@ -75,7 +75,7 @@ void setup() {
   mqtt_manager.Publish(msg);
   Serial.println("queued");
 
-
+  
   App app( &mqtt_manager);
   app.Init(kMQTTConfigs, kMQTTFloatingPointSensors, kMQTTWeatherConfigs);
 

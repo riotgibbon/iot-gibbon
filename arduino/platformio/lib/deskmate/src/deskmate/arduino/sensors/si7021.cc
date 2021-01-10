@@ -46,10 +46,11 @@ namespace deskmate {
         si7021::si7021(){
             si7021("kitchen");
         }
-        si7021::si7021(std::string _location){
+        si7021::si7021(String _location){
             location=_location;
             sensor = Adafruit_Si7021();    
-            Serial.println("Initialising Si7101 sensor");
+            Serial.print("Initialising Si7101 sensor for ");
+            Serial.println((location));
             InitSensor();
         }
          void si7021::read() {

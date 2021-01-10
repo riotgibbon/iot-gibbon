@@ -7,7 +7,7 @@ namespace deskmate {
 
              class dummy: public sensor{
                 public:
-                void read() override;
+                void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) override;
             };
         }
     }

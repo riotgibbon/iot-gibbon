@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include "Adafruit_Si7021.h"
 
+using deskmate::mqtt::MQTTMessage;
 
 
 namespace deskmate {
@@ -46,14 +47,19 @@ namespace deskmate {
         si7021::si7021(){
             si7021("kitchen");
         }
-        si7021::si7021(String _location){
+        si7021::si7021(std::string _location){
             location=_location;
             sensor = Adafruit_Si7021();    
             Serial.print("Initialising Si7101 sensor for ");
-            Serial.println((location));
+            // Serial.println(location);
             InitSensor();
         }
-         void si7021::read() {
+        std::string si7021::getTopic(std::string metric){
+            std::string mode = "test";
+            std::string topic =mode + "/tele/" + metric +"/" + location;
+            return topic;
+        }
+         void si7021::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ ) {
             // Serial.println("dummy si7021 reading");
             float temperature = 0;
             float humidity = 0;
@@ -72,19 +78,20 @@ namespace deskmate {
             readings thisReading;
             thisReading.temperature=tempString;
             thisReading.humidity=humString;
+            
+            std::string metricTemp = "temperature";
+            std::string metricHumidity = "humidity";
 
+            MQTTMessage temperatureMessage;
+            temperatureMessage.topic = getTopic(metricTemp);
+            temperatureMessage.payload=thisReading.temperature;
 
+            MQTTMessage humidityMessage;
+            humidityMessage.topic=getTopic(metricHumidity);
+            humidityMessage.payload =thisReading.humidity;  
 
-            // MQTTMessage temperatureMessage;
-            // temperatureMessage.topic ="test/tele/temperature/kitchen";
-            // temperatureMessage.payload=thisReading.temperature;
-
-            // MQTTMessage humidityMessage;
-            // humidityMessage.topic="test/tele/humidity/kitchen";
-            // humidityMessage.payload =thisReading.humidity;  
-
-            // mqtt_buffer_->Publish(temperatureMessage);
-            // mqtt_buffer_->Publish(humidityMessage);
+            mqtt_buffer_->Publish(temperatureMessage);
+            mqtt_buffer_->Publish(humidityMessage);
         
                 };
             }

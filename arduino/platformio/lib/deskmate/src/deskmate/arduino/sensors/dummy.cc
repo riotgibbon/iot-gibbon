@@ -5,7 +5,7 @@ namespace deskmate {
     namespace arduino {
         namespace sensors {
 
-         void dummy::read() {
+         void dummy::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) {
                     Serial.println("dummy reading");
         
                 };

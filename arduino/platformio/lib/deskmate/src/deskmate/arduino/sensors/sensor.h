@@ -7,7 +7,7 @@ namespace deskmate {
 
             class sensor{
                 public:
-                    virtual void read();
+                    virtual void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer);
                 private:
                     // std::string location;
                     deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;

@@ -113,7 +113,7 @@ bool App::Tick() {
   if (currentMillis - startMillis >= period)  //test whether the period has elapsed
   {
     Serial.println("reading loop");
-    sensor_si7021.read();
+    sensor_si7021.read(mqtt_buffer_);
     // readings thisReading = GetReadings();
     // dummy thisDummy = dummy();
     // thisDummy.read();

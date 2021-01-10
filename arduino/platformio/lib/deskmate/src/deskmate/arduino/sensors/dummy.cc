@@ -1,4 +1,4 @@
-#include "deskmate/arduino/sensors/sensor.h"
+#include "deskmate/arduino/sensors/dummy.h"
 #include "Arduino.h"
 
 namespace deskmate {

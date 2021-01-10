@@ -1,7 +1,7 @@
 #include "deskmate/app/app.h"
 
-#include "deskmate/arduino/sensors/sensor.h"
-
+// #include "deskmate/arduino/sensors/dummy.h"
+// #include "deskmate/arduino/sensors/si7021.h"
 
 #include "deskmate/app/config.h"
 #include "deskmate/gfx/components/mqtt_circle_horizontal_list_item.h"
@@ -25,13 +25,17 @@ using deskmate::app::MQTTFloatingPointSensorConfig;
 using deskmate::mqtt::MQTTMessage;
 using deskmate::mqtt::MQTTMessageBuffer;
 
-using deskmate::arduino::sensors::dummy;
+// using deskmate::arduino::sensors::dummy;
+using deskmate::arduino::sensors::si7021;
 using deskmate::arduino::sensors::sensor;
 
 
 Adafruit_Si7021 sensor = Adafruit_Si7021();
+
 float temperature = 0;
 float humidity = 0;
+
+// si7021 sensor_si7021;
 
 unsigned long startMillis;  //some global variables available anywhere in the program
 unsigned long currentMillis;
@@ -77,6 +81,7 @@ bool App::Init(
     const std::vector<MQTTFloatingPointSensorConfig> &weather_configs) {
 
     // InitSensor();
+    sensor_si7021 = si7021("bedroom");
     startMillis = millis();  //initial start time
 
   return true;
@@ -136,9 +141,10 @@ bool App::Tick() {
   if (currentMillis - startMillis >= period)  //test whether the period has elapsed
   {
     Serial.println("reading loop");
+    sensor_si7021.read();
     // readings thisReading = GetReadings();
-    dummy thisDummy = dummy();
-    thisDummy.read();
+    // dummy thisDummy = dummy();
+    // thisDummy.read();
     
 
     startMillis = currentMillis; 

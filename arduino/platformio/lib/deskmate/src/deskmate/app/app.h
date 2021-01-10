@@ -11,11 +11,14 @@
 #include "deskmate/input/input.h"
 #include "deskmate/mqtt/mqtt.h"
 
+#include "deskmate/arduino/sensors/si7021.h"
+
 namespace deskmate {
 namespace app {
 namespace {
 
 using deskmate::app::MQTTConfig;
+using deskmate::arduino::sensors::si7021;
 // using deskmate::gfx::Display;
 }  // namespace
 
@@ -48,6 +51,7 @@ class App {
  private:
   void dummyReading(); 
   deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
+  si7021 sensor_si7021;
 
 };
 

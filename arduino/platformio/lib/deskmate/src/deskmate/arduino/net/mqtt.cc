@@ -80,12 +80,18 @@ bool MQTTManager::Tick() {
 
   // Send out messages.
   while (!out_queue_.empty()) {
+    //  delay(500);
     const MQTTMessage& msg = out_queue_.front();
-    Serial.printf("[mqtt] Sending message %s -> %s\n", msg.topic.c_str(), msg.payload.c_str());
+    Serial.printf("[mqtt] Publishing message %s -> %s\n", msg.topic.c_str(), msg.payload.c_str());
     if (!pubsub_client_->publish(msg.topic.c_str(), msg.payload.c_str())) {
       Serial.printf("[mqtt] Error sending message %s -> %s\n", msg.topic.c_str(), msg.payload.c_str());
     }
+    // }else {
+    //   out_queue_.pop();
+    //   }
+
     out_queue_.pop();
+   
   }
 
   return true;

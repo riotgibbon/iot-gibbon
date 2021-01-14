@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "deskmate/arduino/sensors/sensor.h"
 #include "deskmate/arduino/sensors/si7021.h"
 #include "credentials.h"
 #include "deskmate/app/app.h"
@@ -20,7 +21,7 @@
 
 
 using deskmate::arduino::sensors::si7021;
-
+using deskmate::arduino::sensors::sensor;
 
 using deskmate::app::App;
 // using deskmate::arduino::gfx::SharpMemDisplay;

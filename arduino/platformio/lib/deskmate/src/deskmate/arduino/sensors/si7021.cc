@@ -51,12 +51,13 @@ namespace deskmate {
             location=_location;
             sensor = Adafruit_Si7021();    
             Serial.print("Initialising Si7101 sensor for ");
-            // Serial.println(location);
+            Serial.println(location.c_str());
             InitSensor();
         }
         std::string si7021::getTopic(std::string metric){
-            std::string mode = "test";
+            std::string mode = "home";
             std::string topic =mode + "/tele/" + metric +"/" + location;
+            Serial.println(topic.c_str());
             return topic;
         }
          void si7021::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ ) {
@@ -89,7 +90,9 @@ namespace deskmate {
             MQTTMessage humidityMessage;
             humidityMessage.topic=getTopic(metricHumidity);
             humidityMessage.payload =thisReading.humidity;  
-
+            
+            
+            // mqtt_buffer_->Tick();
             mqtt_buffer_->Publish(temperatureMessage);
             mqtt_buffer_->Publish(humidityMessage);
         

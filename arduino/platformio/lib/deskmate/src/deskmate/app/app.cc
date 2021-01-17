@@ -37,6 +37,7 @@ unsigned long startMillis;  //some global variables available anywhere in the pr
 unsigned long currentMillis;
 const unsigned long period = 5000;  //the value is a number of milliseconds
 
+std::vector<sensor* > sensors;
 
 
 }  // namespace
@@ -56,6 +57,15 @@ bool App::Init(
 }
 
 
+void App::addSensor(sensor* newSensor){
+    Serial.print("adding sensor ");
+    Serial.print(newSensor->getType().c_str());
+    Serial.print(" location: ");
+    Serial.println(newSensor->getLocation().c_str());
+    
+    sensors.push_back(newSensor);
+}
+
 
 
 
@@ -66,9 +76,20 @@ bool App::Tick() {
   if (currentMillis - startMillis >= period)  //test whether the period has elapsed
   {
     Serial.println("reading loop");
-    thisSensor.read(mqtt_buffer_);
+    // thisSensor.read(mqtt_buffer_);
     // thisSensor->read(mqtt_buffer_);
-    
+    for ( thissensor:sensors){
+      Serial.print ("reading sensor: ");
+      Serial.print(thissensor->getType().c_str());
+      Serial.print("-");
+      Serial.println(thissensor->getLocation().c_str());
+      thissensor->read(mqtt_buffer_);
+    }
+
+// vector<Command*>::iterator it = commands.begin();
+// while(it != commands.end())
+// (*it++)->execute();
+// }
 
     startMillis = currentMillis; 
   }

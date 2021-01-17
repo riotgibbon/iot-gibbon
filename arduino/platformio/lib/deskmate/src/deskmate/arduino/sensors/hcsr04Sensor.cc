@@ -1,3 +1,4 @@
+#include "deskmate/arduino/sensors/sensor.h"
 #include "deskmate/arduino/sensors/hcsr04Sensor.h"
 #include "Arduino.h"
 #include "Adafruit_Si7021.h"
@@ -24,11 +25,12 @@ namespace deskmate {
             
         // }
         hcsr04Sensor::hcsr04Sensor(){
+            sensorType="hcsr04";
             hcsr04Sensor("flat");
         }
         hcsr04Sensor::hcsr04Sensor(std::string _location){
             location=_location;
-           
+            sensorType="hcsr04";
             // InitSensor();
         }
         std::string hcsr04Sensor::getTopic(std::string metric){
@@ -37,7 +39,8 @@ namespace deskmate {
             Serial.println(topic.c_str());
             return topic;
         }
-         void hcsr04Sensor::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ ) {
+  
+         void hcsr04Sensor::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ )  {
               HCSR04 hcsr04(TRIG_PIN, ECHO_PIN, 20, 4000);    
              Serial.print("Initialising hcsr04 sensor for ");
              Serial.println(location.c_str());

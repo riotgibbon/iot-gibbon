@@ -1,6 +1,4 @@
-#ifndef DESKMATE_ARDUINO_SENSORS_SI7021_H
-#define DESKMATE_ARDUINO_SENSORS_SI7021_H
-
+#pragma once
 #include "sensor.h"
 #include "Adafruit_Si7021.h"
 
@@ -13,15 +11,14 @@ namespace deskmate {
                 public:
                     si7021();
                     si7021(std::string _location);
-                    void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) override;
-                 
+                    void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
+                    // virtual std::string getType() override;
                 private:
                     Adafruit_Si7021 sensor;
                     bool InitSensor();
-                    std::string location;
+                    // std::string location;
                     std::string getTopic(std::string metric);
             };
         }
     }
 }
-#endif 

@@ -73,12 +73,12 @@ void setup() {
   Serial.println("trying test message");
   MQTTMessage msg;
   msg.topic="test";
-  msg.payload="hello from ESP32 - bedroom";
+  msg.payload="hello from ESP32 - test s";
   mqtt_manager.Publish(msg);
   Serial.println("queued");
 
   // si7021 sensor_si7021 = si7021("bedroom");
-  hcsr04Sensor myHcsr04 = hcsr04Sensor("desk");
+  hcsr04Sensor *myHcsr04 = new hcsr04Sensor("desk");
   
   App app( &mqtt_manager);
   app.Init(kMQTTConfigs, kMQTTFloatingPointSensors, kMQTTWeatherConfigs);

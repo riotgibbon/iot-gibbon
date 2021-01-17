@@ -45,10 +45,12 @@ namespace deskmate {
             }
 
         si7021::si7021(){
+            sensorType="si7021";
             si7021("kitchen");
         }
         si7021::si7021(std::string _location){
             location=_location;
+            sensorType="si7021";
             sensor = Adafruit_Si7021();    
             Serial.print("Initialising Si7101 sensor for ");
             Serial.println(location.c_str());
@@ -60,7 +62,9 @@ namespace deskmate {
             Serial.println(topic.c_str());
             return topic;
         }
-         void si7021::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ ) {
+ 
+
+         void si7021::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ )  {
             // Serial.println("dummy si7021 reading");
             float temperature = 0;
             float humidity = 0;

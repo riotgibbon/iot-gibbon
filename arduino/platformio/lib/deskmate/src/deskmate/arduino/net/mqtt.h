@@ -20,6 +20,7 @@ namespace net {
 // since this library is mean for single-thread environments.
 class MQTTManager : public deskmate::mqtt::MQTTMessageBuffer {
  public:
+  // MQTTManager();
   MQTTManager(const char* server, int port, const char* username,
               const char* password, const char* client_id);
 

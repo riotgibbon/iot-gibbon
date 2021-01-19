@@ -53,10 +53,15 @@ using deskmate::credentials::kMQTTWeatherConfigs;
 void setup() {
   Serial.begin(9600);
 
+  std::string device  = "esp32";
+  std::string delim  = "-";
+  std::string location  = "desk";
+
+  std::string client = device.append(delim).append(location);
+  // kMQTTClientId=location;
 
   WiFiManager wifi_manager(kWIFISSID, kWIFIPassword);
-  MQTTManager mqtt_manager(kMQTTServer, kMQTTPort, kMQTTUser, kMQTTPassword,
-                           kMQTTClientId);
+  MQTTManager mqtt_manager(kMQTTServer, kMQTTPort, kMQTTUser, kMQTTPassword, client.c_str());
   if (!wifi_manager.Connect()) {
     Serial.println("Unable to connect to WiFi.");
     return;
@@ -73,12 +78,12 @@ void setup() {
   Serial.println("trying test message");
   MQTTMessage msg;
   msg.topic="test";
-  msg.payload="hello from ESP32 - test s";
+  msg.payload="hello from ESP32 - ";
   mqtt_manager.Publish(msg);
   Serial.println("queued");
 
   // si7021 sensor_si7021 = si7021("bedroom");
-  hcsr04Sensor *myHcsr04 = new hcsr04Sensor("desk");
+  hcsr04Sensor *myHcsr04 = new hcsr04Sensor(location);
   
   App app( &mqtt_manager);
   app.Init(kMQTTConfigs, kMQTTFloatingPointSensors, kMQTTWeatherConfigs);

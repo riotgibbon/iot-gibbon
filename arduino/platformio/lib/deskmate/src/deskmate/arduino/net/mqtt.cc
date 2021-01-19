@@ -17,6 +17,11 @@ using deskmate::mqtt::MQTTSubscriber;
 constexpr int kSubscriptionQoS = 1;
 }  // namespace
 
+
+// MQTTManager::MQTTManager(){
+
+// };
+
 MQTTManager::MQTTManager(const char* server, int port, const char* username,
                          const char* password, const char* client_id)
     : username_(username), password_(password), client_id_(client_id) {

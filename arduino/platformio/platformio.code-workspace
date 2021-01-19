@@ -12,6 +12,9 @@
 		},
 		{
 			"path": "Arborfield"
+		},
+		{
+			"path": "Window"
 		}
 	],
 	"settings": {

@@ -22,7 +22,7 @@ bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
       return false;
     }
   }
-  // Serial.printf("[wifi] Connected!\n");
+  Serial.printf("[wifi] Connected!\n");
   return true;
 }
 

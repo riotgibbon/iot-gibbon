@@ -13,6 +13,9 @@
 #include "deskmate/arduino/sensors/sensor.h"
 // #include "deskmate/arduino/sensors/si7021.h"
 // #include "deskmate/arduino/sensors/hcsr04Sensor.h"
+#include "deskmate/arduino/net/mqtt.h"
+#include "deskmate/arduino/net/wifi.h"
+#include "credentials.h"
 
 namespace deskmate {
 namespace app {
@@ -20,31 +23,26 @@ namespace {
 
 using deskmate::app::MQTTConfig;
 using deskmate::arduino::sensors::sensor;
+using deskmate::arduino::net::MQTTManager;
+using deskmate::arduino::net::WiFiManager;
 // using deskmate::arduino::sensors::si7021;
 // using deskmate::arduino::sensors::hcsr04Sensor;
 // using deskmate::gfx::Display;
 }  // namespace
 
-  // struct readings
-  // {
-  //   std::string temperature;
-  //   std::string humidity;
-  // };
 
-// TODO: make this more flexible. In an ideal world, it would receive a config
-// file and would instantiate an app to match it. Right now the definitions of
-// which screens, items are used are hardcoded, and the configs only control
-// which items are present.
-// Clients of this class should be able to instantiate any combination of
-// screen/items they want.
 class App {
  public:
-  App( deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer)
-      :  mqtt_buffer_(mqtt_buffer) {}
+  // App( deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer)
+  //     :  mqtt_buffer_(mqtt_buffer) {}
 
-  bool Init(const std::vector<MQTTConfig> &mqtt_configs,
-            const std::vector<MQTTFloatingPointSensorConfig> &sensor_configs,
-            const std::vector<MQTTFloatingPointSensorConfig> &weather_configs);
+
+  App(  std::string location, std::string device ){
+    _location=location;
+    _device= device;
+  }
+
+  bool Init();
   void addSensor(sensor* newSensor);
    
   bool Tick();  
@@ -53,10 +51,13 @@ class App {
 
 
  private:
+ deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
+ WiFiManager *wifi_manager_;
   // void dummyReading(); 
-  deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
+  // MQTTManager mqtt_buffer_;
   // sensor thisSensor;
-
+  std::string _location;
+  std::string _device;
 };
 
 }  // namespace app

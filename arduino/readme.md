@@ -12,3 +12,4 @@ https://docs.platformio.org/en/latest/boards/espressif32/az-delivery-devkit-v4.h
 SDA - 21
 SCL - 22
 
+                                         

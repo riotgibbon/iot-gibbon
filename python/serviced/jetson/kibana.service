@@ -5,7 +5,7 @@ Wants=network-online.target
 After=elasticsearch.service
 
 [Service]
-ExecStart=/bin/bash -c 'kibana-7.10.0-linux-aarch64/bin/kibana'
+ExecStart=/bin/bash -c '/usr/share/kibana/bin/kibana'
 Restart=always
 RestartSec=10s
 KillMode=process

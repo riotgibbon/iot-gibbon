@@ -8,17 +8,20 @@ systemctl enable systemd-networkd.service systemd-networkd-wait-online.service
 
 
 sudo systemctl disable machinebeat.service
+sudo systemctl disable kibana.service
 
 sudo systemctl daemon-reload
 
 sudo systemctl enable machinebeat.service
+sudo systemctl enable kibana.service
 
 sudo systemctl daemon-reload
 
 restart
 
 sudo systemctl restart machinebeat.service
-
+sudo systemctl restart kibana.service
 
 status
 sudo systemctl status machinebeat.service
+sudo systemctl status kibana.service

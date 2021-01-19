@@ -5,7 +5,7 @@ Wants=network-online.target
 
 
 [Service]
-ExecStart=/bin/bash -c '/usr/share/kibana/bin/kibana'
+ExecStart=/bin/bash -c '/usr/local/services/kibana/bin/kibana'
 Restart=always
 RestartSec=10s
 KillMode=process

@@ -2,7 +2,7 @@
 Description=Kibana
 After=network-online.target
 Wants=network-online.target
-After=elasticsearch.service
+
 
 [Service]
 ExecStart=/bin/bash -c '/usr/share/kibana/bin/kibana'

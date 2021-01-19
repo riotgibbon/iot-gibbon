@@ -77,6 +77,22 @@ sudo chown -R elasticsearch:elasticsearch /media/818ea40d-9b59-4cba-ab75-2b480d9
 
 
 
+
+/media/1f73286b-47a7-4ffa-9f0a-5c2a43c964a2
+
+sudo nano /etc/elasticsearch/elasticsearch.yml
+
+#path.data: /var/lib/elasticsearch
+path.data: /media/1f73286b-47a7-4ffa-9f0a-5c2a43c964a2/data/elasticsearch/data
+
+#path.logs: /var/log/elasticsearch
+path.logs: /media/1f73286b-47a7-4ffa-9f0a-5c2a43c964a2/data/elasticsearch/log
+
+sudo chown -R elasticsearch:elasticsearch /media/1f73286b-47a7-4ffa-9f0a-5c2a43c964a2/data/elasticsearch/
+
+
+
+
 ## Start/stop
 
 sudo /bin/systemctl daemon-reload
@@ -147,6 +163,14 @@ http.host: 0.0.0.0
 http.port: 9200
 transport.host: localhost
 network.host: 0.0.0.0
+
+
+
+timeout
+
+https://blog.sleeplessbeastie.eu/2020/02/29/how-to-prevent-systemd-service-start-operation-from-timing-out/
+
+echo -e "[Service]\nTimeoutStartSec=600" | sudo tee /etc/systemd/system/elasticsearch.service.d/startup-timeout.conf
 
 ## Logstash
 
@@ -428,8 +452,11 @@ sudo systemctl start elasticsearch.service
 sudo systemctl stop elasticsearch.service
 sudo systemctl restart elasticsearch.service
 sudo systemctl status elasticsearch.service
-
 sudo docker run -dit --name not-elastic -p 9200:80 -v /home/user/website/:/usr/local/apache2/htdocs/ httpd:2.4
+
+
+journalctl -xe
+
 
 curl http://localhost:9200/docker.html
 
@@ -454,6 +481,80 @@ works externally
 http://192.168.0.72:9200/
 
 now works locally and from laptop
+
+### Failing to start
+
+   Suppressed: org.apache.lucene.index.CorruptIndexException: checksum passed (34ea2982). possibly transient resource issue, or a Lucene or JVM bug (resource=BufferedChecksumIndexInput(SimpleFSIndexInput(path="/media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/nodes/0/_state/segments_5o")))
+
+toby@jet-gibbon:~$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/mmcblk0p1  118G   16G   97G  15% /
+none            1.8G     0  1.8G   0% /dev
+tmpfs           2.0G   40K  2.0G   1% /dev/shm
+tmpfs           2.0G  176M  1.8G   9% /run
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs           2.0G     0  2.0G   0% /sys/fs/cgroup
+tmpfs           397M  136K  397M   1% /run/user/1000
+/dev/sda1       916G  387M  869G   1% /media/818ea40d-9b59-4cba-ab75-2b480d92a894
+
+
+https://dzone.com/articles/lucene-and-solrs-checkindex
+
+java -ea:org.apache.lucene... org.apache.lucene.index.checkindex index_path -fix
+
+java -cp lucene-core-2.9.3.jar -ea:org.apache.lucene... org.apache.lucene.index.checkindex e:\solr\solr\data\index\ -fix
+
+https://repo1.maven.org/maven2/org/apache/lucene/lucene-core/8.7.0/lucene-core-8.7.0.jar
+
+/media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/
+
+
+java -cp lucene-core-8.7.0.jar -ea:org.apache.lucene... org.apache.lucene.index.CheckIndex /media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/ -fix
+
+
+Exception in thread "main" org.apache.lucene.index.IndexNotFoundException: no segments* file found in MMapDirectory@/media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data lockFactory=org.apache.lucene.store.NativeFSLockFactory@30946e09: files: [nodes, write.lock]
+        at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:517)
+        at org.apache.lucene.index.CheckIndex.doCheck(CheckIndex.java:2970)
+        at org.apache.lucene.index.CheckIndex.doMain(CheckIndex.java:2868)
+        at org.apache.lucene.index.CheckIndex.main(CheckIndex.java:2794)
+
+ https://stackoverflow.com/questions/11204602/how-to-fix-indexnotfoundexception-no-segments-file-found
+
+ start again 
+
+ sudo rm -r /media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/
+
+        at org.apache.lucene.index.CheckIndex.main(CheckIndex.java:2794)
+toby@jet-gibbon:~$  sudo rm -r /media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/
+[sudo] password for toby: 
+rm: cannot remove '/media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/nodes/0/indices/261wWNckT4GkIWBdfYDZ1g/0/index/_5l.cfs': Bad message
+rm: cannot remove '/media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/nodes/0/indices/3iEET7WURvmkvLfcgIrP0A/0/index/_1.cfs': Bad message
+rm: cannot remove '/media/818ea40d-9b59-4cba-ab75-2b480d92a894/data/elasticsearch/data/nodes/0/indices/3iEET7WURvmkvLfcgIrP0A/0/index/_1.si': Bad message
+
+https://unix.stackexchange.com/questions/547194/traversal-failed-u-bad-message-when-deleting-an-extremely-large-directory-in
+
+sudo fsck -cfk /dev/sda2 where dev/sda2 is the corrupted disk
+
+sudo fsck -cfk /dev/sda1 
+
+toby@jet-gibbon:~$ sudo fsck -cfk /dev/sda1 
+fsck from util-linux 2.31.1
+e2fsck 1.44.1 (24-Mar-2018)
+/dev/sda1 is mounted.
+e2fsck: Cannot continue, aborting.
+
+https://askubuntu.com/questions/536955/e2fsck-cannot-continue-aborting
+fsck -nf /dev/sda1
+
+toby@jet-gibbon:~$ sudo umount /dev/sda1
+toby@jet-gibbon:~$ sudo mkfs /dev/sda1 
+mke2fs 1.44.1 (24-Mar-2018)
+/dev/sda1 contains a ext4 filesystem labelled 'toshiba'
+        last mounted on /media/818ea40d-9b59-4cba-ab75-2b480d92a894 on Wed Jan 13 11:00:35 2021
+Proceed anyway? (y/N) y
+Creating filesystem with 244189952 4k blocks and 61054976 inodes
+Filesystem UUID: 1f73286b-47a7-4ffa-9f0a-5c2a43c964a2
+
 
 
 ## Kibana
@@ -486,6 +587,8 @@ bin/kibana
 kibana-7.10.0-linux-aarch64/bin/kibana
 
 shift and run as a service
+
+192.168.0.28
 
 
 192.168.0.72

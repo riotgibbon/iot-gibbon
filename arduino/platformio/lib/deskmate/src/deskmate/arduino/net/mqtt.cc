@@ -95,7 +95,7 @@ bool MQTTManager::Tick() {
     const MQTTMessage& msg = out_queue_.front();
     Serial.print("[mqtt] Publishing message: ");
     Serial.print( msg.topic.c_str());
-    Serial.print( " - ");
+    Serial.print( " : ");
     Serial.println( msg.payload.c_str());
     if (!pubsub_client_->publish(msg.topic.c_str(), msg.payload.c_str())) {
       Serial.print("[mqtt] Error sending message %s -> %s\n");

@@ -12,10 +12,11 @@ namespace deskmate {
                     si7021();
                     si7021(std::string _location);
                     void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
+                    bool InitSensor();
                     // virtual std::string getType() override;
                 private:
-                    Adafruit_Si7021 sensor;
-                    bool InitSensor();
+                    Adafruit_Si7021 *sensor;
+                    
                     // std::string location;
                     std::string getTopic(std::string metric);
             };

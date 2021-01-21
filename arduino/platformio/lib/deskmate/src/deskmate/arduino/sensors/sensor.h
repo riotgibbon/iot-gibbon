@@ -8,7 +8,7 @@ namespace deskmate {
 
             class sensor{
                 public:
-                    sensor(){};
+                    // sensor(){};
                     virtual void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer)=0;
                     std::string getLocation(){
                         return location;
@@ -19,6 +19,7 @@ namespace deskmate {
                 protected:
                     std::string location;
                     std::string sensorType;
+                    bool _isConnected = false;
                     // deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
             };
 

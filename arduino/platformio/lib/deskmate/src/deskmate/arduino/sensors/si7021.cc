@@ -11,7 +11,7 @@ namespace deskmate {
     namespace arduino {
         namespace sensors {
 
-          struct readings
+        struct readings
             {
                 std::string temperature;
                 std::string humidity;
@@ -50,12 +50,13 @@ namespace deskmate {
             Serial.print(")");
             Serial.print(" Serial #"); Serial.print(sensor->sernum_a, HEX); Serial.println(sensor->sernum_b, HEX);
             return true;
-            }
+        }
 
         si7021::si7021(){
             sensorType="si7021";
             si7021("kitchen");
         }
+
         si7021::si7021(std::string _location){
             Serial.print("Initialising Si7101 sensor for ");
             Serial.println(_location.c_str());
@@ -66,72 +67,49 @@ namespace deskmate {
             
             _isConnected= InitSensor();
         }
+
         std::string si7021::getTopic(std::string metric){
             std::string mode = "home";
             std::string topic =mode + "/tele/" + metric +"/" + location;
-            Serial.println(topic.c_str());
+            // Serial.println(topic.c_str());
             return topic;
         }
  
-
-         void si7021::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ )  {
-            if (_isConnected) { 
-            // Serial.println("dummy si7021 reading");
-                float temperature = 0;
-                float humidity = 0;
-                temperature=sensor->readTemperature();
-                char tempString[8];
-                dtostrf(temperature, 1, 2, tempString);    
-
-
-                char buffer[5];
-                String t = dtostrf(temperature, 1, 4, buffer);
-                Serial.print("Converted Temperature: ");
-                Serial.println(t);
-
-                humidity=sensor->readHumidity();
-                char humString[8];
-                dtostrf(humidity, 1, 2, humString);
-
-                // std::string thisTemp (std::to_string(temperature));
-                // std::stringstream sstream;
-                // sstream << temperature;
-                // std::string tmp_str = sstream.str();
-
-                // string num_str1(std::to_string(n1));
-
-                Serial.print("Temperature: ");
-                Serial.print(temperature);
-                Serial.print("\t:Humidity ");
-                Serial.println(humidity);
-
-                readings thisReading;
-                thisReading.temperature=tempString;
-                thisReading.humidity=humString;
-                
-                std::string metricTemp = "temperature";
-                std::string metricHumidity = "humidity";
-
-                MQTTMessage temperatureMessage;
-                temperatureMessage.topic = getTopic(metricTemp);
-                temperatureMessage.payload = thisReading.temperature;
-
-                MQTTMessage humidityMessage;
-                humidityMessage.topic=getTopic(metricHumidity);
-                humidityMessage.payload =thisReading.humidity;  
-                
-                
-                // mqtt_buffer_->Tick();
-                mqtt_buffer_->Publish(temperatureMessage);
-                mqtt_buffer_->Publish(humidityMessage);
-            }
-            else
-            {
-                Serial.println("not connected");
-            }
-                };
-            }
+        std::string floatToString(float value){
+            char buffer[5];
+            std::string s = dtostrf(value, 1, 2, buffer);
+            return s;
         }
 
+         void si7021::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ )  {
+                if (_isConnected) {  
+                
+                    //need to do this for some reason, otherwise results won't display
+                    char buffer[5];
+                    String t = dtostrf(0.0, 1, 4, buffer);
 
+                    std::string metricTemp = "temperature";
+                    std::string metricHumidity = "humidity";
+
+                    MQTTMessage temperatureMessage;
+                    temperatureMessage.topic = getTopic(metricTemp);
+                    temperatureMessage.payload = floatToString(sensor->readTemperature());
+
+                    MQTTMessage humidityMessage;
+                    humidityMessage.topic=getTopic(metricHumidity);
+                    humidityMessage.payload =floatToString(sensor->readHumidity());  
+                    
+
+                    mqtt_buffer_->Publish(temperatureMessage);
+                    mqtt_buffer_->Publish(humidityMessage);
+                }
+                else
+                {
+                    Serial.println("not connected");
+                }
+            };
+        }
     }
+
+
+}

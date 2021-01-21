@@ -12,5 +12,6 @@ ssh pi@192.168.0.63
 ./updateGit.sh 
 
 ### Jetson Nano
-ssh toby@192.168.0.72
+ssh toby@192.168.0.71 - ethernet
+ssh toby@192.168.0.72 - wifi
 

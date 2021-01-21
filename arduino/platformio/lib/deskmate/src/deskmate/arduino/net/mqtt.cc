@@ -25,27 +25,33 @@ constexpr int kSubscriptionQoS = 1;
 MQTTManager::MQTTManager(const char* server, int port, const char* username,
                          const char* password, const char* client_id)
     : username_(username), password_(password), client_id_(client_id) {
+      Serial.print("creating PubSubClient");
+      pubsub_client_= std::make_unique<PubSubClient>(server,port, wifi_client_);
+      Serial.print("created PubSubClient");
   // Register the "On new message" callback, which calls Dispatch.
   // No fancy synchronization is needed here, since this callback only
   // runs when we call loop() in our main... loop. In other works, there
   // is no other thread.
-  pubsub_client_ = std::make_unique<PubSubClient>(
-      server, port,
-      [this](const char* topic, byte* payload,  int length) {
-        std::string str_payload =
-            std::string(reinterpret_cast<char*>(payload), length);
-        Serial.printf("[mqtt] Got message: %s -> %s\n", topic, str_payload.c_str());
-        for (MQTTSubscriber* subs : this->subscribers_by_topic_[topic]) {
-          subs->HandleMessage({topic, str_payload});
-        }
-      },
-      wifi_client_);
+  // pubsub_client_ = std::make_unique<PubSubClient>(
+  //     server, port,
+  //     [this](const char* topic, byte* payload,  int length) {
+  //       std::string str_payload =
+  //           std::string(reinterpret_cast<char*>(payload), length);
+  //       Serial.print("[mqtt] Got message: %s -> %s\n");
+  //       Serial.print(topic);
+  //       Serial.print(str_payload.c_str());
+  //       for (MQTTSubscriber* subs : this->subscribers_by_topic_[topic]) {
+  //         subs->HandleMessage({topic, str_payload});
+  //       }
+  //     },
+  //     wifi_client_);
+  
 }
 
 bool MQTTManager::Connect() {
-  // Serial.println("[mqtt] Will connect.");
-  return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),
-                                 password_.c_str());
+  Serial.println("[mqtt] Will connect.");
+  return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),   password_.c_str());
+  // return pubsub_client_->connect(server.c_str(), username_.c_str(),   password_.c_str());
 }
 
 bool MQTTManager::IsConnected() const { return pubsub_client_->connected(); }
@@ -87,9 +93,14 @@ bool MQTTManager::Tick() {
   while (!out_queue_.empty()) {
     //  delay(500);
     const MQTTMessage& msg = out_queue_.front();
-    Serial.printf("[mqtt] Publishing message %s -> %s\n", msg.topic.c_str(), msg.payload.c_str());
+    Serial.print("[mqtt] Publishing message: ");
+    Serial.print( msg.topic.c_str());
+    Serial.print( " - ");
+    Serial.println( msg.payload.c_str());
     if (!pubsub_client_->publish(msg.topic.c_str(), msg.payload.c_str())) {
-      Serial.printf("[mqtt] Error sending message %s -> %s\n", msg.topic.c_str(), msg.payload.c_str());
+      Serial.print("[mqtt] Error sending message %s -> %s\n");
+      Serial.print( msg.topic.c_str());
+      Serial.print( msg.payload.c_str());
     }
     // }else {
     //   out_queue_.pop();

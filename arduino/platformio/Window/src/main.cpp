@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <PubSubClient.h>
-#include <WiFi.h>
+
 
 #include <queue>
 #include <string>
@@ -55,12 +55,12 @@ using deskmate::arduino::sensors::sensor;
 void setup() {
   Serial.begin(9600);
 
-  std::string device  = "esp32";  
+  std::string device  = "mkr1010";  
   std::string location  = "livingroom/window";
 
 
   si7021 *sensor_si7021 = new si7021(location); 
-
+   
   App app(location,device);
   app.Init();
   app.addSensor(sensor_si7021);

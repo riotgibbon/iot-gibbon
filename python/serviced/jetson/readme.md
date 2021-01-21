@@ -22,6 +22,7 @@ restart
 sudo systemctl restart machinebeat.service
 sudo systemctl restart kibana.service
 
+
 status
 sudo systemctl status machinebeat.service
 sudo systemctl status kibana.service

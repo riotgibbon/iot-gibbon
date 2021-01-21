@@ -1,5 +1,8 @@
+
 #include "deskmate/app/app.h"
 #include <Arduino.h>
+#include <vector>
+#include <iterator>
 
 // #include "deskmate/arduino/sensors/dummy.h"
 // #include "deskmate/arduino/sensors/sensor.h"
@@ -62,7 +65,7 @@ bool App::Init() {
     // InitSensor();
     // thisSensor = si7021("bedroom");
     startMillis = millis();  //initial start time
- std::string delim  = "-";
+  std::string delim  = "-";
   std::string client = _device.append(delim).append(_location);
 
   Serial.print("Client: ");
@@ -70,7 +73,7 @@ bool App::Init() {
 
 
   WiFiManager *wifi_manager= new WiFiManager(kWIFISSID, kWIFIPassword);
-  MQTTManager *mqtt_manager = new MQTTManager(kMQTTServer, kMQTTPort, kMQTTUser, kMQTTPassword,   client.c_str());
+  MQTTManager *mqtt_manager = new MQTTManager(kMQTTServer, kMQTTPort, kMQTTUser, kMQTTPassword, client.c_str());
   if (!wifi_manager->Connect()) {
     Serial.println("Unable to connect to WiFi.");
     return false;
@@ -91,7 +94,7 @@ bool App::Init() {
   Serial.println("trying test message");
   MQTTMessage msg;
   msg.topic="test";
-  msg.payload="hello from ESP32 - " + _location;
+  msg.payload="hello from " + _device + " - " + _location;
   mqtt_manager->Publish(msg);
 
 
@@ -124,18 +127,36 @@ bool App::Tick() {
     Serial.println("reading loop");
     // thisSensor.read(mqtt_buffer_);
     // thisSensor->read(mqtt_buffer_);
-    for ( thissensor:sensors){
+
+    // for ( thissensor : sensors){
+    //   Serial.print ("reading sensor: ");
+    //   Serial.print(thissensor->getType().c_str());
+    //   Serial.print("-");
+    //   Serial.println(thissensor->getLocation().c_str());
+    //   thissensor->read(mqtt_buffer_);
+    // }
+
+    std::vector<sensor*>::iterator it = sensors.begin();
+      while(it != sensors.end()){
+      // (*it++)->execute();
       Serial.print ("reading sensor: ");
-      Serial.print(thissensor->getType().c_str());
+      Serial.print((*it)->getType().c_str());
       Serial.print("-");
-      Serial.println(thissensor->getLocation().c_str());
-      thissensor->read(mqtt_buffer_);
+      Serial.println((*it)->getLocation().c_str());
+      (*it++)->read(mqtt_buffer_);
     }
 
-// vector<Command*>::iterator it = commands.begin();
-// while(it != commands.end())
-// (*it++)->execute();
-// }
+    // for (auto it = sensors.begin(); it != sensors.end(); ++it){
+    //   // (*it++)->execute();
+    //   Serial.print ("reading sensor: ");
+    //   Serial.print((*it++)->getType().c_str());
+    //   Serial.print("-");
+    //   Serial.println((*it++)->getLocation().c_str());
+
+    //   (*it++)->read(mqtt_buffer_);
+    // }
+
+    // }
 
     startMillis = currentMillis; 
   }

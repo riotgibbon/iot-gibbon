@@ -1,6 +1,18 @@
 #include "deskmate/arduino/net/wifi.h"
 
+// #include <WiFi.h>
+
+#ifdef ARDUINO_SAMD_MKRWIFI1010
+#include <WiFiNINA.h>
+#elif ARDUINO_SAMD_MKR1000
+#include <WiFi101.h>
+#elif ESP8266
+#include <ESP8266WiFi.h>
+#else
 #include <WiFi.h>
+#endif
+
+
 
 namespace deskmate {
 namespace arduino {
@@ -22,7 +34,7 @@ bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
       return false;
     }
   }
-  Serial.printf("[wifi] Connected!\n");
+  Serial.print("[wifi] Connected!\n");
   return true;
 }
 

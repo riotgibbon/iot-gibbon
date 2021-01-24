@@ -71,7 +71,8 @@ bool App::Init() {
   Serial.print("Client: ");
   Serial.println(client.c_str());
 
-
+  Serial.print("Connecting to : ");
+  Serial.println(kWIFISSID);
   WiFiManager *wifi_manager= new WiFiManager(kWIFISSID, kWIFIPassword);
   MQTTManager *mqtt_manager = new MQTTManager(kMQTTServer, kMQTTPort, kMQTTUser, kMQTTPassword, client.c_str());
   if (!wifi_manager->Connect()) {
@@ -125,6 +126,7 @@ bool App::Tick() {
   if (currentMillis - startMillis >= period)  //test whether the period has elapsed
   {
     Serial.println("reading loop");
+    digitalWrite(LED_BUILTIN, HIGH); 
     // thisSensor.read(mqtt_buffer_);
     // thisSensor->read(mqtt_buffer_);
 
@@ -145,7 +147,7 @@ bool App::Tick() {
       Serial.println((*it)->getLocation().c_str());
       (*it++)->read(mqtt_buffer_);
     }
-
+    digitalWrite(LED_BUILTIN, LOW); 
     // for (auto it = sensors.begin(); it != sensors.end(); ++it){
     //   // (*it++)->execute();
     //   Serial.print ("reading sensor: ");

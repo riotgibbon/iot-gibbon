@@ -1,20 +1,22 @@
 #pragma once
-
 #include "sensor.h"
-#include "hcsr04.h"
+#include "Adafruit_Si7021.h"
 
 namespace deskmate {
     namespace arduino {
         namespace sensors {
-             class hcsr04Sensor: public sensor{
+
+
+             class mq2: public sensor{
                 public:
-                    hcsr04Sensor();
-                    hcsr04Sensor(std::string location);
+                    mq2();
+                    mq2(std::string location);
                     void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
-                    
+                    bool InitSensor();
+                    // virtual std::string getType() override;
                 private:
-                    // HCSR04 hcsr04;
-                    // bool InitSensor();
+                    // Adafruit_Si7021 *sensor;
+                    
                     // std::string location;
                     std::string getTopic(std::string metric);
             };

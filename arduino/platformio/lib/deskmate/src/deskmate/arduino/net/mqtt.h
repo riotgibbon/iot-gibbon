@@ -3,7 +3,16 @@
 
 #include <Arduino.h>
 #include <PubSubClient.h>
+#ifdef ARDUINO_SAMD_MKRWIFI1010
+#include <WiFiNINA.h>
+#elif ARDUINO_SAMD_MKR1000
+#include <WiFi101.h>
+#elif ESP8266
+#include <ESP8266WiFi.h>
+#else
 #include <WiFi.h>
+#endif
+
 
 #include <memory>
 #include <queue>
@@ -35,7 +44,8 @@ class MQTTManager : public deskmate::mqtt::MQTTMessageBuffer {
   const std::string password_;
   const std::string client_id_;
   WiFiClient wifi_client_;
-  std::unique_ptr<PubSubClient> pubsub_client_;
+  // std::unique_ptr<PubSubClient> pubsub_client_;
+  PubSubClient *pubsub_client_;
 
   // Holds pointers to subscribers so it can re-subscribe when the connection
   // drops. Pointers are expected to outlive instances of this class.

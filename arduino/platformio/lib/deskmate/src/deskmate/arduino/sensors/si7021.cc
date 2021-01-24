@@ -53,16 +53,17 @@ namespace deskmate {
         }
 
         si7021::si7021(){
-            sensorType="si7021";
+            _sensorType="si7021";
             si7021("kitchen");
         }
 
-        si7021::si7021(std::string _location){
+        si7021::si7021(std::string location){
+            _location=location;
             Serial.print("Initialising Si7101 sensor for ");
             Serial.println(_location.c_str());
 
-            location=_location;
-            sensorType="si7021";
+            
+            _sensorType="si7021";
             sensor = new Adafruit_Si7021();    
             
             _isConnected= InitSensor();
@@ -70,7 +71,7 @@ namespace deskmate {
 
         std::string si7021::getTopic(std::string metric){
             std::string mode = "home";
-            std::string topic =mode + "/tele/" + metric +"/" + location;
+            std::string topic =mode + "/tele/" + metric +"/" + _location;
             // Serial.println(topic.c_str());
             return topic;
         }

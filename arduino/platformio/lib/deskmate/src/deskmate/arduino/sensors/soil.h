@@ -6,17 +6,21 @@
 namespace deskmate {
     namespace arduino {
         namespace sensors {
-             class hcsr04Sensor: public sensor{
+             class soil: public sensor{
                 public:
-                    hcsr04Sensor();
-                    hcsr04Sensor(std::string location);
+                    soil();
+                    soil(std::string location, std::string plant, int analogPort, int digitalPort);
                     void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
                     
                 private:
                     // HCSR04 hcsr04;
                     // bool InitSensor();
                     // std::string location;
-                    std::string getTopic(std::string metric);
+                    std::string _plant;
+                    int _analogPort;
+                    int _digitalPort;
+                    std::string getTopic();
+                    std::string getPlantDetails();
             };
         }
     }

@@ -1,7 +1,16 @@
 #include "deskmate/arduino/net/mqtt.h"
 
 #include <Arduino.h>
+#ifdef ARDUINO_SAMD_MKRWIFI1010
+#include <WiFiNINA.h>
+#elif ARDUINO_SAMD_MKR1000
+#include <WiFi101.h>
+#elif ESP8266
+#include <ESP8266WiFi.h>
+#else
 #include <WiFi.h>
+#endif
+
 
 #include <algorithm>
 
@@ -25,9 +34,10 @@ constexpr int kSubscriptionQoS = 1;
 MQTTManager::MQTTManager(const char* server, int port, const char* username,
                          const char* password, const char* client_id)
     : username_(username), password_(password), client_id_(client_id) {
-      Serial.print("creating PubSubClient");
-      pubsub_client_= std::make_unique<PubSubClient>(server,port, wifi_client_);
-      Serial.print("created PubSubClient");
+      Serial.println("creating PubSubClient");
+      // pubsub_client_= std::make_unique<PubSubClient>(server,port, wifi_client_);
+      pubsub_client_= new PubSubClient(server,port, wifi_client_);
+      Serial.println("created PubSubClient");
   // Register the "On new message" callback, which calls Dispatch.
   // No fancy synchronization is needed here, since this callback only
   // runs when we call loop() in our main... loop. In other works, there

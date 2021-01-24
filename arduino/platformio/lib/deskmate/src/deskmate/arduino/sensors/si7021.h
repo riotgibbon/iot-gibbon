@@ -10,7 +10,7 @@ namespace deskmate {
              class si7021: public sensor{
                 public:
                     si7021();
-                    si7021(std::string _location);
+                    si7021(std::string location);
                     void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
                     bool InitSensor();
                     // virtual std::string getType() override;

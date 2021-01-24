@@ -25,17 +25,17 @@ namespace deskmate {
             
         // }
         hcsr04Sensor::hcsr04Sensor(){
-            sensorType="hcsr04";
+            _sensorType="hcsr04";
             hcsr04Sensor("flat");
         }
-        hcsr04Sensor::hcsr04Sensor(std::string _location){
-            location=_location;
-            sensorType="hcsr04";
+        hcsr04Sensor::hcsr04Sensor(std::string location){
+            _location=location;
+            _sensorType="hcsr04";
             // InitSensor();
         }
         std::string hcsr04Sensor::getTopic(std::string metric){
             std::string mode = "home";
-            std::string topic =mode + "/tele/" + metric +"/" + location;
+            std::string topic =mode + "/tele/" + metric +"/" + _location;
             Serial.println(topic.c_str());
             return topic;
         }
@@ -43,7 +43,7 @@ namespace deskmate {
          void hcsr04Sensor::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ )  {
               HCSR04 hcsr04(TRIG_PIN, ECHO_PIN, 20, 4000);    
              Serial.print("Initialising hcsr04 sensor for ");
-             Serial.println(location.c_str());
+             Serial.println(_location.c_str());
             Serial.println(hcsr04.ToString());
             // Serial.println("dummy si7021 reading");
             // float temperature = 0;

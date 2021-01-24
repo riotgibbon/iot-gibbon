@@ -7,7 +7,7 @@
 
 #include "deskmate/app/config.h"
 // #include "deskmate/gfx/display.h"
-#include "deskmate/gfx/screens/window.h"
+// #include "deskmate/gfx/screens/window.h"
 #include "deskmate/input/input.h"
 #include "deskmate/mqtt/mqtt.h"
 #include "deskmate/arduino/sensors/sensor.h"

@@ -1,11 +1,12 @@
 #include "deskmate/arduino/net/wifi.h"
 
-// #include <WiFi.h>
 
 #ifdef ARDUINO_SAMD_MKRWIFI1010
 #include <WiFiNINA.h>
+#undef ESP8266 
 #elif ARDUINO_SAMD_MKR1000
 #include <WiFi101.h>
+#undef ESP8266 
 #elif ESP8266
 #include <ESP8266WiFi.h>
 #else
@@ -20,14 +21,16 @@ namespace net {
 
 namespace {
 constexpr int kMaxWaitForConnectionMS = 1000;
-constexpr int kConnectionLoopDelay = 100;
-constexpr int kConnectionTries = 3;
+constexpr int kConnectionLoopDelay = 500;
+constexpr int kConnectionTries = 10;
 
 bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
    long delayed = 0;
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    // Serial.printf("[wifi] WiFi.status(): %d\n", WiFi.status());
+  // while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.waitForConnectResult() != WL_CONNECTED){
+
+    Serial.printf("[wifi] WiFi.status(): %d\n", WiFi.status());
     delay(kConnectionLoopDelay);
     delayed += kConnectionLoopDelay;
     if (delayed > kMaxWaitForConnectionMS) {
@@ -43,14 +46,17 @@ bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
 // For some reason, my uc (esp32) fails to connect every other time. This
 // re-begin() approach seems to work, although it's not very  elegant.
 bool WiFiManager::Connect() {
+
+
+
   for (int i = 0; i < kConnectionTries; i++) {
-    // Serial.printf("[wifi] Attempting to connect %d/%d...\n", i,
-    //               kConnectionTries);
+    Serial.printf("[wifi] Attempting to connect %d/%d...\n", i,
+                  kConnectionTries);
     if (WiFiTryToConnectOnce(ssid_, password_)) {
       return true;
     }
   }
-  // Serial.printf("[wifi] Unable to connect.\n");
+  Serial.printf("[wifi] Unable to connect.\n");
   return false;
 }
 

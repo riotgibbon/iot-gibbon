@@ -24,6 +24,7 @@ constexpr char kUnitDegreeCelcius[] =
 constexpr char kWIFISSID[] = "VM9729091";
 constexpr char kWIFIPassword[] = "bnb3cwmvNhXh";
 
+
 // MQTT.
 constexpr char kMQTTUser[] = "";
 constexpr char kMQTTPassword[] = "";

@@ -11,12 +11,14 @@
 #include "deskmate/arduino/sensors/si7021.h"
 #include "deskmate/arduino/sensors/soilMoisture.h"
 #include "deskmate/arduino/sensors/soilTemperature.h"
+#include "deskmate/arduino/sensors/guvas12sd.h"
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
 using deskmate::app::App;
 
+using deskmate::arduino::sensors::guvas12sd;
 using deskmate::arduino::sensors::si7021;
 using deskmate::arduino::sensors::soilMoisture;
 using deskmate::arduino::sensors::soilTemperature;
@@ -27,32 +29,20 @@ void setup()
   Serial.println("Creating app");
   std::string device = "mkr1011";
   std::string location = "livingroom";
-  std::string si7021location = ("livingroom/window");
+  std::string windowLocation = ("livingroom/window");
 
-  // si7021 *sensor_si7021 = new si7021(si7021location);
-  // sensor_si7021->InitSensor();
 
-  // soil *bonsai = new soil(location, "bonsai", A0,0);
-
-  // OneWire *oneWire = new OneWire(5);
-
-  // Pass our oneWire reference to Dallas Temperature.
-
-  // DallasTemperature *sensors = new DallasTemperature(oneWire);
-  // sensors->begin();
-  // delay(1000);
-  DeviceAddress bonsaiThermometer = {0x28, 0x6D, 0xEB, 0x19, 0x4E, 0x20, 0x01, 0xCC};
-
-  App app(si7021location, device);
+  App app(windowLocation, device);
   app.Init();
 
-  // app.addSensor(new si7021(si7021location));
-  app.addSensor(new soilMoisture(location, "bonsai", A0,0));
-
-  // app.addSensor(new soilTemperature(sensors, location, "yucca", 0));
-  // app.addSensor(new soilTemperature(sensors, location, "amaryllis",1));
-  // app.addSensor(new soilTemperature(location, "ariala",2));
+  app.addSensor(new si7021(windowLocation));
+  app.addSensor(new soilMoisture(location, "bonsai", A0, 0));
+  app.addSensor(new soilMoisture(location, "amaryllis", A1, 1));
+  app.addSensor(new soilMoisture(location, "aralia", A2, 2));
+  app.addSensor(new soilMoisture(location, "yucca", A3, 3));
   app.addSensor(new soilTemperature( location));
+
+  app.addSensor(new guvas12sd(windowLocation, A6));
 
   Serial.println("Everything setup");
 

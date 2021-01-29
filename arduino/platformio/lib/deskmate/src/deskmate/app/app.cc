@@ -4,18 +4,8 @@
 #include <vector>
 #include <iterator>
 
-// #include "deskmate/arduino/sensors/dummy.h"
-// #include "deskmate/arduino/sensors/sensor.h"
-
 #include "deskmate/app/config.h"
-// #include "deskmate/gfx/components/mqtt_circle_horizontal_list_item.h"
-// #include "deskmate/gfx/components/mqtt_list_item.h"
-// #include "deskmate/gfx/components/mqtt_vertical_bar_horizontal_list_item.h"
-// #include "deskmate/gfx/components/text_list_item.h"
-// #include "deskmate/gfx/display.h"
-// #include "deskmate/gfx/screens/horizontal_list.h"
-// #include "deskmate/gfx/screens/list.h"
-// #include "deskmate/gfx/screens/window.h"
+
 #include "deskmate/input/input.h"
 #include "deskmate/mqtt/mqtt.h"
 

@@ -28,6 +28,7 @@ bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
    long delayed = 0;
   WiFi.begin(ssid, password);
   // while (WiFi.status() != WL_CONNECTED) {
+  //  https://github.com/esp8266/Arduino/issues/119#issuecomment-421530346 
   while (WiFi.waitForConnectResult() != WL_CONNECTED){
 
     Serial.printf("[wifi] WiFi.status(): %d\n", WiFi.status());

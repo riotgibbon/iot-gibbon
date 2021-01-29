@@ -85,7 +85,7 @@ namespace deskmate
             //"home/tele/soilmoisture/livingroom/yucca";
             std::string soilTemperature::getTopic(std::string plant)
             {
-                std::string mode = "test";
+                std::string mode = "home";
                 std::string topic = mode.append("/tele/temperature/").append(_location).append("/").append(plant);
                 // Serial.println(topic.c_str());
                 return topic;
@@ -108,11 +108,12 @@ namespace deskmate
                  Serial.print(temp_str.c_str());
                  Serial.println("C ");
 
-
+                if (tempC>0){
                 MQTTMessage message;
                 message.topic = topic;
                 message.payload = temp_str.c_str();
                 mqtt_buffer_->Publish(message);
+                }
             }
 
 
@@ -131,7 +132,7 @@ namespace deskmate
 
                 readAndSend("bonsai", bonsaiAddress, sensors, mqtt_buffer_);
                 readAndSend("amaryllis", amaryllisAddress, sensors, mqtt_buffer_);
-                readAndSend("ariala", arialaAddress, sensors, mqtt_buffer_);
+                readAndSend("aralia", arialaAddress, sensors, mqtt_buffer_);
                 readAndSend("yucca", yuccaAddress, sensors, mqtt_buffer_);
 
                 

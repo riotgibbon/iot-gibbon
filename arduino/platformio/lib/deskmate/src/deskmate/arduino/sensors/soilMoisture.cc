@@ -47,7 +47,7 @@ namespace deskmate
             //"home/tele/soilmoisture/livingroom/yucca";
             std::string soilMoisture::getTopic()
             {
-                std::string mode = "test";
+                std::string mode = "home";
                 std::string topic = mode.append("/tele/soilmoisture/").append(_location).append("/").append(_plant);
                 // Serial.println(topic.c_str());
                 return topic;

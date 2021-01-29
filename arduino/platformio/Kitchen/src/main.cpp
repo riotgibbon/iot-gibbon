@@ -7,13 +7,13 @@
 #include "deskmate/app/app.h"
 
 
-#include "deskmate/arduino/sensors/mq2.h"
+#include "deskmate/arduino/sensors/mq2Sensor.h"
 
 
 using deskmate::app::App;
 
 
-using deskmate::arduino::sensors::mq2;
+using deskmate::arduino::sensors::mq2Sensor;
 using deskmate::arduino::sensors::sensor;
 
 
@@ -26,7 +26,7 @@ void setup() {
   std::string location  = "kitchen";
 
 
-  mq2 *azenvy_mq2 = new mq2(location); 
+  mq2Sensor *azenvy_mq2 = new mq2Sensor(location); 
 
   App app(location,device);
   app.Init();

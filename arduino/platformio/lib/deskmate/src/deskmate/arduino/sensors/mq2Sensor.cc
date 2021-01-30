@@ -57,6 +57,7 @@ namespace deskmate
 
             std::string mq2Sensor::getTopic(std::string metric)
             {
+                // std::string mode = "test";
                 std::string mode = "home";
                 std::string topic = mode + "/tele/" + metric + "/" + _location;
                 return topic;

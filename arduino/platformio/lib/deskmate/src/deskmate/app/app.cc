@@ -102,7 +102,9 @@ void App::addSensor(sensor* newSensor){
     sensors.push_back(newSensor);
 }
 
-
+  void App::setLEDPin(int ledPin){
+    _ledPin=ledPin;
+  }
 
 
 bool App::Tick() {
@@ -116,17 +118,8 @@ bool App::Tick() {
   if (currentMillis - startMillis >= period)  //test whether the period has elapsed
   {
     Serial.println("reading loop");
-    digitalWrite(LED_BUILTIN, HIGH); 
-    // thisSensor.read(mqtt_buffer_);
-    // thisSensor->read(mqtt_buffer_);
+    digitalWrite(_ledPin, HIGH); 
 
-    // for ( thissensor : sensors){
-    //   Serial.print ("reading sensor: ");
-    //   Serial.print(thissensor->getType().c_str());
-    //   Serial.print("-");
-    //   Serial.println(thissensor->getLocation().c_str());
-    //   thissensor->read(mqtt_buffer_);
-    // }
 
     std::vector<sensor*>::iterator it = sensors.begin();
       while(it != sensors.end()){
@@ -137,18 +130,7 @@ bool App::Tick() {
       Serial.println((*it)->getLocation().c_str());
       (*it++)->read(mqtt_buffer_);
     }
-    digitalWrite(LED_BUILTIN, LOW); 
-    // for (auto it = sensors.begin(); it != sensors.end(); ++it){
-    //   // (*it++)->execute();
-    //   Serial.print ("reading sensor: ");
-    //   Serial.print((*it++)->getType().c_str());
-    //   Serial.print("-");
-    //   Serial.println((*it++)->getLocation().c_str());
-
-    //   (*it++)->read(mqtt_buffer_);
-    // }
-
-    // }
+    digitalWrite(_ledPin, LOW); 
 
     startMillis = currentMillis; 
   }

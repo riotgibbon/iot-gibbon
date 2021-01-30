@@ -15,6 +15,10 @@
 		},
 		{
 			"path": "Window"
+		},
+		{
+			"name": "LivingRoomEnvy",
+			"path": "LivingRoomEnvy"
 		}
 	],
 	"settings": {

@@ -44,6 +44,7 @@ class App {
 
   bool Init();
   void addSensor(sensor* newSensor);
+  void setLEDPin(int ledPin);
    
   bool Tick();  
   
@@ -58,6 +59,7 @@ class App {
   // sensor thisSensor;
   std::string _location;
   std::string _device;
+  int _ledPin=LED_BUILTIN;
 };
 
 }  // namespace app

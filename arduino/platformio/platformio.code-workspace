@@ -19,6 +19,9 @@
 		{
 			"name": "LivingRoomEnvy",
 			"path": "LivingRoomEnvy"
+		},
+		{
+			"path": "KitchenEnvy"
 		}
 	],
 	"settings": {

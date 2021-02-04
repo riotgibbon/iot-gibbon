@@ -8,23 +8,22 @@ namespace deskmate {
         namespace sensors {
 
 
-             class mq2Sensor
+             class mq9Sensor
              : public sensor{
                 public:
-                    mq2Sensor
+                    mq9Sensor
                     ();
-                    mq2Sensor
-                    (std::string location);
+                    mq9Sensor (std::string location);
+                     mq9Sensor (std::string location, int pin);
                     void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
                     bool InitSensor();
                     // virtual std::string getType() override;
                 private:
-                    // Adafruit_Si7021 *sensor;
-                    // mq2Simple *mq2;
-                    MQUnifiedsensor *mq2;
-                    // std::string location;
+
+                    MQUnifiedsensor *mq9;
+                    int _pin;
                     std::string getTopic(std::string metric);
-                    void readAndSend(std::string metric, int value, deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_);
+                    void readAndSend(std::string metric, std::string value, deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_);
             };
         }
     }

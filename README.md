@@ -15,3 +15,7 @@ ssh pi@192.168.0.63
 ssh toby@192.168.0.71 - ethernet
 ssh toby@192.168.0.72 - wifi
 
+### Qnap
+
+ssh admin@192.168.0.46 -
+

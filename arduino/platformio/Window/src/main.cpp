@@ -12,7 +12,7 @@
 #include "deskmate/arduino/sensors/soilMoisture.h"
 #include "deskmate/arduino/sensors/soilTemperature.h"
 #include "deskmate/arduino/sensors/guvas12sd.h"
-
+#include "deskmate/arduino/sensors/mq9Sensor.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
@@ -22,6 +22,7 @@ using deskmate::arduino::sensors::guvas12sd;
 using deskmate::arduino::sensors::si7021;
 using deskmate::arduino::sensors::soilMoisture;
 using deskmate::arduino::sensors::soilTemperature;
+using deskmate::arduino::sensors::mq9Sensor;
 
 void setup()
 {
@@ -41,6 +42,7 @@ void setup()
   app.addSensor(new soilMoisture(location, "aralia", A2, 2));
   app.addSensor(new soilMoisture(location, "yucca", A3, 3));
   app.addSensor(new soilTemperature( location));
+  app.addSensor(new mq9Sensor(location,A4));
 
   app.addSensor(new guvas12sd(windowLocation, A6));
 

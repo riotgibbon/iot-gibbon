@@ -27,12 +27,12 @@ constexpr int kConnectionTries = 10;
 bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
    long delayed = 0;
   WiFi.begin(ssid, password);
-  // while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) {
   //  https://github.com/esp8266/Arduino/issues/119#issuecomment-421530346 
 
-  while (WiFi.waitForConnectResult() != WL_CONNECTED){
+  // while (WiFi.waitForConnectResult() != WL_CONNECTED){
 
-    Serial.printf("[wifi] WiFi.status(): %d\n", WiFi.status());
+    // Serial.print("[wifi] WiFi.status():", + WiFi.status());
     delay(kConnectionLoopDelay);
     delayed += kConnectionLoopDelay;
     if (delayed > kMaxWaitForConnectionMS) {
@@ -52,13 +52,12 @@ bool WiFiManager::Connect() {
 
 
   for (int i = 0; i < kConnectionTries; i++) {
-    Serial.printf("[wifi] Attempting to connect %d/%d...\n", i,
-                  kConnectionTries);
+    // Serial.print("[wifi] Attempting to connect %d/%d...\n", i,   kConnectionTries);
     if (WiFiTryToConnectOnce(ssid_, password_)) {
       return true;
     }
   }
-  Serial.printf("[wifi] Unable to connect.\n");
+  Serial.print("[wifi] Unable to connect.\n");
   return false;
 }
 

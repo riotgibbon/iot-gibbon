@@ -1,6 +1,6 @@
 #ifndef DESKMATE_APP_APP_H
 #define DESKMATE_APP_APP_H
-
+#include <Arduino.h>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -59,7 +59,7 @@ class App {
   // sensor thisSensor;
   std::string _location;
   std::string _device;
-  int _ledPin=LED_BUILTIN;
+  int _ledPin=2;
 };
 
 }  // namespace app

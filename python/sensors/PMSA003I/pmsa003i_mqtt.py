@@ -75,7 +75,7 @@ while True:
             "PM 1.0: %d\tPM2.5: %d\tPM10: %d"
             % (aqdata["pm10 standard"], aqdata["pm25 standard"], aqdata["pm100 standard"])
         )
-        print("Concentration Units (environmental)")
+        print("Concentration Units (enviroynmental)")
         print("---------------------------------------")
         print(
             "PM 1.0: %d\tPM2.5: %d\tPM10: %d"
@@ -90,8 +90,8 @@ while True:
         print("Particles > 10 um / 0.1L air:", aqdata["particles 100um"])
         print("---------------------------------------")
 
-            publish(mqttClient,"pm2.5",aqdata["pm25 env"])   
-            publish(mqttClient,"pm10",aqdata["pm100 env"])  
+        publish(mqttClient,"pm2.5",aqdata["pm25 env"])   
+        publish(mqttClient,"pm10",aqdata["pm100 env"])  
 
     # try:
     #     logger.info("starting bme680 read")

@@ -14,6 +14,7 @@ sudo systemctl disable  weather.service
 sudo systemctl disable apds9960_mqtt.service
 sudo systemctl disable gp2y0a21yk0f_mqtt.service
 sudo systemctl disable hue.service
+sudo systemctl disable pmsa003i_mqtt.service
 
 sudo systemctl daemon-reload
 
@@ -24,7 +25,7 @@ sudo systemctl enable weather.service
 sudo systemctl enable apds9960_mqtt.service
 sudo systemctl enable gp2y0a21yk0f_mqtt.service
 sudo systemctl enable hue.service
-
+sudo systemctl enable pmsa003i_mqtt.service
 
 
 
@@ -35,7 +36,7 @@ sudo systemctl restart weather.service
 sudo systemctl restart apds9960_mqtt.service
 sudo systemctl restart gp2y0a21yk0f_mqtt.service
 sudo systemctl restart hue.service
-
+sudo systemctl restart pmsa003i_mqtt.service
 
 
 sudo systemctl status ifttt.service
@@ -45,3 +46,4 @@ sudo systemctl status weather.service
 sudo systemctl status apds9960_mqtt.service
 sudo systemctl status gp2y0a21yk0f_mqtt.service
 sudo systemctl status hue.service
+sudo systemctl status pmsa003i_mqtt.service

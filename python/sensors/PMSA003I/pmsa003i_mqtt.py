@@ -10,7 +10,7 @@ from adafruit_pm25.i2c import PM25_I2C
 reset_pin = None
 
 import sys
-
+import os
 import math
 import paho.mqtt.client as paho
 

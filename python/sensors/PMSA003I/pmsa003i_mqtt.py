@@ -20,7 +20,7 @@ import paho.mqtt.client as paho
 # sleepSeconds = sleepMinutes * 60
 
 sleepSeconds =5
-sensor ='bme680'
+sensor ='pmsa003i'
 logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)
 logger = logging.getLogger(sensor)

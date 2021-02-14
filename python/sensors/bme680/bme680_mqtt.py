@@ -78,7 +78,7 @@ curr_time = time.time()
 burn_in_time = 300
 
 burn_in_data = []
-
+gasOK = False
 try:
     # Collect gas resistance burn-in values, then use the average
     # of the last 50 values to set the upper limit for calculating
@@ -104,7 +104,10 @@ try:
     print('Gas baseline: {0} Ohms, humidity baseline: {1:.2f} %RH\n'.format(
         gas_baseline,
         hum_baseline))
-
+    gasOK=True
+except Exception as error:
+    logger.error(error.args[0])    
+    gasOK=False
 
 
 broker="192.168.0.46"
@@ -141,7 +144,7 @@ while True:
             publish(mqttClient,"humidity",humidity)  
             publish(mqttClient,"pressure",pressure)  
 
-            if sensor.get_sensor_data() and sensor.data.heat_stable:
+            if sensor.get_sensor_data() and sensor.data.heat_stable and gasOK:
                 gas = sensor.data.gas_resistance
                 gas_offset = gas_baseline - gas
 

@@ -65,7 +65,7 @@ def getMqttClient():
     client = mqtt.Client()
     while (True):
         try:
-            client.connect("192.168.0.63", 1883, 60)
+            client.connect("192.168.0.46", 1883, 60)
             break
         except Exception:
             print ("error connecting, pausing")

@@ -74,7 +74,7 @@ sensor.set_gas_heater_duration(150)
 sensor.select_gas_heater_profile(0)
 
 
-broker="192.168.0.63"
+broker="192.168.0.46"
 port=1883
 logger.info(f"Connecting to mqtt broker {broker}:{port}")
 mqttClient = paho.Client("bme680")  

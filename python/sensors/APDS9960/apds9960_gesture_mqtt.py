@@ -24,7 +24,7 @@ logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
 
-broker="192.168.0.63"
+broker="192.168.0.46"
 port=1883
 logger.info(f"Connecting to mqtt broker {broker}:{port}")
 mqttClient = paho.Client(sensor)  

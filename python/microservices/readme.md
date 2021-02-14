@@ -62,7 +62,7 @@ def startMQTT(q):
     client.on_connect = on_connect
     client.on_message = on_message
 
-    client.connect("192.168.0.63", 1883, 60)
+    client.connect("192.168.0.46", 1883, 60)
 ```
 
 ### Process

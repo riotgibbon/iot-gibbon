@@ -3,7 +3,7 @@
 import time
 import board
 import requests
-import loggingxx
+import logging
 import os
 from datetime import datetime,timedelta
 import bme680

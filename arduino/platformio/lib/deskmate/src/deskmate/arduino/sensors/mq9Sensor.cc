@@ -12,7 +12,7 @@
 #define         Type                    ("MQ-9") //mq9
 #define         Voltage_Resolution     (5)// (5)
 #define         ADC_Bit_Resolution      (10) // For arduino UNO/MEGA/NANO
-#define         Ratiomq9CleanAir        (9.83) //RS / R0 = 9.83 ppm 
+#define         RatioMQ9CleanAir        (9.6) //RS / R0 = 60 ppm 
 
 using deskmate::mqtt::MQTTMessage;
 
@@ -44,7 +44,7 @@ namespace deskmate
                 for(int i = 1; i<=10; i ++)
                 {
                     mq9->update(); // Update data, the arduino will be read the voltage on the analog pin
-                    calcR0 += mq9->calibrate(Ratiomq9CleanAir);
+                    calcR0 += mq9->calibrate(RatioMQ9CleanAir);
                     Serial.print(".");
                 }
                 mq9->setR0(calcR0/10);

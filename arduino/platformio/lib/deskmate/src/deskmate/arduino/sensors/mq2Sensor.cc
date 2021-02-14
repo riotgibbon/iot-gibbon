@@ -23,13 +23,7 @@ namespace deskmate
         namespace sensors
         {
 
-            char *dtostrf(double val, signed char width, unsigned char prec, char *sout)
-            {
-                char fmt[20];
-                sprintf(fmt, "%%%d.%df", width, prec);
-                sprintf(sout, fmt, val);
-                return sout;
-            }
+           
 
             bool mq2Sensor::InitSensor()
             {
@@ -38,7 +32,7 @@ namespace deskmate
                 // mq2->begin();
 
                 mq2 = new MQUnifiedsensor(Board, Voltage_Resolution, ADC_Bit_Resolution, Pin, Type);
-                mq2->setA(36974); mq2->setB(-3.109);
+                // mq2->setA(36974); mq2->setB(-3.109);
                 mq2->init(); 
 
                 Serial.print("Calibrating please wait.");
@@ -76,22 +70,21 @@ namespace deskmate
 
             std::string mq2Sensor::getTopic(std::string metric)
             {
-                // std::string mode = "test";
-                std::string mode = "home";
-                std::string topic = mode + "/tele/" + metric + "/" + _location;
+                std::string mode = "test";
+                // std::string mode = "home";
+                std::string topic = mode + "/tele/" + metric + "/" + _location + "/mq2" ;
                 return topic;
             }
 
-            std::string floatToString(float value)
+           
+            void  mq2Sensor::readAndSend(std::string metric, float a, float b, deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_)
             {
-                char buffer[5];
-                std::string s = dtostrf(value, 1, 2, buffer);
-                return s;
-            }
 
-            void  mq2Sensor::readAndSend(std::string metric, int value, deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_)
-            {
-                 
+
+                    mq2->setA(a); mq2->setB(b); // Configurate the ecuation values to get CH4 concentration
+                    float value = mq2->readSensor(); // Sensor will read PPM concentration using the model and a and b values setted before or in the setup
+                    
+
                     Serial.print(metric.c_str());
                     Serial.print(" : ");
                     Serial.println(value);
@@ -99,7 +92,7 @@ namespace deskmate
 
                     MQTTMessage message;
                     message.topic = getTopic(metric);;
-                    message.payload = std::to_string(value);
+                    message.payload = floatToString(value);
                     mqtt_buffer_->Publish(message);
             }
 
@@ -109,11 +102,7 @@ namespace deskmate
                 {
                     Serial.print("reading mq2Sensor: ");
                     Serial.println(_location.c_str());
-                    // float* values= mq2->read(true);
-
-                    // readAndSend("carbonmonoxide", mq2->readCO(),mqtt_buffer_);
-                    // readAndSend("smoke", mq2->readSmoke(),mqtt_buffer_);
-                    
+    
                       /*
                         Exponential regression:
                         Gas    | a      | b
@@ -125,26 +114,31 @@ namespace deskmate
                     */
 
                     mq2->update();
+
+
                     // mq2->setA(574.25); mq2->setB(-2.222); // Configurate the ecuation values to get CH4 concentration
                     // float LPG = mq2->readSensor(); // Sensor will read PPM concentration using the model and a and b values setted before or in the setup
-                    
-
+                    readAndSend("lpg", 574.25, -2.222,mqtt_buffer_);
+                    readAndSend("hydrogen", 987.99 , -2.162,mqtt_buffer_);
+                    readAndSend("carbonmonoxide", 36974 , -3.109,mqtt_buffer_);
+                    readAndSend("alcohol", 3616.1 ,-2.675,mqtt_buffer_);
+                    readAndSend("propane", 658.71  ,-2.168,mqtt_buffer_);
                     // mq2->setA(36974); mq2->setB(-3.109); // Configurate the ecuation values to get CH4 concentration
-                    float CO = mq2->readSensor(); // Sensor will read PPM concentration using the model and a and b values setted before or in the setup
-                    mq2->serialDebug();// Will print the table on the serial port
+                    // float CO = mq2->readSensor(); // Sensor will read PPM concentration using the model and a and b values setted before or in the setup
+                    // mq2->serialDebug();// Will print the table on the serial port
                     
-                    // mq2->setA(3616.1 ); mq2->setB(-2.675); // Configurate the ecuation values to get CH4 concentration
-                    // float Alcohol = mq2->readSensor(); // Sensor will read PPM concentration using the model and a and b values setted before or in the setup
+                    // // mq2->setA(3616.1 ); mq2->setB(-2.675); // Configurate the ecuation values to get CH4 concentration
+                    // // float Alcohol = mq2->readSensor(); // Sensor will read PPM concentration using the model and a and b values setted before or in the setup
                     
                     // mq2->setA(30000000); mq2->setB(-8.308); // Configurate the ecuation values to get CH4 concentration
                     // float Smoke = mq2->readSensor(); // Sensor will read PPM concentration using the model and a and b values setted before or in the setup
                     
                     // Serial.print("|    "); Serial.print(LPG);
-                    // Serial.print("    |    "); Serial.print(CH4);
-                    Serial.print("    |    "); Serial.print(CO);
-                    // Serial.print("    |    "); Serial.print(Alcohol);
-                    // Serial.print("    |    "); Serial.print(Smoke);
-                    Serial.println("    |");
+                    // // Serial.print("    |    "); Serial.print(CH4);
+                    // Serial.print("    |    "); Serial.print(CO);
+                    // // Serial.print("    |    "); Serial.print(Alcohol);
+                    // // Serial.print("    |    "); Serial.print(Smoke);
+                    // Serial.println("    |");
 
                 }
                 else

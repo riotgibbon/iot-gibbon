@@ -29,7 +29,7 @@ constexpr char kWIFIPassword[] = "bnb3cwmvNhXh";
 constexpr char kMQTTUser[] = "";
 constexpr char kMQTTPassword[] = "";
 constexpr char kMQTTClientId[] = "esp-arduino";
-constexpr char kMQTTServer[] = "192.168.0.63";
+constexpr char kMQTTServer[] = "192.168.0.46";
 constexpr int kMQTTPort = 1883;
 
 // Display pins.

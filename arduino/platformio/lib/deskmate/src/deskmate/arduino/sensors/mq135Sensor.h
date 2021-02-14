@@ -1,6 +1,6 @@
 #pragma once
 #include "sensor.h"
-#include "deskmate/ext/sensors/mq2Simple/mq2Simple.h"
+
 #include <MQUnifiedsensor.h>
 
 namespace deskmate {
@@ -8,23 +8,22 @@ namespace deskmate {
         namespace sensors {
 
 
-             class mq2Sensor
+             class mq135Sensor
              : public sensor{
                 public:
-                    mq2Sensor
+                    mq135Sensor
                     ();
-                    mq2Sensor
-                    (std::string location);
+                    mq135Sensor (std::string location);
+                    mq135Sensor (std::string location, int pin);
                     void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
                     bool InitSensor();
                     // virtual std::string getType() override;
                 private:
-                    // Adafruit_Si7021 *sensor;
-                    // mq2Simple *mq2;
-                    MQUnifiedsensor *mq2;
-                    // std::string location;
+
+                    MQUnifiedsensor *mq135;
+                    int _pin;
                     std::string getTopic(std::string metric);
-                    void readAndSend(std::string metric, float a, float b, deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_);
+                   void  readAndSend(std::string metric, float a, float b, deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_);
             };
         }
     }

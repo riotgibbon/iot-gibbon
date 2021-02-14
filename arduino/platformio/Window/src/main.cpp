@@ -42,7 +42,7 @@ void setup()
   app.addSensor(new soilMoisture(location, "aralia", A2, 2));
   app.addSensor(new soilMoisture(location, "yucca", A3, 3));
   app.addSensor(new soilTemperature( location));
-  app.addSensor(new mq9Sensor(location,A4));
+  app.addSensor(new mq9Sensor(windowLocation,A4));
 
   app.addSensor(new guvas12sd(windowLocation, A6));
 

@@ -27,10 +27,10 @@ constexpr int kConnectionTries = 10;
 bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
    long delayed = 0;
   WiFi.begin(ssid, password);
-  // while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) {
   //  https://github.com/esp8266/Arduino/issues/119#issuecomment-421530346 
 
-  while (WiFi.waitForConnectResult() != WL_CONNECTED){
+  // while (WiFi.waitForConnectResult() != WL_CONNECTED){
 
     // Serial.print("[wifi] WiFi.status():", + WiFi.status());
     delay(kConnectionLoopDelay);

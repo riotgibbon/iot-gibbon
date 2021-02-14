@@ -58,7 +58,7 @@ b.connect()
 # Get the bridge state (This returns the full dictionary that you can explore)
 b.get_api()
 
-influxClient = getInfluxClient()
+influxClient = getInfluxClient(host="192.168.0.46")
 
 
 def getMqttClient():

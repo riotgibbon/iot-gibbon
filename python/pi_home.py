@@ -148,7 +148,7 @@ logger.setLevel(logging.INFO)
 
 device = get_device()
 
-client = getInfluxClient()
+client = getInfluxClient(host='192.168.0.46')
 query = "SELECT MEAN(value) FROM mqtt_consumer   WHERE time > now() - 30s group by * ;"
 
 def getTopicValue(result, topic):

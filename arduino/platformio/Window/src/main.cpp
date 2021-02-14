@@ -44,7 +44,7 @@ void setup()
   app.addSensor(new soilTemperature( location));
   app.addSensor(new mq9Sensor(windowLocation,A4));
 
-  app.addSensor(new guvas12sd(windowLocation, A6));
+  // app.addSensor(new guvas12sd(windowLocation, A6));
 
   Serial.println("Everything setup");
 

@@ -223,7 +223,9 @@ config/  data/
 
 data on /share/CACHEDEV1_DATA/data/influx/data/
 
-https://thenewstack.io/how-to-setup-influxdb-telegraf-and-grafana-on-docker-part-1/
+
+
+
 
 sudo useradd -rs /bin/false influxdb
  sudo mkdir -p /etc/influxdb
@@ -511,4 +513,51 @@ restore again
 
 
 works
+
+
+
+
+
+--network="host"
+
+docker run -d --restart=always --net=container: --user 998:98 --name=telegraf \
+-v /share/CACHEDEV1_DATA/data/telegraf/conf/:/etc/telegraf/ \
+telegraf \
+-config /etc/telegraf/telegraf.conf
+
+
+sudo chown influxdb:influxdb /share/CACHEDEV1_DATA/data/influx/*
+
+docker run --restart=always  -d -p 8086:8086  --user 999:99 --name=influxdb \
+-v /share/CACHEDEV1_DATA/data/influx/config/influxdb.conf:/etc/influxdb/influxdb.conf \
+-v /share/CACHEDEV1_DATA/data/influx/data:/var/lib/influxdb \
+influxdb \
+-config /etc/influxdb/influxdb.conf
+
+
+
+### issues with influx permissions
+restart influx from scratch
+
+cat /etc/passwd | grep influxdb
+influxdb:x:999:99::/share/homes/influxdb:/bin/false
+
+sudo chown influxdb:influxdb /share/CACHEDEV1_DATA/data/influx/*
+
+docker run   -d -p 8086:8086  --user 999:99 --name=influxdb \
+-v /share/CACHEDEV1_DATA/data/influx/config/influxdb.conf:/etc/influxdb/influxdb.conf \
+-v /share/CACHEDEV1_DATA/data/influx/data:/var/lib/influxdb \
+influxdb \
+-config /etc/influxdb/influxdb.conf
+
+
+ influxd backup \
+   -portable \
+   -host 192.168.0.63:8088 \
+   -database home \
+   /var/lib/influxdb/backups/export-home-04/
+
+ influxd restore \
+   -portable \
+   /var/lib/influxdb/backups/export-home-04/
 

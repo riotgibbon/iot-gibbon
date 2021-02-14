@@ -30,6 +30,9 @@ chunks_head  lock  queries.active  wal
 
 works
 
+sudo docker run -p 9090:9090 --volume /media/1f73286b-47a7-4ffa-9f0a-5c2a43c964a2/data/prometheus:/prometheus prom/prometheus
+
+
 ## MQTT
 
 https://frederic-hemberger.de/notes/prometheus/monitoring-temperature-and-humidity-with-mqtt/

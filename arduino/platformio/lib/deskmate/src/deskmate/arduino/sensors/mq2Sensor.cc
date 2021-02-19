@@ -10,7 +10,7 @@
 #define         Pin                     (A0)  //Analog input 3 of your arduino
 /***********************Software Related Macros************************************/
 #define         Type                    ("MQ-2") //MQ2
-#define         Voltage_Resolution     (3.3)// (5)
+#define         Voltage_Resolution     (5)
 #define         ADC_Bit_Resolution      (10) // For arduino UNO/MEGA/NANO
 #define         RatioMQ2CleanAir        (9.83) //RS / R0 = 9.83 ppm 
 

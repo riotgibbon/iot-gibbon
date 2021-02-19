@@ -48,41 +48,10 @@ namespace deskmate
             {
                 _location = location;
                 _sensorType = "soilMoisture";
-                // _plant = plant;
-                // _plantIndex = plantIndex;
-                // _sensors = sensors;
-
-                // // _address = deviceAddress;
-
-                // OneWire oneWire(ONE_WIRE_BUS);
-
-                // // // Pass our oneWire reference to Dallas Temperature.
-                // // sensors(= new Da (&oneWire);
-                // // sensors.begin();
-                // _sensors =  DallasTemperature(&oneWire);
-                // _sensors.begin();
-                // // locate devices on the bus
-                // Serial.println("Locating devices...");
-                // Serial.print("Found ");
-                // int deviceCount = _sensors.getDeviceCount();
-                // Serial.print(deviceCount, DEC);
-                // Serial.println(" devices.");
-                // Serial.println("");
-
-                // Serial.println("Printing addresses...");
-                // for (int i = 0; i < deviceCount; i++)
-                // {
-                //     DeviceAddress Thermometer;
-                //     Serial.print("Sensor ");
-                //     Serial.print(i);
-                //     Serial.print(" : ");
-                //     _sensors.getAddress(Thermometer, i);
-                //     printAddress(Thermometer);
-                // }
+             
             }
 
-            // namespace sensors
-            //"home/tele/soilmoisture/livingroom/yucca";
+
             std::string soilTemperature::getTopic(std::string plant)
             {
                 std::string mode = "home";
@@ -90,11 +59,6 @@ namespace deskmate
                 // Serial.println(topic.c_str());
                 return topic;
             }
-
-            // void getTemperature(DeviceAddress deviceAddress)
-            // {
-            //     float tempC = _sensors.getTempC(deviceAddress);
-            // }
 
 
             void soilTemperature::readAndSend(std::string plant, DeviceAddress address, DallasTemperature sensors,  deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_)
@@ -135,59 +99,7 @@ namespace deskmate
                 readAndSend("aralia", arialaAddress, sensors, mqtt_buffer_);
                 readAndSend("yucca", yuccaAddress, sensors, mqtt_buffer_);
 
-                
-                // float tempC = sensors.getTempC(address);
-                // Serial.print(plant.c_str());        
-                // Serial.print(" - ");
-                //  Serial.print(tempC);
-                //  Serial.println("C ");
-                // // address
-                // Serial.print(getPlantDetails().c_str());
-                // Serial.print(", index: ");
-                // Serial.print(_plantIndex);
-                // Serial.print(" - ");
-
-
-                // Serial.println("Locating devices...");
-                // Serial.print("Found ");
-                // int deviceCount = sensors.getDeviceCount();
-                // Serial.print(deviceCount, DEC);
-                // Serial.println(" devices.");
-                // Serial.println("");
-
-                // Serial.println("Printing addresses...");
-                // for (int i = 0; i < deviceCount; i++)
-                // {
-                //     DeviceAddress Thermometer;
-                //     Serial.print("Sensor ");
-                //     Serial.print(i);
-                //     Serial.print(" : ");
-                //     double tempC = sensors.getTempCByIndex(i);
-                //     Serial.print(tempC);
-                //     Serial.print("C : ");
-                //      sensors.getAddress(Thermometer, i);
-                //     printAddress(Thermometer);
-                // }
-
-                // OneWire oneWire(ONE_WIRE_BUS);
-
-                // Pass our oneWire reference to Dallas Temperature.
-                // DallasTemperature sensors(&oneWire);
-                // sensors.begin();
-                // double tempC = _sensors.getTempCByIndex(_plantIndex);
-                // DeviceAddress bonsaiThermometer = {0x28, 0x6D, 0xEB, 0x19, 0x4E, 0x20, 0x01, 0xCC};
-                // // double tempC = _sensors.getTempC(bonsaiThermometer);
-                // // float tempC = getTemperature(_address);
-                // Serial.print(tempC);
-                // Serial.print((char)176);
-                // Serial.println("C");
-
-
-
-                // MQTTMessage message;
-                // message.topic = getTopic();
-                // message.payload = std::to_string(val);
-                // mqtt_buffer_->Publish(message);
+  
             };
         } // namespace sensors
     }     // namespace arduino

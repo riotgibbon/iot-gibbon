@@ -15,6 +15,7 @@
 #include "deskmate/arduino/sensors/mq9Sensor.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include "deskmate/arduino/sensors/veml6075.h"
 
 using deskmate::app::App;
 
@@ -23,6 +24,8 @@ using deskmate::arduino::sensors::si7021;
 using deskmate::arduino::sensors::soilMoisture;
 using deskmate::arduino::sensors::soilTemperature;
 using deskmate::arduino::sensors::mq9Sensor;
+using deskmate::arduino::sensors::veml6075;
+
 
 void setup()
 {
@@ -43,13 +46,13 @@ void setup()
   app.addSensor(new soilMoisture(location, "yucca", A3, 3));
   app.addSensor(new soilTemperature( location));
   app.addSensor(new mq9Sensor(windowLocation,A4));
-
+  app.addSensor(new veml6075(windowLocation));
   // app.addSensor(new guvas12sd(windowLocation, A6));
 
   Serial.println("Everything setup");
 
   Serial.print("created ");
-  // Serial.println( sensor_si7021->getType().c_str());
+  
   while (true)
   {
     //wifi_manager.MaybeReconnect();

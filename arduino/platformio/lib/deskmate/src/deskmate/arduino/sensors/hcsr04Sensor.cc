@@ -45,41 +45,7 @@ namespace deskmate {
              Serial.print("Initialising hcsr04 sensor for ");
              Serial.println(_location.c_str());
             Serial.println(hcsr04.ToString());
-            // Serial.println("dummy si7021 reading");
-            // float temperature = 0;
-            // float humidity = 0;
-            // temperature=sensor.readTemperature();
-            // char tempString[8];
-            // dtostrf(temperature, 1, 2, tempString);    
-            // humidity=sensor.readHumidity();
-            // char humString[8];
-            // dtostrf(humidity, 1, 2, humString);
-
-            // Serial.print("Humidity:    ");
-            // Serial.print(humString);
-            // Serial.print("\tTemperature: ");
-            // Serial.println(tempString);
-
-            // readings thisReading;
-            // thisReading.temperature=tempString;
-            // thisReading.humidity=humString;
-            
-            // std::string metricTemp = "temperature";
-            // std::string metricHumidity = "humidity";
-
-            // MQTTMessage temperatureMessage;
-            // temperatureMessage.topic = getTopic(metricTemp);
-            // temperatureMessage.payload=thisReading.temperature;
-
-            // MQTTMessage humidityMessage;
-            // humidityMessage.topic=getTopic(metricHumidity);
-            // humidityMessage.payload =thisReading.humidity;  
-            
-            
-            // // mqtt_buffer_->Tick();
-            // mqtt_buffer_->Publish(temperatureMessage);
-            // mqtt_buffer_->Publish(humidityMessage);
-        
+  
                 };
             }
         }

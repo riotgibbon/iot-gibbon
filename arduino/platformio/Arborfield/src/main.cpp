@@ -15,6 +15,9 @@
 
 #include "deskmate/arduino/sensors/guvas12sd.h"
 
+#include "deskmate/arduino/sensors/veml7700.h"
+using deskmate::arduino::sensors::veml7700;
+
 #include "deskmate/arduino/sensors/veml6075.h"
 using deskmate::arduino::sensors::veml6075;
 using deskmate::arduino::sensors::guvas12sd;
@@ -40,7 +43,8 @@ void setup() {
   App app( location, device);
   app.Init();
   // app.addSensor(myHcsr04);
- app.addSensor(new veml6075(location));
+  // app.addSensor(new veml6075(location));
+  app.addSensor(new veml7700(location));
   while (true) {
     // wifi_manager.MaybeReconnect();
     app.Tick();

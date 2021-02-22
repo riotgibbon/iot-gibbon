@@ -35,6 +35,8 @@ namespace deskmate {
                         std::string s = dtostrf(value, 1, 2, buffer);
                         return s;
                     }
+
+                    
             };
 
 

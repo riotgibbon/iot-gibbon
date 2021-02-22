@@ -11,6 +11,10 @@
 #include "deskmate/arduino/sensors/si7021.h"
 #include "deskmate/arduino/sensors/mq135Sensor.h"
 
+#include "deskmate/arduino/sensors/veml7700.h"
+using deskmate::arduino::sensors::veml7700;
+
+
 using deskmate::app::App;
 
 
@@ -26,14 +30,11 @@ void setup() {
   std::string device  = "esp32";  
   std::string location  = "kitchen";
 
-
-   si7021 *sensor_si7021 = new si7021(location);  
-  //  mq9Sensor *mq9 = new mq9Sensor(location); 
-
   App app(location,device);
   app.Init();
-  app.addSensor(sensor_si7021);
-  app.addSensor(new mq135Sensor(location, A0));
+  app.addSensor(new si7021(location));
+  app.addSensor(new mq135Sensor(location, A0 ));
+  app.addSensor(new veml7700(location));
   while (true) {
     //wifi_manager.MaybeReconnect();
     app.Tick();

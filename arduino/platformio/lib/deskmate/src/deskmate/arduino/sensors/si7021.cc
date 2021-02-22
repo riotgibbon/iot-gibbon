@@ -76,33 +76,23 @@ namespace deskmate {
             return topic;
         }
  
-        std::string floatToString(float value){
-            char buffer[5];
-            std::string s = dtostrf(value, 1, 2, buffer);
-            return s;
-        }
+
+        void si7021::readAndSend(std::string metric, float reading,  deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_){
+                
+                Serial.print("Reading : ");
+                Serial.print(metric.c_str());
+                Serial.print(" : ");
+                Serial.println(reading);
+                MQTTMessage message;
+                message.topic = getTopic(metric);
+                message.payload = floatToString(reading);
+                mqtt_buffer_->Publish(message);
+            }
 
          void si7021::read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_ )  {
                 if (_isConnected) {  
-                
-                    //need to do this for some reason, otherwise results won't display
-                    char buffer[5];
-                    String t = dtostrf(0.0, 1, 4, buffer);
-
-                    std::string metricTemp = "temperature";
-                    std::string metricHumidity = "humidity";
-
-                    MQTTMessage temperatureMessage;
-                    temperatureMessage.topic = getTopic(metricTemp);
-                    temperatureMessage.payload = floatToString(sensor->readTemperature());
-
-                    MQTTMessage humidityMessage;
-                    humidityMessage.topic=getTopic(metricHumidity);
-                    humidityMessage.payload =floatToString(sensor->readHumidity());  
-                    
-
-                    mqtt_buffer_->Publish(temperatureMessage);
-                    mqtt_buffer_->Publish(humidityMessage);
+                    readAndSend("temperature", sensor->readTemperature(),mqtt_buffer_ );
+                    readAndSend("humidity", sensor->readHumidity(),mqtt_buffer_ );  
                 }
                 else
                 {

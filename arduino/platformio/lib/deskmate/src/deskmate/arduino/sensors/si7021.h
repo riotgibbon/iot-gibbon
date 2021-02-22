@@ -16,8 +16,9 @@ namespace deskmate {
                     // virtual std::string getType() override;
                 private:
                     Adafruit_Si7021 *sensor;
+                     void readAndSend(std::string metric, float reading,  deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_);
+           
                     
-                    // std::string location;
                     std::string getTopic(std::string metric);
             };
         }

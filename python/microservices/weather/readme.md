@@ -49,3 +49,12 @@ https://rapidapi.com/community/api/open-weather-map/endpoints
    "cod":200
 }
 
+
+
+## Air Quality
+
+OpenAQ
+
+Windsor closest
+https://openaq.org/#/location/69795
+

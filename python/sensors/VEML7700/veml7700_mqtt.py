@@ -26,7 +26,7 @@ locationSensor = f"{location}/{sensor}"
 
 logroot = 'logs'
 os.makedirs (logroot,exist_ok=True)
-logger = logging.getLogger(locationSensor)
+logger = logging.getLogger(sensor)
 logname = datetime.now().strftime(f"{locationSensor}_%Y-%m-%d.log")
 logpath = os.path.join(logroot,logname)
 hdlr = logging.FileHandler(logpath)

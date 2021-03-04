@@ -108,7 +108,7 @@ void App::addSensor(sensor* newSensor){
 
 
 bool App::Tick() {
-
+  
   wifi_manager_->MaybeReconnect();
 
 
@@ -123,7 +123,6 @@ bool App::Tick() {
 
     std::vector<sensor*>::iterator it = sensors.begin();
       while(it != sensors.end()){
-      // (*it++)->execute();
       Serial.print ("reading sensor: ");
       Serial.print((*it)->getType().c_str());
       Serial.print("-");
@@ -134,10 +133,7 @@ bool App::Tick() {
 
     startMillis = currentMillis; 
   }
-  // GetReadings();
-  // display_->Clear();
-  // window_->Render(display_);
-  // display_->Refresh();
+
   return true;
 }
 

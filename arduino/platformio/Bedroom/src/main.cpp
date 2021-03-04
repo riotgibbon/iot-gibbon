@@ -18,7 +18,7 @@ using deskmate::app::App;
 void setup() {
   Serial.begin(9600);
 
-  std::string device  = "esp32";  
+  std::string device  = "ESP8266";  
   std::string location  = "bedroom";
 
 

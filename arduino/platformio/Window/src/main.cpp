@@ -1,9 +1,5 @@
 #include <Arduino.h>
 
-// #include <queue>
-// #include <string>
-// #include <vector>
-
 #include <DallasTemperature.h>
 
 #include "deskmate/app/app.h"
@@ -38,7 +34,7 @@ void setup()
 
   App app(windowLocation, device);
   app.Init();
-
+  app.setLEDPin(LED_BUILTIN);
   app.addSensor(new si7021(windowLocation));
   app.addSensor(new soilMoisture(location, "bonsai", A0, 0));
   app.addSensor(new soilMoisture(location, "amaryllis", A1, 1));

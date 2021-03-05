@@ -104,11 +104,12 @@ void App::addSensor(sensor* newSensor){
 
   void App::setLEDPin(int ledPin){
     _ledPin=ledPin;
+    // pinMode(_ledPin, OUTPUT);
   }
 
 
 bool App::Tick() {
-  
+  digitalWrite(_ledPin, LOW); 
   wifi_manager_->MaybeReconnect();
 
 
@@ -133,6 +134,7 @@ bool App::Tick() {
 
     startMillis = currentMillis; 
   }
+  digitalWrite(_ledPin, LOW); 
 
   return true;
 }

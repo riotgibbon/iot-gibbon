@@ -26,6 +26,7 @@ void setup() {
 // mq135Sensor *sensormq135Sensor= new mq135Sensor(location,A0);
   App app(location,device);
   app.Init();
+  app.setLEDPin(LED_BUILTIN);
   app.addSensor(new si7021(location));
   // app.addSensor(new mq135Sensor(location));
   app.addSensor(new mq135Sensor(location,A0));

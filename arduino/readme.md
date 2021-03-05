@@ -12,4 +12,7 @@ https://docs.platformio.org/en/latest/boards/espressif32/az-delivery-devkit-v4.h
 SDA - 21
 SCL - 22
 
-                                         
+## NodeMCU_Lua_Lolin_V3
+
+SDA - D2
+SCL - D1                                         

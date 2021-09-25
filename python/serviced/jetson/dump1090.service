@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/bin/bash -c '/home/toby/github/dump1090/dump1090 --net --net-beast --interactive'
+ExecStart=/bin/bash -c '/home/toby/github/dump1090/dump1090 --net --net-beast'
 Restart=always
 RestartSec=10s
 KillMode=process

@@ -1,0 +1,14 @@
+[Unit]
+Description=dump1090 client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/bin/bash -c '/home/toby/github/dump1090/dump1090 --net --net-beast --interactive'
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+
+[Install]
+WantedBy=multi-user.target

@@ -18,7 +18,7 @@ class ADSBClient(TcpClient):
 
     def __init__(self, host, port, rawtype):
         super(ADSBClient, self).__init__(host, port, rawtype)
-        self.producer = KafkaProducer(bootstrap_servers=['localhost:29092'], api_version=(0,11,5), value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+        self.producer = KafkaProducer(bootstrap_servers=['192.168.0.46:29092'], api_version=(0,11,5), value_serializer=lambda v: json.dumps(v).encode('utf-8'))
         # self.producer = KafkaProducer(bootstrap_servers=['localhost:29092'], api_version=(0,11,5))
 
     def handle_messages(self, messages):
@@ -82,5 +82,5 @@ class ADSBClient(TcpClient):
                 # self.producer.send('flights',  b'some_message_bytes')
                 self.producer.send('flights', flight)
 # run new client, change the host, port, and rawtype if needed
-client = ADSBClient(host='192.168.0.53', port=30002, rawtype='raw')
+client = ADSBClient(host='localhost', port=30002, rawtype='raw')
 client.run()

@@ -79,7 +79,7 @@ class ADSBClient(TcpClient):
                 updated = True
 
             if updated:
-                flight['updated']=datetime.utcnow().isoformat(sep=' ', timespec='milliseconds')
+                flight['updated']=datetime.now().isoformat(sep=' ', timespec='milliseconds')
                 self.flights[icao]=flight
                 print (f"{self.count}: flights: {len(self.flights)}, {flight}")
                 self.producer.send(self.args.kafkaTopic, flight)

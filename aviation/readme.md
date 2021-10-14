@@ -162,3 +162,85 @@ optional arguments:
                         Kafka topic
 
   python3 /home/toby/github/iot-gibbon/aviation/dump1090.py -ah localhost -k 192.168.0.46:9092 -kt flights_jetson
+
+
+
+  ## Vertica integration
+
+  from Kafka - https://docs.confluent.io/5.5.1/connect/kafka-connect-vertica/sink/index.html
+
+  30 day connector
+
+
+  from Vertica
+  https://www.vertica.com/docs/10.0.x/HTML/Content/Authoring/KafkaIntegrationGuide/AutomaticallyCopyingDataFromKafka.htm#0
+
+  run manual first
+  https://www.vertica.com/docs/10.0.x/HTML/Content/Authoring/KafkaIntegrationGuide/ManuallyCopyingDataExample.htm?TocPath=Integrating%20with%20Apache%20Kafka|Manually%20Copying%20Data%20From%20Kafka|_____1
+
+  use a Flex table - will dynamically create according to incoming data
+
+
+
+
+COPY flights SOURCE KafkaSource(stream='flights_jetson|0|-2',
+                                                                       brokers='192.168.0.46:9092',
+                                                                       duration=interval '10000 milliseconds')
+                                                    PARSER KafkaJSONParser()
+                                                    REJECTED DATA AS TABLE public.flights_rejections
+[2021-10-14 11:29:53] 107,786 rows affected in 10 s 247 ms
+
+
+SELECT compute_flextable_keys('flights');
+
+select * from flights_keys;
+
+| key\_name | frequency | data\_type\_guess |
+| :--- | :--- | :--- |
+| GS | 107222 | Integer |
+| altitude | 107264 | Integer |
+| callsign | 101582 | Varchar\(20\) |
+| icao | 107786 | Varchar\(20\) |
+| updated | 107786 | Timestamp |
+| lat | 107264 | Numeric\(10,6\) |
+| lon | 107264 | Numeric\(9,6\) |
+
+
+
+## Automated Kafka>Vertica ingest
+https://www.vertica.com/docs/10.0.x/HTML/Content/Authoring/KafkaIntegrationGuide/AutomaticallyCopyingDataFromKafka.htm
+https://www.vertica.com/docs/10.0.x/HTML/Content/Authoring/KafkaIntegrationGuide/SettingUpAScheduler.htm
+
+config file - written to /home/dbadmin/docker/flights.conf
+
+```
+username=dbadmin
+password=
+dbhost=192.168.0.46
+dbport=5433
+config-schema=docker
+```
+
+
+CREATE RESOURCE POOL flights_pool MEMORYSIZE '10%' PLANNEDCONCURRENCY 1 QUEUETIMEOUT 0;
+
+
+add to path
+export PATH=/opt/vertica/packages/kafka/bin:$PATH
+
+vkconfig scheduler --create --config-schema docker --operator dbadmin  --conf /home/dbadmin/docker/flights.conf
+vkconfig cluster --create --cluster kafka_flights --hosts 192.168.0.46:9092 --conf /home/dbadmin/docker/flights.conf
+vkconfig source --create --cluster kafka_flights --source flights_jetson --partitions 1 --conf /home/dbadmin/docker/flights.conf
+vkconfig target --create --target-schema public --target-table flights --conf /home/dbadmin/docker/flights.conf
+vkconfig load-spec --create --parser KafkaJSONParser --load-spec flights_load --conf /home/dbadmin/docker/flights.conf
+vkconfig microbatch --create --microbatch flights --target-schema public --target-table flights \
+           --add-source flights_jetson --add-source-cluster kafka_flights --load-spec flights_load \
+           --conf /home/dbadmin/docker/flights.conf
+
+  nohup vkconfig launch --conf /home/dbadmin/docker/flights.conf >/dev/null 2>&1 & 
+
+
+  updated startup script : `/docker-entrypoint.sh`
+
+  added vklconfig launch - everything else already setup. Starts automatically
+

@@ -3,7 +3,8 @@ from pyModeS.extra.tcpclient import TcpClient
 from datetime import datetime
 import json
 from kafka import KafkaProducer
-
+import argparse
+import sys
 
 lat_ref, lon_ref = 51.50307, -0.59729
 format_string = "%d/%m/%y %H:%M:%S.%f"
@@ -15,11 +16,14 @@ class ADSBClient(TcpClient):
     flights = {}
     count=0
     producer=''
+    args = {}
 
-    def __init__(self, host, port, rawtype):
-        super(ADSBClient, self).__init__(host, port, rawtype)
-        self.producer = KafkaProducer(bootstrap_servers=['192.168.0.46:29092'], api_version=(0,11,5), value_serializer=lambda v: json.dumps(v).encode('utf-8'))
-        # self.producer = KafkaProducer(bootstrap_servers=['localhost:29092'], api_version=(0,11,5))
+
+    def __init__(self, args):
+        super(ADSBClient, self).__init__(args.host, args.port, args.rawtype)
+        self.args = args
+        self.producer = KafkaProducer(bootstrap_servers=[args.kafkaHost], api_version=(0,11,5), value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+
 
     def handle_messages(self, messages):
         for msg, ts in messages:
@@ -77,10 +81,38 @@ class ADSBClient(TcpClient):
             if updated:
                 flight['updated']=datetime.utcnow().isoformat(sep=' ', timespec='milliseconds')
                 self.flights[icao]=flight
-                # print (flight)
                 print (f"{self.count}: flights: {len(self.flights)}, {flight}")
-                # self.producer.send('flights',  b'some_message_bytes')
-                self.producer.send('flights', flight)
-# run new client, change the host, port, and rawtype if needed
-client = ADSBClient(host='localhost', port=30002, rawtype='raw')
-client.run()
+                self.producer.send(self.args.kafkaTopic, flight)
+
+def check_positive(value):
+    ivalue = int(value)
+    if ivalue <= 0:
+        raise argparse.ArgumentTypeError("%s is an invalid positive int value" % value)
+    return ivalue
+
+
+def parse_args(args):
+    parser = argparse.ArgumentParser()
+    localhost = 'localhost'
+    parser.add_argument("-ah", "--host", help="ADS-B 1090 host", default=localhost)
+    parser.add_argument("-hp", "--port", help="ADS-B 1090 host port", type=check_positive, default=30002)
+    parser.add_argument("-rt", "--rawtype", help="ADS-B 1090 raw type", choices =['raw','beast'], default='raw')
+    parser.add_argument("-k", "--kafkaHost", help="Kafka bootstap host",  default='localhost:9092')
+    parser.add_argument("-kt", "--kafkaTopic", help="Kafka topic",  default='flights')
+
+
+    return parser.parse_args(args)
+
+if __name__ == '__main__':
+    parsed_args = parse_args(sys.argv[1:])
+    print(parsed_args)
+    # run new client, change the host, port, and rawtype if needed
+    client = ADSBClient(parsed_args)
+    # client = ADSBClient(host='localhost', port=30002, rawtype='raw')
+    client.run()
+
+
+
+        # loop = asyncio.get_event_loop()
+        # loop.run_until_complete(main(sys.argv))
+    # sys.exit(main(sys.argv))

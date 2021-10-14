@@ -110,7 +110,55 @@ sudo docker run \
 
 
 ## Kafka
+https://kafka-python.readthedocs.io/en/master/
+
+
+
 
  bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
 
   bin/kafka-console-consumer.sh --topic flights --from-beginning --bootstrap-server localhost:29092
+
+
+  https://github.com/wurstmeister/kafka-docker
+
+```
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    build: .
+    ports:
+      - "9092:9092"
+    environment:
+      DOCKER_API_VERSION: 1.22
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.0.46
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+
+## dump1090
+
+toby@jet-2gibbon:~/github/iot-gibbon/aviation$ python3 dump1090.py -h
+usage: dump1090.py [-h] [-ah HOST] [-hp PORT] [-rt {raw,beast}] [-k KAFKAHOST]
+                   [-kt KAFKATOPIC]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -ah HOST, --host HOST
+                        ADS-B 1090 host
+  -hp PORT, --port PORT
+                        ADS-B 1090 host port
+  -rt {raw,beast}, --rawtype {raw,beast}
+                        ADS-B 1090 raw type
+  -k KAFKAHOST, --kafkaHost KAFKAHOST
+                        Kafka bootstap host
+  -kt KAFKATOPIC, --kafkaTopic KAFKATOPIC
+                        Kafka topic
+
+  python3 /home/toby/github/iot-gibbon/aviation/dump1090.py -ah localhost -k 192.168.0.46:9092 -kt flights_jetson

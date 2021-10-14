@@ -1,19 +1,21 @@
 import pyModeS as pms
 from pyModeS.extra.tcpclient import TcpClient
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from kafka import KafkaProducer
 import argparse
 import sys
+import cachetools
+
 
 lat_ref, lon_ref = 51.50307, -0.59729
 format_string = "%d/%m/%y %H:%M:%S.%f"
 
 # define your custom class by extending the TcpClient
-#   - implement your handle_messages() methods
+#   - implement your handle_messages() methods∂
 class ADSBClient(TcpClient):
 
-    flights = {}
+    flights = cachetools.TTLCache(maxsize=256, ttl=30*60)
     count=0
     producer=''
     args = {}
@@ -80,7 +82,7 @@ class ADSBClient(TcpClient):
 
             if updated:
                 flight['updated']=datetime.now().isoformat(sep=' ', timespec='milliseconds')
-                self.flights[icao]=flight
+                self.flights.__setitem__(icao,flight)
                 print (f"{self.count}: flights: {len(self.flights)}, {flight}")
                 self.producer.send(self.args.kafkaTopic, flight)
 

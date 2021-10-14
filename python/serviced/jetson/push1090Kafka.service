@@ -1,0 +1,15 @@
+[Unit]
+Description=push1090Kafka client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/bin/bash -c 'python3 /home/toby/github/iot-gibbon/aviation/push1090Kafka.py -ah localhost -k 192.168.0.46:9092 -kt flights_jetson'
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+User=toby
+
+[Install]
+WantedBy=multi-user.target

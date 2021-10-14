@@ -15,7 +15,7 @@ format_string = "%d/%m/%y %H:%M:%S.%f"
 #   - implement your handle_messages() methods∂
 class ADSBClient(TcpClient):
 
-    flights = cachetools.TTLCache(maxsize=256, ttl=30*60)
+    flights = cachetools.TTLCache(maxsize=256, ttl=20*60)
     count=0
     producer=''
     args = {}

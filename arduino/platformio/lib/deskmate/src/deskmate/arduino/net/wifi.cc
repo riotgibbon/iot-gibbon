@@ -22,7 +22,7 @@ namespace net {
 namespace {
 constexpr int kMaxWaitForConnectionMS = 1000;
 constexpr int kConnectionLoopDelay = 500;
-constexpr int kConnectionTries = 1000;
+constexpr int kConnectionTries = 10;
 
 
 #ifdef ARDUINO_SAMD_MKRWIFI1010
@@ -72,7 +72,7 @@ bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
 // For some reason, my uc (esp32) fails to connect every other time. This
 // re-begin() approach seems to work, although it's not very  elegant.
 bool WiFiManager::Connect() {
-  while(true){
+  for (int i = 0; i < kConnectionTries; i++) {
     if (WiFiTryToConnectOnce(ssid_, password_)) {
       return true;
     }

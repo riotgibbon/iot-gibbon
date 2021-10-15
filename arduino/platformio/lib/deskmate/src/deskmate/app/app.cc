@@ -99,7 +99,7 @@ void App::addSensor(sensor* newSensor){
     Serial.print(" location: ");
     Serial.println(newSensor->getLocation().c_str());
     
-    sensors.push_back(newSensor);
+    if (newSensor->isConnected()) sensors.push_back(newSensor);
 }
 
   void App::setLEDPin(int ledPin){
@@ -110,30 +110,45 @@ void App::addSensor(sensor* newSensor){
 
 bool App::Tick() {
   digitalWrite(_ledPin, LOW); 
-  wifi_manager_->MaybeReconnect();
+  // try {
+    wifi_manager_->MaybeReconnect();
 
 
-  mqtt_buffer_->Tick();
+    mqtt_buffer_->Tick();
 
-  currentMillis = millis();  //get the current "time" (actually the number of milliseconds since the program started)
-  if (currentMillis - startMillis >= period)  //test whether the period has elapsed
-  {
-    Serial.println("reading loop");
-    digitalWrite(_ledPin, HIGH); 
+    currentMillis = millis();  //get the current "time" (actually the number of milliseconds since the program started)
+    if (currentMillis - startMillis >= period)  //test whether the period has elapsed
+    {
+      Serial.println("reading loop");
+      digitalWrite(_ledPin, HIGH); 
 
 
-    std::vector<sensor*>::iterator it = sensors.begin();
-      while(it != sensors.end()){
-      Serial.print ("reading sensor: ");
-      Serial.print((*it)->getType().c_str());
-      Serial.print("-");
-      Serial.println((*it)->getLocation().c_str());
-      (*it++)->read(mqtt_buffer_);
+      std::vector<sensor*>::iterator it = sensors.begin();
+        while(it != sensors.end()){
+        Serial.print ("reading sensor: ");
+        Serial.print((*it)->getType().c_str());
+        Serial.print("-");
+        Serial.println((*it)->getLocation().c_str());
+        (*it++)->read(mqtt_buffer_);
+      }
+      digitalWrite(_ledPin, LOW); 
+
+      startMillis = currentMillis; 
     }
-    digitalWrite(_ledPin, LOW); 
+  // }
+  // catch (const std::exception& e) { // caught by reference to base
+  //   MQTTMessage msg;
+  //   msg.topic="error"+ _device + "/" + _location;
+  //   msg.payload=e.what();
+  //   mqtt_buffer_->Publish(msg);
+  //  }
 
-    startMillis = currentMillis; 
-  }
+  // catch (...) {
+  //   MQTTMessage msg;
+  //   msg.topic="error"+ _device + "/" + _location;
+  //   msg.payload="unknown error";
+  //   mqtt_buffer_->Publish(msg);
+  // }
   digitalWrite(_ledPin, LOW); 
 
   return true;

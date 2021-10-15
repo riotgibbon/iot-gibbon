@@ -1,6 +1,6 @@
-#define PRE_PIN          8
+#define PRE_PIN          5
 #define VNOX_PIN         A0
-#define VRED_PIN         A3
+//#define VRED_PIN         A3
 
 #define PRE_HEAT_SECONDS 10
 
@@ -36,11 +36,11 @@ void loop() {
   
   // Read analog values, print them out, and wait
   vnox_value = analogRead(VNOX_PIN);
-  vred_value = analogRead(VRED_PIN);
+//  vred_value = analogRead(VRED_PIN);
   Serial.print("Vnox: ");
   Serial.print(vnox_value, DEC);
-  Serial.print(" Vred: ");
-  Serial.println(vred_value, DEC);
+//  Serial.print(" Vred: ");
+//  Serial.println(vred_value, DEC);
 
   int NO2rawInput = vnox_value;
   NO2resistance = NO2seriesResistor * ((1023.0 / NO2rawInput) - 1.0);

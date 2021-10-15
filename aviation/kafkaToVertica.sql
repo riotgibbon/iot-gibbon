@@ -18,37 +18,46 @@ order by updated desc
 
 ;
 
+-- 4C01E0 landing
+-- 4076CD takeoff
+
 select count(*) from flights;
 
-select icao, callsign,flightDate, direction,
-case when direction ='takeoff' then min(updated) else max(updated) end as directionTime,
-min(altitude::INT) as minAltitude
-from (
-                                                        select *,
-                                                               case when firstAltitude > lastAltitude then 'landing' else 'takeoff' END as direction
+select flightDate, direction, count(*) from (
+                                                select icao,
+                                                       callsign,
+                                                       flightDate,
+                                                       direction,
+                                                       case when direction = 'takeoff' then min(updated) else max(updated) end as directionTime,
+                                                       min(altitude::INT)                                                      as minAltitude
+                                                from (
+                                                         select *,
+                                                                case when firstAltitude > lastAltitude then 'landing' else 'takeoff' END as direction
 
-                                                        from (
-                                                                 select icao,
-                                                                        callsign,
-                                                                        lat,
-                                                                        lon,
-                                                                        updated,
-                                                                        altitude,
-                                                                        date(updated::TIMESTAMP)                                                     as flightDate,
-                                                                        FIRST_VALUE(altitude::INT)
-                                                                        OVER (PARTITION BY icao,callsign,date(updated::TIMESTAMP)   ORDER BY updated::TIMESTAMP)      as firstAltitude,
-                                                                        FIRST_VALUE(altitude::INT)
-                                                                        OVER (PARTITION BY icao,callsign,date(updated::TIMESTAMP)   ORDER BY updated::TIMESTAMP DESC) as lastAltitude
-                                                                 from flights
-                                                                 WHERE lat between 51.4 and 51.5
-                                                                   and lon between -0.58 and -0.09
-                                                                   and callsign is not null
+                                                         from (
+                                                                  select icao,
+                                                                         callsign,
+                                                                         lat,
+                                                                         lon,
+                                                                         updated,
+                                                                         altitude,
+                                                                         date(updated::TIMESTAMP)                                                                    as flightDate,
+                                                                         FIRST_VALUE(altitude::INT)
+                                                                         OVER (PARTITION BY icao,callsign,date(updated::TIMESTAMP) ORDER BY updated::TIMESTAMP)      as firstAltitude,
+                                                                         FIRST_VALUE(altitude::INT)
+                                                                         OVER (PARTITION BY icao,callsign,date(updated::TIMESTAMP) ORDER BY updated::TIMESTAMP DESC) as lastAltitude
+                                                                  from flights
+                                                                  WHERE lat between 51.4 and 51.5
+                                                                    and lon between -0.58 and -0.09
+                                                                    and callsign is not null
                                                                     and altitude::INT between 0 and 8000
-                                                                    and icao ='407462'
-                                                             ) as f
-                                                    ) as f2
-GROUP BY 1,2,3,4
-order by directionTime DESC;
+--                                                                     and icao ='407462'
+                                                              ) as f
+                                                     ) as f2
+                                                GROUP BY 1, 2, 3, 4
+                                                order by directionTime DESC
+                                            )f3
+group by 1,2;
 
 select * from (
                   select 51.45759 as lat, -0.10284 as lon

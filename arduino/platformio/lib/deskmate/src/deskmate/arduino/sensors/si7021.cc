@@ -51,7 +51,7 @@ namespace deskmate {
             Serial.print(" Serial #"); Serial.print(sensor->sernum_a, HEX); Serial.println(sensor->sernum_b, HEX);
             return true;
         }
-
+ 
         si7021::si7021(){
             _sensorType="si7021";
             si7021("kitchen");

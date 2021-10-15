@@ -30,6 +30,7 @@ sudo systemctl restart dump1090.service
 sudo systemctl restart push1090Kafka.service
 
 sudo systemctl stop dump1090.service
+sudo systemctl stop push1090Kafka.service
 
 status
 sudo systemctl status machinebeat.service

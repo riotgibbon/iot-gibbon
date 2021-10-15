@@ -22,6 +22,7 @@ namespace deskmate
             soilTemperature::soilTemperature()
             {
                 _sensorType = "soilTemperature";
+                _isConnected = true;
                 // hcsr04Sensor("flat");
             }
             // std::string soilTemperature::getPlantDetails()
@@ -48,7 +49,7 @@ namespace deskmate
             {
                 _location = location;
                 _sensorType = "soilMoisture";
-             
+                _isConnected = true;
             }
 
 

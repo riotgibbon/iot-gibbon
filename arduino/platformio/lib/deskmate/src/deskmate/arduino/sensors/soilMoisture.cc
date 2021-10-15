@@ -42,6 +42,7 @@ namespace deskmate
                 _analogPort = analogPort;
                 _digitalPort = digitalPort;
                 pinMode(_digitalPort, OUTPUT); //Set _digitalPort as an OUTPUT
+                _isConnected = true;
                 // InitSensor();
             }
             //"home/tele/soilmoisture/livingroom/yucca";

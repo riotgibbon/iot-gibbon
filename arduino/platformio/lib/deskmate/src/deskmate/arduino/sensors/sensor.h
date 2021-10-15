@@ -16,6 +16,9 @@ namespace deskmate {
                     std::string getType(){
                         return _sensorType;
                     };
+                    bool isConnected(){
+                        return _isConnected;
+                    }
                 protected:
                     std::string _location;
                     std::string _sensorType;

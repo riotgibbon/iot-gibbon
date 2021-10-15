@@ -13,8 +13,8 @@ services:
       KSQL_BOOTSTRAP_SERVERS: localhost:9092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-    # network_mode:
-    #   host
+    network_mode:
+      host
   ksqldb-cli:
     image: confluentinc/ksqldb-cli:0.21.0
     container_name: ksqldb-cli

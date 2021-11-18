@@ -16,7 +16,7 @@ moistureMin = 700
 moistureMax = 835
 
 # plants = ['aralia', 'amaryllis', 'bonsai', 'yucca']
-plants = ['yucca']
+plants = ['amaryllis', 'bonsai', 'yucca']
 plantTopics ="home/tele/soilmoisture/livingroom/"
 
 transitionTime = 20

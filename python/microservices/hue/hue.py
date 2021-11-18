@@ -12,8 +12,8 @@ converter = Converter()
 
 hueHigh = 65535
 hueLow = 0
-moistureMin = 700
-moistureMax = 835
+moistureMin = 500
+moistureMax = 700
 
 # plants = ['aralia', 'amaryllis', 'bonsai', 'yucca']
 plants = ['amaryllis', 'bonsai', 'yucca']

@@ -1,4 +1,7 @@
 adafruit-circuitpython-bme680
 bme680
 paho-mqtt
+phue
+influxdb
+rgbxy
 

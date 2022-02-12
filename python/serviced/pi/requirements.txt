@@ -5,3 +5,4 @@ phue
 influxdb
 rgbxy
 pimoroni-ioexpander
+adafruit-circuitpython-pm25

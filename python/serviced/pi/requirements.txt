@@ -6,3 +6,4 @@ influxdb
 rgbxy
 pimoroni-ioexpander
 adafruit-circuitpython-pm25
+adafruit_veml7700

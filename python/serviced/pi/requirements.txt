@@ -1,1 +1,4 @@
 adafruit-circuitpython-bme680
+bme680
+paho
+

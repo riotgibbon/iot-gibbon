@@ -185,8 +185,9 @@ while True:
         is_present =presentMean>0
 
         proximityVoltage =getTopicValue(result,'home/tele/proximityVoltage/livingroom/desk')
+        print(f"is_present: {is_present}")
         if is_present :
-            print(f"present: {present}")
+            
             if not was_present:
                 logging.info("Switching light on")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_On/with/key/d52lKnzf-xDid_NfD5tga-')

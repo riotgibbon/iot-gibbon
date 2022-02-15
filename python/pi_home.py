@@ -178,7 +178,7 @@ while True:
     today_time = now.strftime("%H:%M:%S")
     if today_time != today_last_time:
         result = client.query(query)
-        print(f"got data {result}")
+        # print(f"got data {result}")
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
         presentMean=getTopicValue(result,'home/tele/present/livingroom/desk')
@@ -186,6 +186,7 @@ while True:
 
         proximityVoltage =getTopicValue(result,'home/tele/proximityVoltage/livingroom/desk')
         if is_present :
+            print(f"present: {present}")
             if not was_present:
                 logging.info("Switching light on")
                 r = requests.get('https://maker.ifttt.com/trigger/Light_Desk_On/with/key/d52lKnzf-xDid_NfD5tga-')

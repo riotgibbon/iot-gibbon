@@ -7,3 +7,4 @@ rgbxy
 pimoroni-ioexpander
 adafruit-circuitpython-pm25
 adafruit-circuitpython-veml7700
+luma.oled

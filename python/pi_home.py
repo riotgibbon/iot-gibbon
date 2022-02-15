@@ -178,6 +178,7 @@ while True:
     today_time = now.strftime("%H:%M:%S")
     if today_time != today_last_time:
         result = client.query(query)
+        print(f"got data {result}")
         temperature =getTopicValue(result,'home/tele/temperature/livingroom/desk')
         humidity=getTopicValue(result,'home/tele/humidity/livingroom/desk')
         presentMean=getTopicValue(result,'home/tele/present/livingroom/desk')

@@ -20,6 +20,7 @@ def getInfluxClient(host='192.168.0.46', port=8086):
     password=''
     dbname = 'home'
     client = InfluxDBClient(host, port, user, password, dbname)
+    print (f"Got influx @{host}")
     return client
 
 

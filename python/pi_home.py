@@ -15,7 +15,7 @@ from luma.core.render import canvas
 import math
 from influxdb import InfluxDBClient
 
-def getInfluxClient(host='localhost', port=8086):
+def getInfluxClient(host='192.168.0.46', port=8086):
     user=''
     password=''
     dbname = 'home'

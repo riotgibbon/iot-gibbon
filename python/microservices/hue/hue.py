@@ -93,7 +93,8 @@ def getPressureIndex(client):
 
 
 def postToLights(plantName, reading):
-    lightId = 7
+    lightIds=[7,8]
+    # lightId = 7
     # light mapping:
     # get index of pressure
     pressureIndex = getPressureIndex(influxClient)/10
@@ -116,14 +117,15 @@ def postToLights(plantName, reading):
         
         command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':mappedTemperature, 'bri': mappedHumidity}
         print(command)
-        b.set_light(lightId,command)
-        # b.set_light(2,command)
+        for lightId in lightIds:
+            b.set_light(lightId,command)
+            # b.set_light(2,command)
 
-        lightInfo= b.get_light(lightId)
+            lightInfo= b.get_light(lightId)
 
-        xy = lightInfo['state']['xy']
-        x= xy[0]
-        y=xy[1]
+            xy = lightInfo['state']['xy']
+            x= xy[0]
+            y=xy[1]
 
         bri =mappedHumidity/254
 

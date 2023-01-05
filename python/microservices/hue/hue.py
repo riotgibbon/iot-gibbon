@@ -19,7 +19,7 @@ moistureMax = 700
 plants = ['amaryllis', 'bonsai', 'yucca']
 plantTopics ="home/tele/soilmoisture/livingroom/"
 
-transitionTime = 20
+transitionTime = 1200
 
 plantSeconds=180
 currentPlantCount=0

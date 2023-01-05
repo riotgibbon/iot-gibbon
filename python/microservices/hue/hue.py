@@ -19,7 +19,7 @@ plants = ['aralia', 'amaryllis', 'bonsai', 'yucca']
 # plants = ['amaryllis', 'bonsai', 'yucca']
 plantTopics ="home/tele/soilmoisture/livingroom/"
 
-transitionTime = 1200
+transitionTime = 120
 
 plantSeconds=180
 currentPlantCount=0

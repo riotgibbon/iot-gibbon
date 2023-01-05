@@ -12,11 +12,11 @@ converter = Converter()
 
 hueHigh = 65535
 hueLow = 0
-moistureMin = 500
-moistureMax = 700
+moistureMin = 200
+moistureMax = 900
 
-# plants = ['aralia', 'amaryllis', 'bonsai', 'yucca']
-plants = ['amaryllis', 'bonsai', 'yucca']
+plants = ['aralia', 'amaryllis', 'bonsai', 'yucca']
+# plants = ['amaryllis', 'bonsai', 'yucca']
 plantTopics ="home/tele/soilmoisture/livingroom/"
 
 transitionTime = 1200

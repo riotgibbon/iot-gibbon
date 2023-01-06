@@ -68,7 +68,7 @@ limit 1
             distance=row[3]
             print(f"icao: {icao} , altitude : {altitude}, speed: {speed}, distance : {distance}")
 
-            hueMappedValue =int(mapRange (altitude, 1000, 15000, hueLow, hueHigh))
+            hueMappedValue =int(mapRange (altitude, 500, 15000, hueLow, hueHigh))
             sat =int(mapRange (speed, 0, 600, 100,254))
             bri =int(mapRange (10000- distance, 0, 10000, 100,254))
             command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}

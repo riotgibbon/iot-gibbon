@@ -1,7 +1,7 @@
 import time
 import json
 from kafka import KafkaConsumer
-from pandas import DataFrame
+# from pandas import DataFrame
 from datetime import datetime
 import psycopg2
 

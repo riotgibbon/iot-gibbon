@@ -4,7 +4,7 @@ import psycopg2.extras
 from phue import Bridge  # https://github.com/studioimaginaire/phue
 import traceback
 
-sleepSeconds=30
+sleepSeconds=5
 
 CONNECTION = "postgres://postgres:password@192.168.0.46:5432/postgres"
 

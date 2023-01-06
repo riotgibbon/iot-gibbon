@@ -94,6 +94,7 @@ def getPressureIndex(client):
 
 def postToLights(plantName, reading):
     lightIds=[7]
+    
     # lightIds=[7,8]
     # lightId = 7
     # light mapping:

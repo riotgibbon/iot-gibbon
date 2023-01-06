@@ -88,17 +88,18 @@ limit 1
             updated=row[5]
             planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': updated}
             print(planeData)
-            maxDistance = 40000
+            maxDistance = 1000000
             maxAltitude=40000
 
             hueMappedValue =int(mapRange (altitude, 500, 40000, hueLow, hueHigh))
-            sat =int(mapRange (speed, 0, 600, 100,254))
+            sat =int(mapRange (speed, 0, 600, 50,254))
 
-            bri =int(mapRange (maxDistance- distance, 0, maxDistance, 100,254))
+            bri =int(mapRange (maxDistance- distance, 0, maxDistance, 50,254))
             command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}
             print(command)
             b.set_light(lightId,command)
-            client.publish('home/cmd/hue/plane', planeData)
+            jsonMsg = json.dumps(planeData)
+            client.publish('home/cmd/hue/plane', jsonMsg)
 
             # lightInfo= b.get_light(lightId)
 
@@ -117,7 +118,7 @@ limit 1
 
             # jsonMsg = json.dumps(body)
             # print(jsonMsg)
-            client.publish('home/cmd/hue/plane', jsonMsg)
+            # client.publish('home/cmd/hue/plane', jsonMsg)
 
         except Exception as error:
             traceback.print_exc() 

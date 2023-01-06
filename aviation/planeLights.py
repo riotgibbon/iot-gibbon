@@ -85,7 +85,8 @@ limit 1
             altitude=row[1]
             speed=row[2]
             distance=row[3]
-            planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance}
+            updated=row[5]
+            planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': updated}
             print(planeData)
             maxDistance = 40000
             maxAltitude=40000

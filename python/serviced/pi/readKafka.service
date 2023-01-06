@@ -3,7 +3,7 @@ Description=readKafka client
 After=multi-user.target
 
 [Service]
-ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/aviation/readKafka.py  2>&1'
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/aviation/readKafka.py  > /home/pi/logs/readKafka.log 2>&1'
 Restart=always
 RestartSec=10s
 KillMode=process

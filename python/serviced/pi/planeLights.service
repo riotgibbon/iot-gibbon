@@ -1,0 +1,13 @@
+[Unit]
+Description=planeLights client
+After=multi-user.target
+
+[Service]
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/github/iot-gibbon/aviation/planeLights.py '
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+
+[Install]
+WantedBy=multi-user.target

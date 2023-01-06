@@ -1,8 +1,13 @@
+import paho.mqtt.client as mqtt
 import time
 import psycopg2
 import psycopg2.extras
 from phue import Bridge  # https://github.com/studioimaginaire/phue
 import traceback
+import json
+from rgbxy import Converter
+
+converter = Converter()
 
 sleepSeconds=5
 
@@ -20,6 +25,20 @@ b.connect()
 
 # Get the bridge state (This returns the full dictionary that you can explore)
 b.get_api()
+
+def getMqttClient():
+    client = mqtt.Client()
+    while (True):
+        try:
+            client.connect("192.168.0.46", 1883, 60)
+            break
+        except Exception:
+            print ("error connecting, pausing")
+            traceback.print_exc()
+            time.sleep(5)
+    return client
+
+client = getMqttClient()   
 
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
   return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
@@ -66,7 +85,8 @@ limit 1
             altitude=row[1]
             speed=row[2]
             distance=row[3]
-            print(f"icao: {icao} , altitude : {altitude}, speed: {speed}, distance : {distance}")
+            planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance}
+            print(planeData)
 
             hueMappedValue =int(mapRange (altitude, 500, 15000, hueLow, hueHigh))
             sat =int(mapRange (speed, 0, 600, 100,254))
@@ -74,6 +94,26 @@ limit 1
             command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}
             print(command)
             b.set_light(lightId,command)
+
+            lightInfo= b.get_light(lightId)
+
+            xy = lightInfo['state']['xy']
+            x= xy[0]
+            y=xy[1]
+
+            hex = f"#{converter.xy_to_hex(x,y,bri)}"
+
+            hue= {'xy': xy, 'hex': hex, 'rgb':converter.xy_to_rgb(x,y,bri), 'bri': bri, 'hue': hueMappedValue }
+            # print(hue)
+            body={}
+            body['hue']=hue #json.dumps(lightInfo)
+            
+            body['plane']=  planeData
+
+            jsonMsg = json.dumps(body)
+            # print(jsonMsg)
+            client.publish('home/cmd/hue/plane', jsonMsg)
+
         except Exception as error:
             traceback.print_exc() 
 

@@ -87,10 +87,13 @@ limit 1
             distance=row[3]
             planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance}
             print(planeData)
+            maxDistance = 40000
+            maxAltitude=40000
 
-            hueMappedValue =int(mapRange (altitude, 500, 15000, hueLow, hueHigh))
+            hueMappedValue =int(mapRange (altitude, 500, 40000, hueLow, hueHigh))
             sat =int(mapRange (speed, 0, 600, 100,254))
-            bri =int(mapRange (10000- distance, 0, 10000, 100,254))
+
+            bri =int(mapRange (maxDistance- distance, 0, maxDistance, 100,254))
             command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}
             print(command)
             b.set_light(lightId,command)

@@ -41,7 +41,9 @@ def getMqttClient():
 client = getMqttClient()   
 
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
-  return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+    
+        
+    return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 with psycopg2.connect(CONNECTION) as conn:  
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -49,34 +51,34 @@ with psycopg2.connect(CONNECTION) as conn:
         try:
             # print("getting data")
             query="""
-            select * from (
-                  select icao,
-                         altitude,
-                         speed,
-                         distance,
-                         ts,
-                         updated,
-                         ROW_NUMBER() OVER (
-                             PARTITION BY icao
-                             ORDER BY ts desc) reading,
-                        first_value
-                            (ts) over(order by ts desc) as LAST_VALUE
-                  from (
-                           select st_distance(ST_MakePoint(lon, lat) ::geography,
-                                              ST_MakePoint(-0.597207, 51.503572) ::geography) distance,
-                                  TO_TIMESTAMP(updated, 'YYYY-MM-DD HH24:MI:SS.MS')           ts,
-                                  *
-                           from flights
+    select * from (
+                      select icao,
+                             altitude,
+                             speed,
+                             distance,
+                             ts,
+                             updated,
+                             ROW_NUMBER() OVER (
+                                 PARTITION BY icao
+                                 ORDER BY ts desc) reading
 
-                           where altitude>0 and lat>0
-                            and flightdate = CURRENT_DATE::TEXT
-                       ) f
+                      from (
+                               select st_distance(ST_MakePoint(lon, lat) ::geography,
+                                                  ST_MakePoint(-0.597207, 51.503572) ::geography) distance,
+                                      TO_TIMESTAMP(updated, 'YYYY-MM-DD HH24:MI:SS.MS')           ts,
+                                      *
+                               from flights
 
-              )r
-where reading=1
-and ts>last_value - interval '2 minute'
-order by distance
-limit 1
+                               where altitude>0 and lat>0
+                                and flightdate = CURRENT_DATE::TEXT
+--                                 and TO_TIMESTAMP(updated, 'YYYY-MM-DD HH24:MI:SS.MS') > CURRENT_TIMESTAMP - interval '2 minute'
+                           ) f
+                where ts>CURRENT_TIMESTAMP - interval '2 minute'
+                  )r
+    where reading=1
+--     and ts>CURRENT_TIMESTAMP - interval '2 minute'
+    order by distance
+    limit 1
             """
             cursor.execute(query)
             row = cursor.fetchone()

@@ -41,7 +41,8 @@ def getMqttClient():
 client = getMqttClient()   
 
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
-    
+    x= max(in_min, x)
+    x= min(in_max, x)
         
     return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 

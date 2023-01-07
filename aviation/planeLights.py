@@ -91,13 +91,13 @@ with psycopg2.connect(CONNECTION) as conn:
             updated=row[5]
             planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': updated}
             print(planeData)
-            maxDistance = 1000000
+            maxDistance = 100000
             maxAltitude=40000
 
             hueMappedValue =int(mapRange (altitude, 500, 40000, hueLow, hueHigh))
             sat =int(mapRange (speed, 0, 600, 50,254))
 
-            bri =int(mapRange (maxDistance- distance, 0, maxDistance, 50,254))
+            bri =int(mapRange ( distance, 0, maxDistance, 50,254))
             command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}
             print(command)
             b.set_light(lightId,command)

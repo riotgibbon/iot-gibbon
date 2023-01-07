@@ -9,7 +9,7 @@ from rgbxy import Converter
 
 converter = Converter()
 
-sleepSeconds=5
+sleepSeconds=20
 
 CONNECTION = "postgres://postgres:password@192.168.0.46:5432/postgres"
 

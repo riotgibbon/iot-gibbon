@@ -52,7 +52,7 @@ with psycopg2.connect(CONNECTION) as conn:
         try:
             # print("getting data")
             query="""
-    select * from (
+     select * from (
                       select icao,
                              altitude,
                              speed,
@@ -69,15 +69,12 @@ with psycopg2.connect(CONNECTION) as conn:
                                       TO_TIMESTAMP(updated, 'YYYY-MM-DD HH24:MI:SS.MS')           ts,
                                       *
                                from flights
-
                                where altitude>0 and lat>0
                                 and flightdate = CURRENT_DATE::TEXT
---                                 and TO_TIMESTAMP(updated, 'YYYY-MM-DD HH24:MI:SS.MS') > CURRENT_TIMESTAMP - interval '2 minute'
                            ) f
                 where ts>CURRENT_TIMESTAMP - interval '2 minute'
                   )r
     where reading=1
---     and ts>CURRENT_TIMESTAMP - interval '2 minute'
     order by distance
     limit 1
             """

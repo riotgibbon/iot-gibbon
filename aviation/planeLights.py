@@ -122,6 +122,7 @@ limit 1
         client.publish('home/cmd/hue/plane', jsonMsg)
 
     except Exception as error:
+        client.publish('home/cmd/hue/plane', f'could not publish: {error}')
         traceback.print_exc() 
 
     time.sleep(sleepSeconds)

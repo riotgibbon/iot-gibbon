@@ -95,7 +95,7 @@ limit 1
         hueMappedValue =int(mapRange (altitude, 500, 40000, hueLow, hueHigh))
         sat =int(mapRange (speed, 0, 600, 50,254))
 
-        bri =int(mapRange (maxDistance - distance, 0, maxDistance, 50,254))
+        bri =int(mapRange (maxDistance - distance, 0, maxDistance, 10,254))
         command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}
         print(command)
         b.set_light(lightId,command)

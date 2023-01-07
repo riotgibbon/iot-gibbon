@@ -89,7 +89,7 @@ limit 1
         updated=row[5]
         planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': updated}
         print(planeData)
-        maxDistance = 100000
+        maxDistance = 75000
         maxAltitude=40000
 
         hueMappedValue =int(mapRange (altitude, 500, 40000, hueLow, hueHigh))

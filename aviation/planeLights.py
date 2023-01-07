@@ -101,27 +101,27 @@ with psycopg2.connect(CONNECTION) as conn:
             command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}
             print(command)
             b.set_light(lightId,command)
-            jsonMsg = json.dumps(planeData)
-            client.publish('home/cmd/hue/plane', jsonMsg)
-
-            # lightInfo= b.get_light(lightId)
-
-            # xy = lightInfo['state']['xy']
-            # x= xy[0]
-            # y=xy[1]
-
-            # hex = f"#{converter.xy_to_hex(x,y,bri)}"
-
-            # hue= {'xy': xy, 'hex': hex, 'rgb':converter.xy_to_rgb(x,y,bri), 'bri': bri, 'hue': hueMappedValue }
-            # # print(hue)
-            # body={}
-            # body['hue']=hue #json.dumps(lightInfo)
-            
-            # body['plane']=  planeData
-
-            # jsonMsg = json.dumps(body)
-            # print(jsonMsg)
+            # jsonMsg = json.dumps(planeData)
             # client.publish('home/cmd/hue/plane', jsonMsg)
+
+            lightInfo= b.get_light(lightId)
+
+            xy = lightInfo['state']['xy']
+            x= xy[0]
+            y=xy[1]
+
+            hex = f"#{converter.xy_to_hex(x,y,bri)}"
+
+            hue= {'xy': xy, 'hex': hex, 'rgb':converter.xy_to_rgb(x,y,bri), 'bri': bri, 'hue': hueMappedValue }
+            # print(hue)
+            body={}
+            body['hue']=hue #json.dumps(lightInfo)
+            
+            body['plane']=  planeData
+
+            jsonMsg = json.dumps(body)
+            print(jsonMsg)
+            client.publish('home/cmd/hue/plane', jsonMsg)
 
         except Exception as error:
             traceback.print_exc() 

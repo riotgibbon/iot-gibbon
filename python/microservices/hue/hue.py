@@ -75,7 +75,9 @@ def getMqttClient():
     return client
 
 def mapRange( x,  in_min,  in_max,  out_min,  out_max):
-  return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+    x= max(in_min, x)
+    x= min(in_max, x)      
+    return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 def indexValue(value, low, high):
     return mapRange(value, low,high,1,100)

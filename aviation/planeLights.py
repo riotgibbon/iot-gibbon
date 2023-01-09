@@ -5,11 +5,12 @@ import psycopg2.extras
 from phue import Bridge  # https://github.com/studioimaginaire/phue
 import traceback
 import json
-from rgbxy import Converter
 
-converter = Converter()
 
-sleepSeconds=10
+
+
+sleepSeconds=2
+transitionTime=sleepSeconds*10
 
 CONNECTION = "postgres://postgres:password@192.168.0.46:5432/postgres"
 
@@ -17,7 +18,7 @@ hueHigh = 65535
 hueLow = 0
 lightId=8
 host = '192.168.0.11'
-transitionTime=50
+
 b = Bridge(host)
 
 # If the app is not registered and the button is not pressed, press the button and call connect() (this only needs to be run a single time)

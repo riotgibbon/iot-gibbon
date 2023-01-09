@@ -87,7 +87,7 @@ while True:
         speed=row[2]
         distance=row[3]
         updated=row[4]
-        planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': updated}
+        planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': str(updated)}
         print(planeData)
         maxDistance = 75000
         maxAltitude=40000

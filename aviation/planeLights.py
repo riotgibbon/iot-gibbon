@@ -72,7 +72,7 @@ while True:
                                from flights
                                where altitude>0 and lat>0
                                 and flightdate = CURRENT_DATE::TEXT
-                                and updated > (CURRENT_TIMESTAMP - interval '2 minute')::TEXT
+                                and updated > (CURRENT_TIMESTAMP - interval '2 minute')
                            ) f
                   )r
     where reading=1

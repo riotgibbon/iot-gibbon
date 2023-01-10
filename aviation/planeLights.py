@@ -72,7 +72,7 @@ while True:
                                       *
                                from flights
                                where altitude>0 and lat>0
-                                -- and flightdate = CURRENT_DATE::TEXT
+                                --st and flightdate = CURRENT_DATE::TEXT
                                 and updated > (CURRENT_TIMESTAMP - interval '2 minute')
                            ) f
                   )r
@@ -89,7 +89,7 @@ while True:
         distance=row[3]
         updated=row[4]
         planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': str(updated)}
-        print(planeData)
+        # print(planeData)
         maxDistance = 75000
         maxAltitude=40000
 
@@ -98,7 +98,7 @@ while True:
 
         bri =int(mapRange (maxDistance - distance, 0, maxDistance, 25,200))
         command =  {'transitiontime' : transitionTime,  'hue':  hueMappedValue, 'sat':sat, 'bri': bri}
-        print(command)
+        # print(command)
         b.set_light(lightId,command)
         body={}
         body['hue']=command #json.dumps(lightInfo)

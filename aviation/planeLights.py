@@ -61,6 +61,7 @@ while True:
                              distance,
 --                              ts,
                              updated,
+                             callsign,
                              ROW_NUMBER() OVER (
                                  PARTITION BY icao
                                  ORDER BY updated desc) reading
@@ -88,7 +89,8 @@ while True:
         speed=row[2]
         distance=row[3]
         updated=row[4]
-        planeData={'icao': icao , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': str(updated)}
+        callsign=row[5].replace("_","")
+        planeData={'icao': icao , 'callsign': callsign , 'altitude' : altitude, 'speed': speed, 'distance' : distance, 'updated': str(updated)}
         # print(planeData)
         maxDistance = 75000
         maxAltitude=40000

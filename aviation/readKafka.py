@@ -31,7 +31,7 @@ while(True):
                 altitude=-1
             # print(d['icao'])    
             sql =f"""insert into flights (icao, altitude, lat, lon, updated, flightdate, speed, callsign)
-            values ('{d.get('icao')}', {altitude}, {d.get('lat',-1)}, {d.get('lon',-1)}, '{d.get('updated')}', '{time.strftime("%Y-%m-%d")}', {d.get('GS',0)}, '{d.get('callsign')}')"""
+            values ('{d.get('icao')}', {altitude}, {d.get('lat',-1)}, {d.get('lon',-1)}, '{d.get('updated')}', '{time.strftime("%Y-%m-%d")}', {d.get('GS',0)}, '{d.get('callsign','').replace("_","")}')"""
             # print (sql)
             cursor.execute(sql)
             conn.commit()

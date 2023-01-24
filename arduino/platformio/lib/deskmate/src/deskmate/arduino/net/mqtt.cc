@@ -59,9 +59,13 @@ MQTTManager::MQTTManager(const char* server, int port, const char* username,
 }
 
 bool MQTTManager::Connect() {
-  Serial.println("[mqtt] Will connect.");
-  return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),   password_.c_str());
-  // return pubsub_client_->connect(server.c_str(), username_.c_str(),   password_.c_str());
+
+  if (!IsConnected()) {
+    Serial.println("[mqtt] Will connect.");
+
+    return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),   password_.c_str());
+  }
+  // return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),   password_.c_str());
 }
 
 bool MQTTManager::IsConnected() const { return pubsub_client_->connected(); }
@@ -84,7 +88,7 @@ bool MQTTManager::Tick() {
   pubsub_client_->loop();
 
   if (!IsConnected()) {
-    // Serial.println("[mqtt] Connection lost. Reconnecting.");
+    Serial.println("[mqtt] Connection lost. Reconnecting.");
     if (!Connect()) {
       Serial.println("[mqtt] Unable to reconnect.");
       return false;
@@ -103,23 +107,27 @@ bool MQTTManager::Tick() {
   while (!out_queue_.empty()) {
     //  delay(500);
     const MQTTMessage& msg = out_queue_.front();
-    Serial.print("[mqtt] Publishing message: ");
+    Serial.print("[mqtt] Publishing message:  ");
     Serial.print( msg.topic.c_str());
     Serial.print( " : ");
     Serial.println( msg.payload.c_str());
+
     if (!pubsub_client_->publish(msg.topic.c_str(), msg.payload.c_str())) {
-      Serial.print("[mqtt] Error sending message %s -> %s\n");
+      Serial.println("[mqtt] Error sending message %s -> %s\n");
       Serial.print( msg.topic.c_str());
-      Serial.print( msg.payload.c_str());
+      Serial.print( " : ");
+      Serial.println( msg.payload.c_str());
+      delay(50);
+      // out_queue_.push(msg);
     }
     // }else {
     //   out_queue_.pop();
     //   }
 
     out_queue_.pop();
-   
+    delay(50);
   }
-
+  
   return true;
 }
 

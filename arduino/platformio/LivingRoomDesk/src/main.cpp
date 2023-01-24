@@ -4,11 +4,15 @@
 // #include "deskmate/arduino/sensors/si7021.h"
 #include "deskmate/app/app.h"
 // #include "deskmate/arduino/sensors/mq135Sensor.h"
+#include "deskmate/arduino/sensors/veml7700.h"
+#include "deskmate/arduino/sensors/pm25.h"
+
 // mics4514
 using deskmate::arduino::sensors::sensor;
 #include "deskmate/arduino/sensors/mics4514.h"
 using deskmate::arduino::sensors::mics4514;
-
+using deskmate::arduino::sensors::veml7700;
+using deskmate::arduino::sensors::pm25;
 
 // using deskmate::arduino::sensors::si7021;
 
@@ -28,11 +32,13 @@ void setup() {
   App app(location,device);
   app.Init();
   // app.setLEDPin(LED_BUILTIN);
-  app.addSensor(new mics4514(location, 8, A0, A7));
-  // app.addSensor(new si7021(location));
-  // // app.addSensor(new mq135Sensor(location));
-  // app.addSensor(new mq135Sensor(location,A0));
-  //   app.addSensor(new veml7700(location));
+
+
+
+  // app.addSensor(new mics4514(location, 8, A0, A7));
+  app.addSensor(new pm25(location));
+  app.addSensor(new veml7700(location));
+  
   while (true) {
     //wifi_manager.MaybeReconnect();
     app.Tick();

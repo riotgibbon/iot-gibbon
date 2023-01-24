@@ -32,7 +32,8 @@ mqttClient.connect(broker,port)
 logger.info(f"Connected")
 
 
-i2c = busio.I2C(board.SCL, board.SDA)
+# i2c = busio.I2C(board.SCL, board.SDA)
+i2c = board.I2C()
 int_pin = digitalio.DigitalInOut(board.D5)
 int_pin.switch_to_input(pull=digitalio.Pull.UP)
 apds = APDS9960(i2c)

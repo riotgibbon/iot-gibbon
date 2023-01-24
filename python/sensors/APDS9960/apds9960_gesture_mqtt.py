@@ -34,7 +34,9 @@ logger.info(f"Connected")
 
 i2c = busio.I2C(board.SCL, board.SDA)
 int_pin = digitalio.DigitalInOut(board.D5)
-apds = APDS9960(i2c, interrupt_pin=int_pin)
+int_pin.switch_to_input(pull=digitalio.Pull.UP)
+apds = APDS9960(i2c)
+# apds = APDS9960(i2c, interrupt_pin=int_pin)
 
 apds.enable_proximity = True
 apds.enable_gesture = True
@@ -50,25 +52,25 @@ def postToIFTT(event):
 
 while True:
         try:
+            if not int_pin.value:
+                    gesture = apds.gesture()
 
-            gesture = apds.gesture()
-
-            if gesture == 0x01:
-                print("up")
-                publish(mqttClient,"gesture","up")   
-                postToIFTT('desk_up')
-            elif gesture == 0x02:
-                print("down")
-                publish(mqttClient,"gesture","down")  
-                postToIFTT('desk_down')
-            elif gesture == 0x03:
-                print("left")
-                publish(mqttClient,"gesture","left")  
-                postToIFTT('desk_left')
-            elif gesture == 0x04:
-                print("right")
-                publish(mqttClient,"gesture","right")  
-                postToIFTT('desk_right')
+                    if gesture == 0x01:
+                        print("up")
+                        publish(mqttClient,"gesture","up")   
+                        postToIFTT('desk_up')
+                    elif gesture == 0x02:
+                        print("down")
+                        publish(mqttClient,"gesture","down")  
+                        postToIFTT('desk_down')
+                    elif gesture == 0x03:
+                        print("left")
+                        publish(mqttClient,"gesture","left")  
+                        postToIFTT('desk_left')
+                    elif gesture == 0x04:
+                        print("right")
+                        publish(mqttClient,"gesture","right")  
+                        postToIFTT('desk_right')
 
 
         except Exception as error:

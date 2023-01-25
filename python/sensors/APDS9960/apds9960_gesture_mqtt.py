@@ -41,7 +41,7 @@ apds = APDS9960(i2c)
 
 apds.enable_proximity = True
 apds.enable_gesture = True
-
+sleepSeconds=0.01
 
 def publish(client, metric, value):
     topic =f"home/tele/{metric}/livingroom/desk"
@@ -76,4 +76,4 @@ while True:
 
         except Exception as error:
             logger.error(error.args[0])   
-            
+        time.sleep(sleepSeconds)        

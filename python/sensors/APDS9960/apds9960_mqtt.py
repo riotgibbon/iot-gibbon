@@ -37,6 +37,8 @@ i2c = board.I2C()
 int_pin = digitalio.DigitalInOut(board.D5)
 int_pin.switch_to_input(pull=digitalio.Pull.UP)
 apds = APDS9960(i2c)
+sleepSeconds=0.01
+
 
 # apds.enable_proximity = True
 # apds.proximity_interrupt_threshold = (0, 175)
@@ -113,6 +115,8 @@ while True:
         except Exception as error:
             logger.error(error.args[0])  
             print("error: "+ error) 
+
+        time.sleep(sleepSeconds)   
 
 
         

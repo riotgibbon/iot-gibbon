@@ -4,6 +4,7 @@ import ST7789
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+from colour import Color
 
 display_type = "square"
 disp = ST7789.ST7789(
@@ -51,7 +52,7 @@ def map_value(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
-    
+
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))

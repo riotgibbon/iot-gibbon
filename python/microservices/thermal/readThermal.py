@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import json
 import ST7789
 
-
+display_type = "square"
 disp = ST7789.ST7789(
     height=135 if display_type == "rect" else 240,
     rotation=0 if display_type == "rect" else 90,

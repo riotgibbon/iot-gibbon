@@ -72,8 +72,10 @@ def on_message(client, userdata, msg):
     draw.ellipse((10, 10, WIDTH - 10, HEIGHT - 10), outline=(0, 255, 0), fill=(0, 0, 255))
     disp.display(img)
 
-    for t in temps:
-        print (t)
+    # for t in temps:
+    #     print (t)
+    pixels = [map_value(p, MINTEMP, MAXTEMP, 0, COLORDEPTH - 1) for p in temps]
+    print(pixels)
 
 client = mqtt.Client()
 client.on_connect = on_connect

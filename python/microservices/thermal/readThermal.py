@@ -15,6 +15,16 @@ disp = ST7789.ST7789(
     offset_top=53 if display_type == "rect" else 0
 )
 
+disp.begin()
+
+WIDTH = disp.width
+HEIGHT = disp.height
+# Clear the display to a red background.
+# Can pass any tuple of red, green, blue values (from 0 to 255 each).
+# Get a PIL Draw object to start drawing on the display buffer.
+img = Image.new('RGB', (WIDTH, HEIGHT), color=(255, 0, 0))
+draw = ImageDraw.Draw(img)
+
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))

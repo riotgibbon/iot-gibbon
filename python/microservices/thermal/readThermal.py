@@ -1,6 +1,9 @@
 import paho.mqtt.client as mqtt
 import json
 import ST7789
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont.
 
 display_type = "square"
 disp = ST7789.ST7789(

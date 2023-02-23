@@ -26,7 +26,32 @@ HEIGHT = disp.height
 # Can pass any tuple of red, green, blue values (from 0 to 255 each).
 # Get a PIL Draw object to start drawing on the display buffer.
 
+# low range of the sensor (this will be blue on the screen)
+MINTEMP = 26.0
 
+# high range of the sensor (this will be red on the screen)
+MAXTEMP = 32.0
+
+# how many color values we can have
+COLORDEPTH = 1024
+
+# the list of colors we can choose from
+blue = Color("indigo")
+colors = list(blue.range_to(Color("red"), COLORDEPTH))
+
+# create the array of colors
+colors = [(int(c.red * 255), int(c.green * 255), int(c.blue * 255)) for c in colors]
+
+# some utility functions
+def constrain(val, min_val, max_val):
+    return min(max_val, max(min_val, val))
+
+
+def map_value(x, in_min, in_max, out_min, out_max):
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
+    
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
@@ -45,7 +70,7 @@ def on_message(client, userdata, msg):
     draw.rectangle((10, 10, WIDTH - 10, HEIGHT - 10), outline=(255, 255, 0), fill=(255, 0, 255))
     draw.ellipse((10, 10, WIDTH - 10, HEIGHT - 10), outline=(0, 255, 0), fill=(0, 0, 255))
     disp.display(img)
-    
+
     for t in temps:
         print (t)
 

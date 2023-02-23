@@ -28,6 +28,8 @@ HEIGHT = disp.height
 img = Image.new('RGB', (WIDTH, HEIGHT), color=(255, 0, 0))
 draw = ImageDraw.Draw(img)
 draw.rectangle((10, 10, WIDTH - 10, HEIGHT - 10), outline=(255, 255, 0), fill=(255, 0, 255))
+draw.ellipse((10, 10, WIDTH - 10, HEIGHT - 10), outline=(0, 255, 0), fill=(0, 0, 255))
+
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):

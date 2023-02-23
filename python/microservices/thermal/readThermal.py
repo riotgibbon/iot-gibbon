@@ -25,10 +25,6 @@ HEIGHT = disp.height
 # Clear the display to a red background.
 # Can pass any tuple of red, green, blue values (from 0 to 255 each).
 # Get a PIL Draw object to start drawing on the display buffer.
-img = Image.new('RGB', (WIDTH, HEIGHT), color=(255, 0, 0))
-draw = ImageDraw.Draw(img)
-draw.rectangle((10, 10, WIDTH - 10, HEIGHT - 10), outline=(255, 255, 0), fill=(255, 0, 255))
-draw.ellipse((10, 10, WIDTH - 10, HEIGHT - 10), outline=(0, 255, 0), fill=(0, 0, 255))
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -44,6 +40,12 @@ def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
     tempsStr = str(msg.payload.decode("utf-8"))
     temps = json.loads(tempsStr)
+    img = Image.new('RGB', (WIDTH, HEIGHT), color=(255, 0, 0))
+    draw = ImageDraw.Draw(img)
+    draw.rectangle((10, 10, WIDTH - 10, HEIGHT - 10), outline=(255, 255, 0), fill=(255, 0, 255))
+    draw.ellipse((10, 10, WIDTH - 10, HEIGHT - 10), outline=(0, 255, 0), fill=(0, 0, 255))
+    disp.display(img)
+    
     for t in temps:
         print (t)
 

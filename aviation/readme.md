@@ -12,7 +12,8 @@ https://github.com/joergsteinkamp/dump1090
 http://192.168.0.53:8080/
 
 
-
+http://192.168.0.14:8080/
+cd 
 
 config 
 https://uk.flightaware.com/adsb/piaware/advanced_configuration
@@ -115,9 +116,12 @@ https://kafka-python.readthedocs.io/en/master/
 
 
 
+
  bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
 
   bin/kafka-console-consumer.sh --topic flights --from-beginning --bootstrap-server localhost:29092
+
+
 
 
   https://github.com/wurstmeister/kafka-docker
@@ -218,7 +222,7 @@ username=dbadmin
 password=
 dbhost=192.168.0.46
 dbport=5433
-config-schema=docker
+config-schema=flights 
 ```
 
 
@@ -228,8 +232,16 @@ CREATE RESOURCE POOL flights_pool MEMORYSIZE '10%' PLANNEDCONCURRENCY 1 QUEUETIM
 add to path
 export PATH=/opt/vertica/packages/kafka/bin:$PATH
 
+sudo apt-get update
+sudo apt install default-jre
+
+
+
 vkconfig scheduler --create --config-schema docker --operator dbadmin  --conf /home/dbadmin/docker/flights.conf
 vkconfig cluster --create --cluster kafka_flights --hosts 192.168.0.46:9092 --conf /home/dbadmin/docker/flights.conf
+
+
+
 vkconfig source --create --cluster kafka_flights --source flights_jetson --partitions 1 --conf /home/dbadmin/docker/flights.conf
 vkconfig target --create --target-schema public --target-table flights --conf /home/dbadmin/docker/flights.conf
 vkconfig load-spec --create --parser KafkaJSONParser --load-spec flights_load --conf /home/dbadmin/docker/flights.conf
@@ -237,10 +249,45 @@ vkconfig microbatch --create --microbatch flights --target-schema public --targe
            --add-source flights_jetson --add-source-cluster kafka_flights --load-spec flights_load \
            --conf /home/dbadmin/docker/flights.conf
 
-  nohup vkconfig launch --conf /home/dbadmin/docker/flights.conf >/dev/null 2>&1 & 
+    
+
+
+vkconfig microbatch --delete --microbatch flights --conf /home/dbadmin/docker/flights.conf
+
+
+nohup vkconfig launch --conf /home/dbadmin/docker/flights.conf >/dev/null 2>&1 &
 
 
   updated startup script : `/docker-entrypoint.sh`
 
   added vklconfig launch - everything else already setup. Starts automatically
 
+
+
+
+  ## runnig Kafka
+ssh admin@192.168.0.46 
+
+cd /share/CACHEDEV1_DATA/data/github/iot-gibbon/aviation/kafka/wurstmeister/
+ docker-compose up -d
+
+
+
+## troubleshootig
+
+no data
+
+http://192.168.0.53:8080/
+
+
+## KafkaReader
+https://towardsdatascience.com/track-real-time-gold-prices-using-apache-kafka-pandas-matplotlib-122a73728a88
+
+pip3 install kafka-python
+
+
+read Kafka queue in Python - works
+
+objective - find closest flights: distance/altitude/speed/
+
+for the closest flight - represent by altitude:colour, and speed:brightness

@@ -1,7 +1,7 @@
 #pragma once
 #include "Arduino.h"
 #include "sensor.h"
-#include "Adafruit_VEML7700.h"
+#include <Adafruit_VEML7700.h>
 
 namespace deskmate
 {

@@ -37,6 +37,7 @@ MQTTManager::MQTTManager(const char* server, int port, const char* username,
       Serial.println("creating PubSubClient");
       // pubsub_client_= std::make_unique<PubSubClient>(server,port, wifi_client_);
       pubsub_client_= new PubSubClient(server,port, wifi_client_);
+      pubsub_client_->setBufferSize(2048);
       Serial.println("created PubSubClient");
   // Register the "On new message" callback, which calls Dispatch.
   // No fancy synchronization is needed here, since this callback only

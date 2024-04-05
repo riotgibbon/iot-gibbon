@@ -25,6 +25,9 @@
 		},
 		{
 			"path": "LivingRoomDesk"
+		},
+		{
+			"path": "Thermal"
 		}
 	],
 	"settings": {

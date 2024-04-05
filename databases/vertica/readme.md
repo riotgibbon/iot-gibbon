@@ -12,6 +12,8 @@ docker run -p 5433:5433 -d -v /data/vertica/vertica_data:/home/dbadmin/docker da
 
 docker run -p 5433:5433 -d -v /share/CACHEDEV1_DATA/data/vertica/vertica_data:/home/dbadmin/docker dataplatform/docker-vertica
 
+docker run -p 5433:5433 -d --network host -v /share/CACHEDEV1_DATA/data/vertica/vertica_data:/home/dbadmin/docker dataplatform/docker-vertica
+
 ssh admin@192.168.0.46
 
 

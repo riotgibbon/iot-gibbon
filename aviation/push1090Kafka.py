@@ -44,16 +44,8 @@ class ADSBClient(TcpClient):
             icao = pms.adsb.icao(msg)
             default={'icao':icao}
             flight = self.flights.get(icao, default)
-
-
-            tc = pms.adsb.typecode(msg)
-
             typecode = pms.adsb.typecode(msg)
 
-            # callsign = pms.adsb.callsign(msg)
-
-            # TODO: write you magic code here
-            # print(ts, icao, tc, msg, typecode)
             if (typecode>0 and typecode <5):
                 # print(f"icao {icao}, callsign: {pms.adsb.callsign(msg)}")
                 flight['callsign']=pms.adsb.callsign(msg)
@@ -113,9 +105,3 @@ if __name__ == '__main__':
     client = ADSBClient(parsed_args)
     # client = ADSBClient(host='localhost', port=30002, rawtype='raw')
     client.run()
-
-
-
-        # loop = asyncio.get_event_loop()
-        # loop.run_until_complete(main(sys.argv))
-    # sys.exit(main(sys.argv))

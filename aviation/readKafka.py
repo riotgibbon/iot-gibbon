@@ -21,7 +21,8 @@ CONNECTION = "postgres://postgres:password@192.168.0.46:5432/postgres"
 while(True):
 
     with psycopg2.connect(CONNECTION) as conn:  
-        cursor = conn.cursor()
+        cursor = conn.cursor()0.
+        
 
         for message in consumer:
             # print(message)

@@ -27,7 +27,7 @@ load_dotenv()
 CONNECTION = os.getenv('cockroach_db')
 
 def getMqttClient():
-    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    client = mqtt.Client()
     while (True):
         try:
             client.connect("broker.hivemq.com", 1883, 60)
@@ -39,7 +39,7 @@ def getMqttClient():
     return client
 
 
-def on_connect(client, userdata, flags, reason_code, properties):
+def on_connect(client, userdata, flags, reason_code):
     print("Connected with result code "+str(reason_code))
 
     # Subscribing in on_connect() means that if we lose the connection and

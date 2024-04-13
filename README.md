@@ -7,7 +7,7 @@ Home IOT code
 ## Machines
 
 ### Raspberry PI
-ssh pi@192.168.0.50
+ssh pi@192.168.0.23
 
 ./updateGit.sh 
 

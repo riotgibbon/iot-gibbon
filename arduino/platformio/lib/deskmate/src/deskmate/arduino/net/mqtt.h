@@ -43,6 +43,7 @@ class MQTTManager : public deskmate::mqtt::MQTTMessageBuffer {
   bool Tick() override;
 
  private:
+  
   const std::string username_;
   const std::string password_;
   const std::string client_id_;

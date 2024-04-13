@@ -52,6 +52,7 @@ class App {
 
 
  private:
+ void setDateTime();
  deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
  WiFiManager *wifi_manager_;
   // void dummyReading(); 

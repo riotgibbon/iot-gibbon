@@ -1,93 +1,34 @@
 {
 	"folders": [
 		{
-			"name": "Kitchen",
-			"path": "Kitchen"
-		},
-		{
 			"path": "lib"
-		},
-		{
-			"path": "Bedroom"
-		},
-		{
-			"path": "Arborfield"
-		},
-		{
-			"path": "Window"
-		},
-		{
-			"name": "LivingRoomEnvy",
-			"path": "LivingRoomEnvy"
-		},
-		{
-			"path": "KitchenEnvy"
 		},
 		{
 			"path": "LivingRoomDesk"
 		},
 		{
+			"path": "LivingRoomEnvy"
+		},
+		{
 			"path": "Thermal"
+		},
+		{
+			"path": "Window"
+		},
+		{
+			"path": "Arborfield"
+		},
+		{
+			"path": "Bedroom"
+		},
+		{
+			"path": "Bike"
+		},
+		{
+			"path": "Kitchen"
+		},
+		{
+			"path": "KitchenEnvy"
 		}
-	],
-	"settings": {
-		"files.associations": {
-			"random": "cpp",
-			"*.tcc": "c",
-			"fstream": "c",
-			"iosfwd": "c",
-			"istream": "c",
-			"limits": "c",
-			"sstream": "c",
-			"streambuf": "c",
-			"array": "c",
-			"atomic": "c",
-			"cctype": "c",
-			"chrono": "c",
-			"clocale": "c",
-			"cmath": "c",
-			"cstdarg": "c",
-			"cstddef": "c",
-			"cstdint": "c",
-			"cstdio": "c",
-			"cstdlib": "c",
-			"cstring": "c",
-			"ctime": "c",
-			"cwchar": "c",
-			"cwctype": "c",
-			"deque": "c",
-			"unordered_map": "c",
-			"unordered_set": "c",
-			"vector": "c",
-			"exception": "c",
-			"algorithm": "c",
-			"functional": "c",
-			"optional": "c",
-			"ratio": "c",
-			"string_view": "c",
-			"system_error": "c",
-			"tuple": "c",
-			"type_traits": "c",
-			"initializer_list": "c",
-			"iomanip": "c",
-			"iostream": "c",
-			"memory": "c",
-			"new": "c",
-			"ostream": "c",
-			"numeric": "c",
-			"stdexcept": "c",
-			"cinttypes": "c",
-			"utility": "c",
-			"typeinfo": "c",
-			"bit": "c",
-			"compare": "c",
-			"concepts": "c",
-			"map": "c",
-			"iterator": "c",
-			"memory_resource": "c",
-			"netfwd": "c",
-			"string": "c",
-			"ranges": "c"
-		}
-	}
+	]
 }

@@ -1,4 +1,5 @@
 #include "deskmate/arduino/net/mqtt.h"
+#include "deskmate/app/credentials.h"
 
 #include <Arduino.h>
 #ifdef ARDUINO_SAMD_MKRWIFI1010
@@ -12,15 +13,24 @@
 #endif
 
 
+#include <FS.h>
+#include <LittleFS.h>
+#include <CertStoreBearSSL.h>
+
+
 #include <algorithm>
+
+
 
 namespace deskmate {
 namespace arduino {
 namespace net {
 
+
 namespace {
 using deskmate::mqtt::MQTTMessage;
 using deskmate::mqtt::MQTTSubscriber;
+using deskmate::credentials::kMQTTGUID;
 
 // Max that PubSubClient supports.
 constexpr int kSubscriptionQoS = 1;
@@ -34,9 +44,40 @@ constexpr int kSubscriptionQoS = 1;
 MQTTManager::MQTTManager(const char* server, int port, const char* username,
                          const char* password, const char* client_id)
     : username_(username), password_(password), client_id_(client_id) {
+      
+
+      bool isTLS = false;
+
+      if (isTLS) {
+        Serial.println("TLS enabled");
+
+      WiFiClientSecure espClient;
+      LittleFS.begin();
+      BearSSL::CertStore certStore;
+
       Serial.println("creating PubSubClient");
+      int numCerts = certStore.initCertStore(LittleFS, PSTR("/certs.idx"), PSTR("/certs.ar"));
+    Serial.printf("Number of CA certs read: %d\n", numCerts);
+    if (numCerts == 0) {
+      Serial.printf("No certs found. Did you run certs-from-mozilla.py and upload the LittleFS directory before running?\n");
+      return; // Can't connect to anything w/o certs!
+    }
+
+    BearSSL::WiFiClientSecure *bear = new BearSSL::WiFiClientSecure();
+    // Integrate the cert store with this conection
+    bear->setCertStore(&certStore);
+
+    pubsub_client_ = new PubSubClient(server,port, *bear);
+
+    // pubsub_client_->setServer(server, port);
+
+      } else {
+        Serial.println("TLS disabled");
+        pubsub_client_= new PubSubClient(server,port, wifi_client_);
+      }
       // pubsub_client_= std::make_unique<PubSubClient>(server,port, wifi_client_);
-      pubsub_client_= new PubSubClient(server,port, wifi_client_);
+      // 
+
       pubsub_client_->setBufferSize(2048);
       Serial.println("created PubSubClient");
   // Register the "On new message" callback, which calls Dispatch.
@@ -59,14 +100,19 @@ MQTTManager::MQTTManager(const char* server, int port, const char* username,
   
 }
 
+
 bool MQTTManager::Connect() {
 
   if (!IsConnected()) {
-    Serial.println("[mqtt] Will connect.");
+    Serial.println(client_id_.c_str());
+    Serial.println(username_.c_str());
+    Serial.println(password_.c_str());
+    Serial.println("[mqtt] Attempting connection.");
 
-    return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),   password_.c_str());
+    pubsub_client_->connect(client_id_.c_str(), username_.c_str(),   password_.c_str());
+    return IsConnected();
   }
-  // return pubsub_client_->connect(client_id_.c_str(), username_.c_str(),   password_.c_str());
+  return IsConnected();
 }
 
 bool MQTTManager::IsConnected() const { return pubsub_client_->connected(); }
@@ -109,13 +155,28 @@ bool MQTTManager::Tick() {
     //  delay(500);
     const MQTTMessage& msg = out_queue_.front();
     Serial.print("[mqtt] Publishing message:  ");
-    Serial.print( msg.topic.c_str());
+    // Generate a GUID
+    // std::string guid = mqttGUID;
+
+    // Append the GUID to msg.topic
+    std::string topic= msg.topic;
+    
+    if (sizeof(kMQTTGUID) > 0) {
+      std::string guid;
+      guid += kMQTTGUID;
+      topic = guid + "/" + msg.topic;  
+    }
+    // std::string topicWithGUID = mqttGUID.append("/").append(msg.topic);
+
+    // Publish the message with the updated topic
+
+    Serial.print( topic.c_str());
     Serial.print( " : ");
     Serial.println( msg.payload.c_str());
 
-    if (!pubsub_client_->publish(msg.topic.c_str(), msg.payload.c_str())) {
+    if (!pubsub_client_->publish(topic.c_str(), msg.payload.c_str())) {
       Serial.println("[mqtt] Error sending message %s -> %s\n");
-      Serial.print( msg.topic.c_str());
+      Serial.print( topic.c_str());
       Serial.print( " : ");
       Serial.println( msg.payload.c_str());
       delay(50);

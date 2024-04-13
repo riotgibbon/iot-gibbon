@@ -20,16 +20,45 @@ constexpr char kUnitDegreeCelcius[] =
     "\xf8"
     "C";
 
-// WiFi.
-constexpr char kWIFISSID[] = "VM9729091";
-constexpr char kWIFIPassword[] = "bnb3cwmvNhXh";
+// // WiFi.
+// constexpr char kWIFISSID[] = "VM9729091";
+// constexpr char kWIFIPassword[] = "bnb3cwmvNhXh";
+
+// WiFi. - hotspot
+constexpr char kWIFISSID[] = "GibbonNet";
+constexpr char kWIFIPassword[] = "honeybunny";
+
+constexpr char kMQTTGUID[] = "ed33f5b2-7d08-4278-b2b0-06446de0f95d";
+// // MQTT.
+// constexpr char kMQTTUser[] = "";
+// constexpr char kMQTTPassword[] = "";
+// constexpr char kMQTTClientId[] = "esp-arduino";
+// constexpr char kMQTTServer[] = "192.168.0.46";
+// constexpr int kMQTTPort = 1883;
+
 
 // MQTT.
 constexpr char kMQTTUser[] = "";
 constexpr char kMQTTPassword[] = "";
 constexpr char kMQTTClientId[] = "esp-arduino";
-constexpr char kMQTTServer[] = "192.168.0.46";
+constexpr char kMQTTServer[] = "broker.hivemq.com";
 constexpr int kMQTTPort = 1883;
+
+
+// // // MQTT. hiveMQ TLS
+// constexpr char kMQTTUser[] = "mobile";
+// constexpr char kMQTTPassword[] = "Po11ution";
+// constexpr char kMQTTClientId[] = "esp-arduino";
+// constexpr char kMQTTServer[] = "4f67a8b4e1c9480997bf9fa8ce9378d7.s1.eu.hivemq.cloud";
+// constexpr int kMQTTPort = 8883;
+
+
+// MQTT.
+// constexpr char kMQTTUser[] = "";
+// constexpr char kMQTTPassword[] = "";
+// constexpr char kMQTTClientId[] = "esp-arduino";
+// constexpr char kMQTTServer[] = "192.168.0.44";
+// constexpr int kMQTTPort = 1883;
 
 // Display pins.
 constexpr uint8_t kSCKPin = 14;

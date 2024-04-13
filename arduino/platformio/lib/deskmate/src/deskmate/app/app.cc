@@ -9,6 +9,8 @@
 #include "deskmate/input/input.h"
 #include "deskmate/mqtt/mqtt.h"
 
+#include <TZ.h>
+
 // #include "Adafruit_Si7021.h"
 
 namespace deskmate {
@@ -47,7 +49,24 @@ std::vector<sensor* > sensors;
 }  // namespace
 
  
+void  App::setDateTime(){
+    // You can use your own timezone, but the exact time is not used at all.
+  // Only the date is needed for validating the certificates.
+    configTime(TZ_Europe_London, "pool.ntp.org", "time.nist.gov");
 
+    Serial.print("Waiting for NTP time sync: ");
+    time_t now = time(nullptr);
+    while (now < 8 * 3600 * 2) {
+      delay(100);
+      Serial.print(".");
+      now = time(nullptr);
+    }
+    Serial.println();
+
+    struct tm timeinfo;
+    gmtime_r(&now, &timeinfo);
+    Serial.printf("%s %s", tzname[0], asctime(&timeinfo));
+}
  
 
 bool App::Init() {
@@ -63,14 +82,17 @@ bool App::Init() {
 
   Serial.print("Connecting to : ");
   Serial.println(kWIFISSID);
+  
   WiFiManager *wifi_manager= new WiFiManager(kWIFISSID, kWIFIPassword);
   MQTTManager *mqtt_manager = new MQTTManager(kMQTTServer, kMQTTPort, kMQTTUser, kMQTTPassword, client.c_str());
   if (!wifi_manager->Connect()) {
     Serial.println("Unable to connect to WiFi.");
     return false;
   }
-  Serial.print("Connected to WiFi: ");
+  Serial.print("Connected to WiFi: ");  
   Serial.println(kWIFISSID);
+  setDateTime();
+  
   if (!mqtt_manager->Connect()) {
     Serial.println("Unable to connect to the MQTT server.");
     return false;

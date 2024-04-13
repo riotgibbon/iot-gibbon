@@ -19,6 +19,7 @@ sudo systemctl disable pmsa003i_mqtt.service
 sudo systemctl disable veml7700_mqtt.service
 sudo systemctl disable readKafka.service
 sudo systemctl disable planeLights.service
+sudo systemctl disable pollution.service
 
 sudo systemctl daemon-reload
 
@@ -33,6 +34,8 @@ sudo systemctl enable pmsa003i_mqtt.service
 sudo systemctl enable veml7700_mqtt.service
 sudo systemctl enable readKafka.service
 sudo systemctl enable planeLights.service
+sudo systemctl enable pollution.service
+
 
 sudo systemctl restart ifttt.service
 sudo systemctl restart pi_home.service
@@ -45,6 +48,7 @@ sudo systemctl restart pmsa003i_mqtt.service
 sudo systemctl restart veml7700_mqtt.service
 sudo systemctl restart readKafka.service
 sudo systemctl restart planeLights.service
+sudo systemctl restart pollution.service
 
 sudo systemctl status ifttt.service
 sudo systemctl status pi_home.service
@@ -57,3 +61,4 @@ sudo systemctl status pmsa003i_mqtt.service
 sudo systemctl status veml7700_mqtt.service
 sudo systemctl status readKafka.service
 sudo systemctl status planeLights.service
+sudo systemctl status pollution.service

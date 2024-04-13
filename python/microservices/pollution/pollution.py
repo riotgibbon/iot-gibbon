@@ -25,7 +25,7 @@ values = {
 load_dotenv()
 
 CONNECTION = os.getenv('cockroach_db')
-
+print(f"db: {CONNECTION}")
 def getMqttClient():
     client = mqtt.Client()
     while (True):
@@ -85,6 +85,7 @@ def on_message(client, userdata, msg):
         values['satellites'] = location['satellites']
 
         print(values)
+        
         with psycopg2.connect(CONNECTION) as conn:  
             cursor = conn.cursor()
             sql =f"""insert into pollution (lat, lon, temperature, humidity, carbonmonoxide, pm1, pm25, pm10)

@@ -24,9 +24,11 @@ values = {
 
 load_dotenv()
 
-CONNECTION = os.getenv('cockroach_db')
-print(f"db: {CONNECTION}")
-print(psycopg2.extensions.parse_dsn(CONNECTION))
+CONNECTIONS = json.loads(os.environ['connections']) 
+for CONNECTION in CONNECTIONS:
+
+    print(f"db: {CONNECTION}")
+    print(psycopg2.extensions.parse_dsn(CONNECTION))
 def getMqttClient():
     client = mqtt.Client()
     while (True):
@@ -86,14 +88,14 @@ def on_message(client, userdata, msg):
         values['satellites'] = location['satellites']
 
         print(values)
-        
-        with psycopg2.connect(CONNECTION) as conn:  
-            with conn.cursor() as cursor:
-                sql =f"""insert into pollution (lat, lon, temperature, humidity, carbonmonoxide, pm1, pm25, pm10)
-                values ({ values['latitude'] }, {values['longitude']}, {values['temperature']}, {values['humidity']}, {values['carbonmonoxide']}, {values['pm1']}, {values['pm2.5']}, {values['pm10']})"""
-                # print (sql)
-                cursor.execute(sql)
-                conn.commit()
+        for CONNECTION in CONNECTIONS:
+            with psycopg2.connect(CONNECTION) as conn:  
+                with conn.cursor() as cursor:
+                    sql =f"""insert into pollution (lat, lon, temperature, humidity, carbonmonoxide, pm1, pm25, pm10)
+                    values ({ values['latitude'] }, {values['longitude']}, {values['temperature']}, {values['humidity']}, {values['carbonmonoxide']}, {values['pm1']}, {values['pm2.5']}, {values['pm10']})"""
+                    # print (sql)
+                    cursor.execute(sql)
+                    conn.commit()
 
          
 

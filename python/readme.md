@@ -1,4 +1,19 @@
-# Raspberry Pi Garden
+# Python scripts
+
+## VENV
+
+Create a virtual environment for the project
+
+create environment:
+virtualenv .venv
+
+activate:
+. .venv/bin/activate
+
+reqs:
+python % pip install -r setup/requirements.txt 
+
+## Raspberry Pi Garden
 
 Projects and experiments
 

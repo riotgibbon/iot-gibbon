@@ -21,19 +21,19 @@ CONNECTION = "postgres://postgres:password@192.168.0.46:5432/postgres"
 while(True):
 
     with psycopg2.connect(CONNECTION) as conn:  
-        cursor = conn.cursor()0.
-        
+        # cursor = conn.cursor()
+        with conn.cursor() as cursor:
 
-        for message in consumer:
-            # print(message)
-            d=json.loads(message.value)
-            altitude=d.get('altitude',-1)
-            if altitude==None:
-                altitude=-1
-            # print(d['icao'])    
-            sql =f"""insert into flights (icao, altitude, lat, lon, updated, flightdate, speed, callsign)
-            values ('{d.get('icao')}', {altitude}, {d.get('lat',-1)}, {d.get('lon',-1)}, '{d.get('updated')}', '{time.strftime("%Y-%m-%d")}', {d.get('GS',0)}, '{d.get('callsign','').replace("_","")}')"""
-            # print (sql)
-            cursor.execute(sql)
-            conn.commit()
+            for message in consumer:
+                # print(message)
+                d=json.loads(message.value)
+                altitude=d.get('altitude',-1)
+                if altitude==None:
+                    altitude=-1
+                # print(d['icao'])    
+                sql =f"""insert into flights (icao, altitude, lat, lon, updated, flightdate, speed, callsign)
+                values ('{d.get('icao')}', {altitude}, {d.get('lat',-1)}, {d.get('lon',-1)}, '{d.get('updated')}', '{time.strftime("%Y-%m-%d")}', {d.get('GS',0)}, '{d.get('callsign','').replace("_","")}')"""
+                # print (sql)
+                cursor.execute(sql)
+                conn.commit()
         # df=DataFrame(d)

@@ -8,6 +8,7 @@ import psycopg2.extras
 import json
 import os
 from dotenv import load_dotenv
+import urllib.parse
 
 
 rootTopic ="ed33f5b2-7d08-4278-b2b0-06446de0f95d/home/tele/"
@@ -26,7 +27,7 @@ load_dotenv()
 
 CONNECTIONS = json.loads(os.environ['connections']) 
 for CONNECTION in CONNECTIONS:
-
+    
     print(f"db: {CONNECTION}")
     print(psycopg2.extensions.parse_dsn(CONNECTION))
 def getMqttClient():
@@ -50,7 +51,7 @@ def on_connect(client, userdata, flags, reason_code):
     client.subscribe(f"{rootTopic}#")
 
 def getTopic(topic):
-    return f"{rootTopic}{topic}/bike"
+    return f"{rootTopic}{topic}/sniffy"
 
 def isTopic(expected, actual ):
     return getTopic(expected) == actual

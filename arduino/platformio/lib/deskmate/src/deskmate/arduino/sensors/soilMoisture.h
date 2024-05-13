@@ -1,3 +1,4 @@
+#ifdef DALLAS
 #pragma once
 
 #include "sensor.h"
@@ -34,3 +35,4 @@ namespace deskmate
         } // namespace sensors
     }     // namespace arduino
 } // namespace deskmate
+#endif

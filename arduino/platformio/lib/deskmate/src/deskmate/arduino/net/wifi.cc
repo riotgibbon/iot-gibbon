@@ -13,7 +13,7 @@
 #include <WiFi.h>
 #endif
 
-
+// #include "defines.h"
 
 namespace deskmate {
 namespace arduino {
@@ -41,6 +41,8 @@ bool WifiNotConnected(){
   Serial.println("ESP8266");
   return WiFi.waitForConnectResult()!= WL_CONNECTED;
 }
+
+
 #else
 bool WifiNotConnected(){
   Serial.println("wifi.h");
@@ -49,10 +51,12 @@ bool WifiNotConnected(){
 #endif
 
 
+
+
 bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
   long delayed = 0;
   WiFi.begin(ssid, password);
-  Serial.print("[wifi] ");
+  Serial.print("[wifi] library: ");
   while (WifiNotConnected()){
     Serial.println("[wifi] connecting ...");
     delay(kConnectionLoopDelay);

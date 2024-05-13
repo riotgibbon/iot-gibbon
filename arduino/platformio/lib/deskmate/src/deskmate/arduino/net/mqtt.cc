@@ -13,9 +13,9 @@
 #endif
 
 
-#include <FS.h>
-#include <LittleFS.h>
-#include <CertStoreBearSSL.h>
+// #include <FS.h>
+// #include <LittleFS.h>
+// #include <CertStoreBearSSL.h>
 
 
 #include <algorithm>
@@ -49,25 +49,25 @@ MQTTManager::MQTTManager(const char* server, int port, const char* username,
       bool isTLS = false;
 
       if (isTLS) {
-        Serial.println("TLS enabled");
+    //     Serial.println("TLS enabled");
 
-      WiFiClientSecure espClient;
-      LittleFS.begin();
-      BearSSL::CertStore certStore;
+    //   WiFiClientSecure espClient;
+    //   LittleFS.begin();
+    //   BearSSL::CertStore certStore;
 
-      Serial.println("creating PubSubClient");
-      int numCerts = certStore.initCertStore(LittleFS, PSTR("/certs.idx"), PSTR("/certs.ar"));
-    Serial.printf("Number of CA certs read: %d\n", numCerts);
-    if (numCerts == 0) {
-      Serial.printf("No certs found. Did you run certs-from-mozilla.py and upload the LittleFS directory before running?\n");
-      return; // Can't connect to anything w/o certs!
-    }
+    //   Serial.println("creating PubSubClient");
+    //   int numCerts = certStore.initCertStore(LittleFS, PSTR("/certs.idx"), PSTR("/certs.ar"));
+    // Serial.printf("Number of CA certs read: %d\n", numCerts);
+    // if (numCerts == 0) {
+    //   Serial.printf("No certs found. Did you run certs-from-mozilla.py and upload the LittleFS directory before running?\n");
+    //   return; // Can't connect to anything w/o certs!
+    // }
 
-    BearSSL::WiFiClientSecure *bear = new BearSSL::WiFiClientSecure();
-    // Integrate the cert store with this conection
-    bear->setCertStore(&certStore);
+    // BearSSL::WiFiClientSecure *bear = new BearSSL::WiFiClientSecure();
+    // // Integrate the cert store with this conection
+    // bear->setCertStore(&certStore);
 
-    pubsub_client_ = new PubSubClient(server,port, *bear);
+    // pubsub_client_ = new PubSubClient(server,port, *bear);
 
     // pubsub_client_->setServer(server, port);
 

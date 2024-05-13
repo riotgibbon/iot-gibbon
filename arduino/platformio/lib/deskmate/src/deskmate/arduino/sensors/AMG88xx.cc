@@ -1,3 +1,5 @@
+#ifdef AMG88XX
+
 #include "deskmate/arduino/sensors/AMG88xx.h"
 #include "Arduino.h"
 #include "Adafruit_AMG88xx.h"
@@ -104,3 +106,4 @@ namespace deskmate {
 
 
 }
+#endif

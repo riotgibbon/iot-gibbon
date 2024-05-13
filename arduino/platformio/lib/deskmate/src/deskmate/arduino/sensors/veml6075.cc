@@ -1,3 +1,5 @@
+#ifdef VEML
+
 #include "deskmate/arduino/sensors/sensor.h"
 #include "deskmate/arduino/sensors/veml6075.h"
 #include "Arduino.h"
@@ -103,3 +105,5 @@ namespace deskmate
     }     // namespace arduino
 
 } // namespace deskmate
+
+#endif

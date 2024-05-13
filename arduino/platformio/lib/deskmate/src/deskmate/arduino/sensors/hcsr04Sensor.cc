@@ -1,7 +1,9 @@
+#ifdef HC_SR04
+
 #include "deskmate/arduino/sensors/sensor.h"
 #include "deskmate/arduino/sensors/hcsr04Sensor.h"
 #include "Arduino.h"
-#include "Adafruit_Si7021.h"
+
 
 
 #define TRIG_PIN 12
@@ -52,3 +54,4 @@ namespace deskmate {
 
 
     }
+#endif

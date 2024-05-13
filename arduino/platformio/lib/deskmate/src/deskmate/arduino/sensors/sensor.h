@@ -1,6 +1,7 @@
 #pragma once
 #include "deskmate/mqtt/mqtt.h"
 #include "Arduino.h"
+#include "deskmate/app/broadcast.h"
 
 namespace deskmate {
     namespace arduino {
@@ -10,6 +11,10 @@ namespace deskmate {
                 public:
                     // sensor(){};
                     virtual void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer)=0;
+                    virtual void broadcast( deskmate::app::Broadcast *broadcast){
+                        
+                        broadcast->sendMessage(_sensorType, _location);
+                    }
                     std::string getLocation(){
                         return _location;
                     }

@@ -1,3 +1,4 @@
+#ifdef AMG88XX
 #pragma once
 #include "sensor.h"
 #include "Adafruit_AMG88xx.h"
@@ -24,3 +25,4 @@ namespace deskmate {
         }
     }
 }
+#endif

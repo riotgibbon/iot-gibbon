@@ -1,3 +1,4 @@
+#ifdef DALLAS
 #pragma once
 
 #include "sensor.h"
@@ -9,7 +10,7 @@ namespace deskmate
     namespace arduino
     {
         namespace sensors
-        {
+        { 
             class soilTemperature : public sensor
             {
             public:
@@ -33,3 +34,4 @@ namespace deskmate
         } // namespace sensors
     }     // namespace arduino
 } // namespace deskmate
+#endif

@@ -93,6 +93,16 @@ namespace deskmate
                 readAndSend("pm1", (data.pm10_env), mqtt_buffer_);
 
             };
+            void pm25::broadcast(deskmate::app::Broadcast *broadcast) 
+            {
+
+                PM25_AQI_Data data =PM25_AQI_Data() ;
+                sensor->read(&data);
+
+                broadcast->sendMessage("pm10", floatToString(data.pm100_env));
+                broadcast->sendMessage("pm2.5", floatToString(data.pm25_env));
+                broadcast->sendMessage("pm1",floatToString (data.pm10_env));
+            }
         } // namespace sensors
     }     // namespace arduino
 

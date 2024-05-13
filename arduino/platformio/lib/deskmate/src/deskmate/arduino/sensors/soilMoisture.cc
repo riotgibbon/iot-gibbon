@@ -1,3 +1,4 @@
+#ifdef DALLAS
 #include "deskmate/arduino/sensors/sensor.h"
 #include "deskmate/arduino/sensors/soilMoisture.h"
 #include "Arduino.h"
@@ -78,3 +79,4 @@ namespace deskmate
     }     // namespace arduino
 
 } // namespace deskmate
+#endif

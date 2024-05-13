@@ -138,6 +138,7 @@ namespace deskmate
                     Serial.println("not connected");
                 }
             };
+
         } // namespace sensors
     }     // namespace arduino
 

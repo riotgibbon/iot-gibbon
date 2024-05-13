@@ -17,14 +17,21 @@
 #include "deskmate/arduino/net/wifi.h"
 #include "credentials.h"
 
+#include "deskmate/app/broadcast.h"
+
+
+
+
 namespace deskmate {
 namespace app {
 namespace {
 
 using deskmate::app::MQTTConfig;
+using deskmate::app::Broadcast;
 using deskmate::arduino::sensors::sensor;
 using deskmate::arduino::net::MQTTManager;
 using deskmate::arduino::net::WiFiManager;
+
 // using deskmate::arduino::sensors::si7021;
 // using deskmate::arduino::sensors::hcsr04Sensor;
 // using deskmate::gfx::Display;
@@ -43,6 +50,9 @@ class App {
   }
 
   bool Init();
+  bool InitWiFi(std::string client);
+  bool InitMQTT();
+  bool InitBroadcast(std::string client);
   void addSensor(sensor* newSensor);
   void setLEDPin(int ledPin);
    
@@ -54,6 +64,9 @@ class App {
  private:
  void setDateTime();
  deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer_;
+  
+ Broadcast *broadcast_;
+
  WiFiManager *wifi_manager_;
   // void dummyReading(); 
   // MQTTManager mqtt_buffer_;

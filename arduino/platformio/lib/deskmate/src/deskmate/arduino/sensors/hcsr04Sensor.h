@@ -1,3 +1,4 @@
+#ifdef HC_SR04
 #pragma once
 
 #include "sensor.h"
@@ -21,3 +22,4 @@ namespace deskmate {
         }
     }
 }
+#endif

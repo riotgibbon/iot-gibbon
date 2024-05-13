@@ -1,3 +1,4 @@
+#ifdef VEML
 #pragma once
 #include "Arduino.h"
 #include "sensor.h"
@@ -25,3 +26,4 @@ namespace deskmate
         } // namespace sensors
     }     // namespace arduino
 } // namespace deskmate
+#endif

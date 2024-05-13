@@ -12,6 +12,7 @@ namespace deskmate {
                     pm25();
                     pm25(std::string location);
                     void read(deskmate::mqtt::MQTTMessageBuffer *mqtt_buffer) ;
+                    void broadcast(deskmate::app::Broadcast *broadcast) override;
                     bool InitSensor();
                     // virtual std::string getType() override;
                 private:

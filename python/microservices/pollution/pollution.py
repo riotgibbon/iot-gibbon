@@ -8,6 +8,7 @@ import psycopg2.extras
 import json
 import os
 from dotenv import load_dotenv
+import urllib.parse
 
 
 rootTopic ="ed33f5b2-7d08-4278-b2b0-06446de0f95d/home/tele/"
@@ -24,9 +25,11 @@ values = {
 
 load_dotenv()
 
-CONNECTION = os.getenv('cockroach_db')
-print(f"db: {CONNECTION}")
-print(psycopg2.extensions.parse_dsn(CONNECTION))
+CONNECTIONS = json.loads(os.environ['connections']) 
+for CONNECTION in CONNECTIONS:
+    
+    print(f"db: {CONNECTION}")
+    print(psycopg2.extensions.parse_dsn(CONNECTION))
 def getMqttClient():
     client = mqtt.Client()
     while (True):
@@ -48,7 +51,7 @@ def on_connect(client, userdata, flags, reason_code):
     client.subscribe(f"{rootTopic}#")
 
 def getTopic(topic):
-    return f"{rootTopic}{topic}/bike"
+    return f"{rootTopic}{topic}/sniffy"
 
 def isTopic(expected, actual ):
     return getTopic(expected) == actual
@@ -86,14 +89,14 @@ def on_message(client, userdata, msg):
         values['satellites'] = location['satellites']
 
         print(values)
-        
-        with psycopg2.connect(CONNECTION) as conn:  
-            with conn.cursor() as cursor:
-                sql =f"""insert into pollution (lat, lon, temperature, humidity, carbonmonoxide, pm1, pm25, pm10)
-                values ({ values['latitude'] }, {values['longitude']}, {values['temperature']}, {values['humidity']}, {values['carbonmonoxide']}, {values['pm1']}, {values['pm2.5']}, {values['pm10']})"""
-                # print (sql)
-                cursor.execute(sql)
-                conn.commit()
+        for CONNECTION in CONNECTIONS:
+            with psycopg2.connect(CONNECTION) as conn:  
+                with conn.cursor() as cursor:
+                    sql =f"""insert into pollution (lat, lon, temperature, humidity, carbonmonoxide, pm1, pm25, pm10)
+                    values ({ values['latitude'] }, {values['longitude']}, {values['temperature']}, {values['humidity']}, {values['carbonmonoxide']}, {values['pm1']}, {values['pm2.5']}, {values['pm10']})"""
+                    # print (sql)
+                    cursor.execute(sql)
+                    conn.commit()
 
          
 

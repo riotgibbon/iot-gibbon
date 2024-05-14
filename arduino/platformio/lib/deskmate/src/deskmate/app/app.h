@@ -14,7 +14,24 @@
 // #include "deskmate/arduino/sensors/si7021.h"
 // #include "deskmate/arduino/sensors/hcsr04Sensor.h"
 #include "deskmate/arduino/net/mqtt.h"
-#include "deskmate/arduino/net/wifi.h"
+
+
+
+
+#ifdef ARDUINO_SAMD_MKRWIFI1010
+#include "deskmate/arduino/net/wifiSingle.h"
+#define WIFI_SINGLE 
+#elif ARDUINO_SAMD_MKR1000
+#include "deskmate/arduino/net/wifiSingle.h"
+#define WIFI_SINGLE 
+#elif ESP8266
+#include "deskmate/arduino/net/wifiSingle.h"
+#define WIFI_MULTI
+#else
+#include "deskmate/arduino/net/wifiMulti.h"
+#define WIFI_MULTI
+#endif
+
 #include "credentials.h"
 
 #include "deskmate/app/broadcast.h"

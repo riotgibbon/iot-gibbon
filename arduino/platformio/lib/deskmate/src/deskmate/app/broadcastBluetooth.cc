@@ -51,7 +51,7 @@ void broadcaster::bluetoothCallback(esp_spp_cb_event_t event, esp_spp_cb_param_t
     else if(event == ESP_SPP_CLOSE_EVT)
     {
         Serial.println("Connection closed");
-//        BT_connected = false;
+       BT_connected = false;
 //        ESP.restart();
     }
     // else if(event == ESP_SPP_DATA_IND_EVT)

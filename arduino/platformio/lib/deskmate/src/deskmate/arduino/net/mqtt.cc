@@ -2,15 +2,16 @@
 #include "deskmate/app/credentials.h"
 
 #include <Arduino.h>
-#ifdef ARDUINO_SAMD_MKRWIFI1010
-#include <WiFiNINA.h>
-#elif ARDUINO_SAMD_MKR1000
-#include <WiFi101.h>
-#elif ESP8266
-#include <ESP8266WiFi.h>
-#else
-#include <WiFi.h>
-#endif
+
+// #ifdef ARDUINO_SAMD_MKRWIFI1010
+// #include <WiFiNINA.h>
+// #elif ARDUINO_SAMD_MKR1000
+// #include <WiFi101.h>
+// #elif ESP8266
+// #include <ESP8266WiFi.h>
+// #else
+// #include <WiFi.h>
+// #endif
 
 
 // #include <FS.h>

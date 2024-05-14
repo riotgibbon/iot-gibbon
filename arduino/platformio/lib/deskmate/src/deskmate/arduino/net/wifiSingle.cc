@@ -1,4 +1,4 @@
-#include "deskmate/arduino/net/wifi.h"
+#include "deskmate/arduino/net/wifiSingle.h"
 
 
 #ifdef ARDUINO_SAMD_MKRWIFI1010
@@ -13,7 +13,10 @@
 #include <WiFi.h>
 #endif
 
-// #include "defines.h"
+#define XSTR(x) #x
+#define STR(x) XSTR(x)
+
+
 
 namespace deskmate {
 namespace arduino {
@@ -53,9 +56,15 @@ bool WifiNotConnected(){
 
 
 
-bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
+bool WiFiTryToConnectOnce() {
+
+  char  WIFI_SSID[] = STR(F_WIFI_SSID);
+  char  WIFIPassword[] = STR(F_WIFIPassword);
+  Serial.print("Connecting to : ");  
+  Serial.println(WIFI_SSID);
+
   long delayed = 0;
-  WiFi.begin(ssid, password);
+  WiFi.begin(WIFI_SSID, WIFIPassword);
   Serial.print("[wifi] library: ");
   while (WifiNotConnected()){
     Serial.println("[wifi] connecting ...");
@@ -77,7 +86,7 @@ bool WiFiTryToConnectOnce(const char* ssid, const char* password) {
 // re-begin() approach seems to work, although it's not very  elegant.
 bool WiFiManager::Connect() {
   for (int i = 0; i < kConnectionTries; i++) {
-    if (WiFiTryToConnectOnce(ssid_, password_)) {
+    if (WiFiTryToConnectOnce()) {
       return true;
     }
     Serial.println("[wifi] retrying!");

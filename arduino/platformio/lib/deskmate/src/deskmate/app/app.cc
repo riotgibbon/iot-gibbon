@@ -102,16 +102,15 @@ bool App::InitWiFi(std::string client) {
   Serial.print("Client: ");
   Serial.println(client.c_str());
 
-  char  WIFI_SSID[] = STR(F_WIFI_SSID);
-  char  WIFIPassword[] = STR(F_WIFIPassword);
+  // char  WIFI_SSID[] = STR(F_WIFI_SSID);
+  // char  WIFIPassword[] = STR(F_WIFIPassword);
 
-  Serial.print("Connecting to : ");  
-  Serial.println(WIFI_SSID);
+
 
   // Serial.print(" / ");  
   // Serial.println(WIFIPassword);
   
-  WiFiManager *wifi_manager= new WiFiManager(WIFI_SSID, WIFIPassword);
+  WiFiManager *wifi_manager= new WiFiManager();
 
 
   MQTTManager *mqtt_manager = new MQTTManager(kMQTTServer, kMQTTPort, kMQTTUser, kMQTTPassword, client.c_str());
@@ -120,7 +119,7 @@ bool App::InitWiFi(std::string client) {
     return false;
   }
   Serial.print("Connected to WiFi: ");  
-  Serial.println(WIFI_SSID);
+  
   // setDateTime();
   
   if (!mqtt_manager->Connect()) {

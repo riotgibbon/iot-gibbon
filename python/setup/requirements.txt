@@ -3,3 +3,4 @@ psycopg2
 python-dotenv
 python-dateutil
 streamlit
+sqlalchemy

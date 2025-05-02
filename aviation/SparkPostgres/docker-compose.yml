@@ -1,0 +1,83 @@
+version: '2'
+services:
+  # zookeeper:
+  #   image: wurstmeister/zookeeper
+  #   ports:
+  #     - "2181:2181"
+  # kafka:
+  #   image: wurstmeister/kafka
+  #   ports:
+  #     - "9092:9092"
+  #   environment:
+  #     DOCKER_API_VERSION: 1.47
+  #     KAFKA_ADVERTISED_HOST_NAME: 192.168.1.111
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  mongodb:
+    image: mongodb/mongodb-community-server
+    ports:
+      - "27017:27017"
+    volumes:
+        - /share/CACHEDEV1_DATA/data/mongo_data:/data/db
+  timescaledb:
+    image: timescale/timescaledb-ha:pg17
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      TIMESCALEDB_TELEMETRY: off
+      POSTGRES_USER: timescaledb
+      POSTGRES_PASSWORD: password
+    volumes:
+      - /share/CACHEDEV1_DATA/data/postgres/db-data:/home/postgres/pgdata/data
+
+    spark:
+        image: docker.io/bitnami/spark:3.5
+        user: root # Run container as root container: https://docs.bitnami.com/tutorials/work-with-non-root-containers/
+        hostname: spark
+        networks:
+          - default_net
+        environment:
+            - SPARK_MODE=master
+            - SPARK_RPC_AUTHENTICATION_ENABLED=no
+            - SPARK_RPC_ENCRYPTION_ENABLED=no
+            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+            - SPARK_SSL_ENABLED=no
+            - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+            - AWS_DEFAULT_REGION= ${AWS_DEFAULT_REGION}
+        volumes:
+            - /sh/share/CACHEDEV1_DATA/data/spark/data:/data
+            - ../code/spark/app:/usr/local/spark/app # Spark scripts folder (Must be the same path in airflow and Spark Cluster)
+            - ../code/spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
+            - /Users/toby.evans/Documents/github/adp-data-lake-services/infrastructure/spark_jobs:/usr/local/spark/epw # Spark scripts folder (Must be the same path in airflow and Spark Cluster)
+        ports:
+            - "4042:8080"
+            - "7077:7077"
+
+
+    spark-worker-1:
+        image: docker.io/bitnami/spark:3.5
+        user: root
+        networks:
+          - default_net
+        environment:
+            - SPARK_MODE=worker
+            - SPARK_MASTER_URL=spark://spark:7077
+            - SPARK_WORKER_MEMORY=1G
+            - SPARK_WORKER_CORES=1
+            - SPARK_RPC_AUTHENTICATION_ENABLED=no
+            - SPARK_RPC_ENCRYPTION_ENABLED=no
+            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+            - SPARK_SSL_ENABLED=no
+        volumes:
+            - ../data:/data
+            - ../code/spark/app:/usr/local/spark/app # Spark scripts folder (Must be the same path in airflow and Spark Cluster)
+            - ../code/spark/resources:/usr/local/spark/resources #Resources folder (Must be the same path in airflow and Spark Cluster)
+            - /Users/toby.evans/Documents/github/adp-data-lake-services/infrastructure/spark_jobs:/usr/local/spark/epw # Spark scripts folder (Must be the same path in airflow and Spark Cluster)
+
+# /share/CACHEDEV1_DATA/data/
+
+# /share/CACHEDEV1_DATA/data/spark/
+# /share/CACHEDEV1_DATA/data/postgres/

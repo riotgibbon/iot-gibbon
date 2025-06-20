@@ -1,0 +1,19 @@
+[
+    {
+        "_meta": {
+            "topic": "flights",
+            "key": "icao"
+
+        },
+
+        "icao": "faker.airline.flightNumber({ addLeadingZeros: true })",
+        "GS":"faker.number.int(1000)",
+        "updated":"faker.date.soon()",
+        "flightDate":"faker.date.soon()",
+        "altitude":"faker.number.int(50000)",
+        "lat":"faker.location.latitude({ max: 60, min: 50 })",
+        "lon":"faker.location.longitude({ max: 2, min: -6 })"
+
+
+    }
+]

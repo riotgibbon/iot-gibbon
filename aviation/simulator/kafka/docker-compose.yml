@@ -1,0 +1,88 @@
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    # networks:
+    #   - default_net
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    # networks:
+    #   - default_net
+    environment:
+      DOCKER_API_VERSION: 1.47
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.129.21
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  mongodb:
+    image: mongodb/mongodb-community-server
+    # networks:
+    #   - default_net
+    ports:
+      - "27017:27017"
+    volumes:
+        - ./mongo_data:/data/db
+  # timescaledb:
+  #   image: timescale/timescaledb-ha:pg17
+  #   restart: always
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     TIMESCALEDB_TELEMETRY: off
+  #     POSTGRES_USER: timescaledb
+  #     POSTGRES_PASSWORD: password
+  #   volumes:
+  #     - ${PWD}/timescaledb/db-data:/home/postgres/pgdata/data
+  spark:
+      image: docker.io/bitnami/spark:3.5
+      user: root # Run container as root container: https://docs.bitnami.com/tutorials/work-with-non-root-containers/
+      hostname: spark
+      # networks:
+      #   - default_net
+      environment:
+          - SPARK_MODE=master
+          - SPARK_RPC_AUTHENTICATION_ENABLED=no
+          - SPARK_RPC_ENCRYPTION_ENABLED=no
+          - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+          - SPARK_SSL_ENABLED=no
+      volumes:
+          - ${PWD}/scripts:/scripts
+          - ${PWD}/output:/output
+      ports:
+          - "4042:8080"
+          - "7077:7077"
+  zeppelin:
+    image: apache/zeppelin:0.9.0
+    # networks:
+    #   - default_net
+    ports:
+      - 8900:8080
+      - 4040:4040
+    volumes:
+      - ./config/zeppelin/notebook:/opt/zeppelin/notebook
+      - ./config/zeppelin/helium:/opt/zeppelin/helium
+      - ./config/zeppelin/sedona:/opt/zeppelin/sedona
+      - zeppelin-conf:/opt/zeppelin/conf
+      - zeppelin-interpreter:/opt/zeppelin/interpreter
+      - ./data:/data
+      - ./jars:/jars 
+
+
+volumes:
+  postgresdata:
+    external: false
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: 'timescaledb/db-data'
+  zeppelin-conf:
+    driver: local
+  zeppelin-interpreter:
+    driver: local
+# networks:
+#     default_net:

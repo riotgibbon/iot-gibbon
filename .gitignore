@@ -1,1 +1,14 @@
 python/microservices/pollution/.env
+
+
+
+stacks/
+mongo_data/
+spark_output*/
+.streamlit/
+db-data/
+.idea/
+digdis/data/util/
+output/
+timescaledb/
+
